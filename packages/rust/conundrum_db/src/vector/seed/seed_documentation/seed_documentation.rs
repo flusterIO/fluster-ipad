@@ -5,7 +5,10 @@ use conundrum::{
     ecosystem::{
         db::{
             db::ArcMutexDB,
-            db_traits::{db_entity::DBEntity, entity_crud::EntityCRUD},
+            db_traits::{
+                db_entity::{DBEntity, DBSchema},
+                entity_crud::EntityCRUD,
+            },
             tables::DatabaseTable,
         },
         error_handling::{
@@ -64,7 +67,7 @@ impl Chunk<ParseConundrumOptions, DocumentationChunk, ServerState> for SeedDocum
 impl<'a>
     SeedChunks<'a,
                DocumentationChunk,
-               <DocumentationChunk as DBEntity>::PartialUpdateType,
+               <DocumentationChunk as DBSchema>::PartialUpdateType,
                ParseConundrumOptions,
                ServerState> for SeedDocumentation
 {

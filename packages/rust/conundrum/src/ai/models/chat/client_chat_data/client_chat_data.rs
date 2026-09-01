@@ -8,14 +8,11 @@ use crate::{
                     user::user_message::UserMessage,
                 },
             },
-            tool::{
-                tool_execution::{self, ToolExecution},
-                tool_execution_partial::ToolExecutionPartial,
-            },
+            tool::tool_execution::{self, ToolExecution},
         },
         rig::ai_traits::from_with_convo_information::FromWithConvoInformation,
     },
-    ecosystem::db::db_traits::db_entity::DBEntity,
+    ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema},
     lifted_models::primitives::db_id::DatabaseId,
 };
 
@@ -26,7 +23,7 @@ pub struct ClientChatData {
     pub reasoning: Vec<String>,
     pub system_prompt: Option<String>,
     pub response: String,
-    pub tool_calls: Vec<<ToolExecution as DBEntity>::PartialUpdateType>,
+    pub tool_calls: Vec<<ToolExecution as DBSchema>::PartialUpdateType>,
     pub tokens: TokenExpendeture,
 }
 
@@ -48,7 +45,7 @@ impl ClientChatData {
         let tool_executions: Vec<ToolExecution> =
             self.tool_calls
                 .iter()
-                .map(|x: &<ToolExecution as DBEntity>::PartialUpdateType| {
+                .map(|x: &<ToolExecution as DBSchema>::PartialUpdateType| {
                     ToolExecution::from_with_convo_info(x.clone(), self.convo_id.clone(), self.agent_id.clone())
                 })
                 .collect::<Vec<ToolExecution>>();

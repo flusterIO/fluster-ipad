@@ -24,8 +24,6 @@ pub fn generate_db_entity(model: &Model) -> Result<proc_macro2::TokenStream, syn
         let ty = um.ty.clone();
         return Ok(quote! {
         impl #crate_id::ecosystem::db::db_traits::db_entity::DBEntity for #ident {
-            type PartialUpdateType = <#ty as #as_entity::DBEntity>::PartialUpdateType;
-
             fn table() -> #crate_id::ecosystem::db::tables::DatabaseTable {
                 #table
             }
@@ -33,11 +31,8 @@ pub fn generate_db_entity(model: &Model) -> Result<proc_macro2::TokenStream, syn
         });
     }
 
-    let partial_type = &model.partial_type_or_self()?;
-
     Ok(quote! {
         impl<'a> #crate_id::ecosystem::db::db_traits::db_entity::DBEntity for #ident {
-            type PartialUpdateType = #partial_type;
 
             fn table() -> #crate_id::ecosystem::db::tables::DatabaseTable {
                 #table

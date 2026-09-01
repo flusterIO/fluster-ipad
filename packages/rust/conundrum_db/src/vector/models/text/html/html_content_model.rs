@@ -16,5 +16,5 @@ use crate::vector::models::text::{
 
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy, DatabaseEntity, specta::Type)]
 #[serde(transparent)]
-#[db(table = DatabaseTable::HTML, unit = TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>)]
-pub struct HTMLModel(TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>);
+#[db(table = DatabaseTable::HTML, unit = TextBasedContent)]
+pub struct HTMLModel<'a>(TextBasedContent<'a, CdrmContent, TextBasedChunk, ParseConundrumOptions>);

@@ -1,3 +1,4 @@
+use convert_case::Pattern;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{DeriveInput, Type, parse_macro_input};
@@ -43,48 +44,91 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
             }
         }
     };
+
+    let partial_generics = match &input.opts.include_partial_generics {
+        true => {
+            let generics = input.generics.clone();
+            println!("Generics!!!: {}",
+                     quote! {
+                         #generics
+                     });
+            quote! {
+               #generics
+            }
+        }
+        false => {
+            quote! {}
+        }
+    };
+    let partial_where_clause = match &input.opts.include_partial_generics {
+        true => {
+            if let Some(g) = input.where_clause.clone() {
+                let g = input.where_clause.clone();
+                quote! {
+                    where #g
+                }
+            } else {
+                quote! {}
+            }
+        }
+        false => {
+            quote! {}
+        }
+    };
+
     if let Some(um) = &input.unit {
         let partial_nested_type = um.ty.clone();
         let crate_id = input.conundrum_crate_import();
-        return Ok(quote! {
+        Ok(quote! {
         #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, specta::Type, fake::Dummy, conundrum_macros::DBSchema)]
         #db_attr
-        pub struct #partial_name(<#partial_nested_type as #crate_id::ecosystem::db::db_traits::db_entity::DBEntity>::PartialUpdateType);
-        });
+        pub struct #partial_name #partial_generics(<#partial_nested_type as #crate_id::ecosystem::db::db_traits::db_entity::DBSchema>::PartialUpdateType);
+        })
+    } else {
+        let fields = input.fields.clone();
+
+        let mut partial_fields = Vec::new();
+        let primary_field = input.primary_field().ok();
+
+        for field in fields {
+            let field_ident = field.ident.clone();
+
+            let options = field.options.partial.clone();
+
+            if options.skip {
+                continue;
+            }
+
+            let field_type = &field.ty;
+
+            if options.required || primary_field.is_some_and(|x| *x == field) {
+                let is_primary_field = match primary_field.is_some_and(|x| *x == field) {
+                    true => {
+                        quote! {
+                            #[db(primary)]
+                        }
+                    }
+                    false => {
+                        quote! {}
+                    }
+                };
+                partial_fields.push(quote! {
+                                        #is_primary_field
+                                        pub #field_ident: #field_type
+                                    });
+            } else {
+                partial_fields.push(quote! {
+                                        pub #field_ident: Option<#field_type>
+                                    });
+            }
+        }
+
+        Ok(quote! {
+            #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, specta::Type, fake::Dummy, conundrum_macros::DBSchema)]
+            #db_attr
+            pub struct #partial_name #partial_generics #partial_where_clause {
+                #(#partial_fields),*
+            }
+        })
     }
-
-    let fields = input.fields.clone();
-
-    let mut partial_fields = Vec::new();
-    let primary_field = input.primary_field().ok();
-
-    for field in fields {
-        let field_ident = field.ident.clone();
-
-        let options = field.options.partial.clone();
-
-        if options.skip {
-            continue;
-        }
-
-        let field_type = &field.ty;
-
-        if options.required || primary_field.is_some_and(|x| *x == field) {
-            partial_fields.push(quote! {
-                                    pub #field_ident: #field_type
-                                });
-        } else {
-            partial_fields.push(quote! {
-                                    pub #field_ident: Option<#field_type>
-                                });
-        }
-    }
-
-    Ok(quote! {
-        #[derive(Debug, Clone, serde::Serialize, serde::Deserialize, specta::Type, fake::Dummy, conundrum_macros::DBSchema)]
-        #db_attr
-        pub struct #partial_name {
-            #(#partial_fields),*
-        }
-    })
 }

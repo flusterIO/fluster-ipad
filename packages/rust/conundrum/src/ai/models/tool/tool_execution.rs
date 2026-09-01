@@ -43,8 +43,8 @@ pub struct ToolExecution {
     pub ctime: DateTime,
 }
 
-impl FromWithConvoInformation<<Self as DBEntity>::PartialUpdateType> for ToolExecution {
-    fn from_with_convo_info(data: <Self as DBEntity>::PartialUpdateType,
+impl FromWithConvoInformation<<Self as DBSchema>::PartialUpdateType> for ToolExecution {
+    fn from_with_convo_info(data: <Self as DBSchema>::PartialUpdateType,
                             convo_id: DatabaseId,
                             agent_id: Option<DatabaseId>)
                             -> Self {

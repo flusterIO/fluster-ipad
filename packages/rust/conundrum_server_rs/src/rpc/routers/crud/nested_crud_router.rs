@@ -3,7 +3,7 @@ use std::sync::Arc;
 use crate::crud_router;
 use crate::rpc::routers::crud::expanded::chat_conversation_crud::get_chat_conversation_crud;
 use conundrum::ai::models::agent::agent_description::AgentDescription;
-use conundrum::ai::models::agent::agent_description_partial::AgentDescriptionPartial;
+use conundrum::ecosystem::db::db_traits::db_entity::DBSchema;
 use conundrum::ecosystem::error_handling::server_error::ServerError;
 use conundrum::{
     ai::models::{
@@ -54,7 +54,7 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
     let ai_message_crud = crud_router!(AIMessage, AIMessage);
     let system_prompt_message_crud = crud_router!(SystemPromptMessage, SystemPromptMessage);
     let chat_conversation_crud = get_chat_conversation_crud();
-    let agent_description_crud = crud_router!(AgentDescription, AgentDescriptionPartial);
+    let agent_description_crud = crud_router!(AgentDescription, <AgentDescription as DBSchema>::PartialUpdateType);
     let tool_execution_crud = crud_router!(ToolExecution, ToolExecution);
     Router::<Arc<ServerState>>::new().nest(DatabaseTable::UserWorkspace.to_string(), workspace_crud)
                                      .nest(DatabaseTable::GitRepository.to_string(), git_repo_crud)

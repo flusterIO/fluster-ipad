@@ -1,6 +1,7 @@
 use proc_macro2::Span;
 use proc_macro2::TokenStream;
 use quote::quote;
+use syn::token::Struct;
 use syn::{Error, Field, GenericArgument, PathArguments, Type};
 
 fn is_option(ty: &Type) -> bool {
@@ -46,6 +47,11 @@ fn parse_partial(options: &mut PartialOptions, meta: syn::meta::ParseNestedMeta<
                 return Ok(());
             }
 
+            if meta.path.is_ident("skip_fields") {
+                options.skip_fields = true;
+                return Ok(());
+            }
+
             if meta.path.is_ident("required") {
                 options.required = true;
                 return Ok(());
@@ -56,13 +62,24 @@ fn parse_partial(options: &mut PartialOptions, meta: syn::meta::ParseNestedMeta<
                 return Ok(());
             }
 
-            Err(meta.error("unknown partial option"))
+            Err(meta.error(format!("unknown partial option: {}",
+                                   meta.path
+                                       .get_ident()
+                                       .map(|q| {
+                                           quote! {
+                                               #q
+                                           }
+                                       })
+                                       .unwrap_or_else(|| quote! {})).as_str()))
         })
 }
 
 #[derive(Clone, Debug)]
 pub struct PartialOptions {
+    /// Skip being added to the partial entirely.
     pub skip: bool,
+    /// Skip being added to the arrow fields only.
+    pub skip_fields: bool,
     pub required: bool,
     pub patch: bool,
 }
@@ -71,6 +88,7 @@ pub struct PartialOptions {
 impl Default for PartialOptions {
     fn default() -> Self {
         Self { skip: false,
+               skip_fields: false,
                required: false,
                patch: false }
     }
@@ -253,6 +271,7 @@ impl UnitModel {
 pub struct Model {
     pub ident: syn::Ident,
     pub generics: syn::Generics,
+    pub where_clause: Option<syn::WhereClause>,
 
     /// True if the model is held in the `conundrum` crate, false if held in
     /// any crate that imports conundrum.
@@ -261,13 +280,14 @@ pub struct Model {
     pub table: Option<syn::Path>,
     pub partial: Option<syn::Path>,
     pub fields: Vec<ModelField>,
+    pub opts: ModelOptions,
 
     /// The underlying type when this model is a newtype.
     pub unit: Option<UnitModel>,
 }
 
 impl Model {
-    pub fn primary_field_with_nested_type_fallback(&self) -> TokenStream {
+    pub fn primary_field_type_with_nested_type_fallback(&self) -> TokenStream {
         self.primary_field()
             .map(|x| {
                 let ty = x.ty.clone();
@@ -376,48 +396,6 @@ impl Model {
         Self::extract_named_fields(&unit_struct.fields)
     }
 
-    /// Construct a Model.
-    ///
-    /// `models` must contain the DeriveInput definitions for all models that
-    /// can be referenced by #[db(unit = ...)].
-    ///
-    /// For an ordinary model:
-    ///
-    ///     Model::from_input(input, &models)
-    ///
-    /// extracts its own fields.
-    ///
-    /// For:
-    ///
-    ///     #[db(unit = TextBasedChunk)]
-    ///     struct CdrmChunk(TextBasedChunk);
-    ///
-    /// extracts TextBasedChunk's fields and stores them directly in
-    /// `Model.fields`.
-    pub fn from_input(input: syn::DeriveInput, models: &[syn::DeriveInput]) -> Result<Self, syn::Error> {
-        let options = ModelOptions::parse(&input.attrs)?;
-
-        let syn::Data::Struct(data) = &input.data else {
-            return Err(syn::Error::new_spanned(&input.ident, "DatabaseEntity can only be derived for structs"));
-        };
-
-        let unit = Self::extract_unit(&data.fields, options.unit.as_ref())?;
-
-        let fields = match &unit {
-            Some(unit) => Self::extract_unit_fields(&unit.path, models)?,
-
-            None => Self::extract_named_fields(&data.fields)?,
-        };
-
-        Ok(Self { ident: input.ident,
-                  generics: input.generics,
-                  in_source_crate: options.in_source_crate,
-                  table: options.table,
-                  partial: options.partial,
-                  fields,
-                  unit })
-    }
-
     pub fn is_unit(&self) -> bool {
         self.unit.is_some()
     }
@@ -431,7 +409,7 @@ impl Model {
         self.unit.as_ref().map(|unit| unit.path.clone()).unwrap_or_else(|| syn::Path::from(self.ident.clone()))
     }
 
-    pub fn partial_type_or_self(&self) -> Result<syn::Ident, syn::Error> {
+    pub fn partial_type_or_partial_name(&self) -> Result<syn::Ident, syn::Error> {
         if let Some(pt) = &self.partial {
             pt.get_ident()
               .cloned()
@@ -498,15 +476,25 @@ impl Model {
     pub fn partial_name(&self) -> syn::Ident {
         let struct_name = &self.ident;
 
+        if format!("{}",
+                   quote! {
+                       #struct_name
+                   }).ends_with("Partial")
+        {
+            return struct_name.clone();
+        }
+
         let partial_name = syn::Ident::new(&format!("{struct_name}Partial"), struct_name.span());
         partial_name
     }
 }
 
+#[derive(Debug, Clone)]
 pub struct ModelOptions {
     pub table: Option<syn::Path>,
     pub in_source_crate: bool,
     pub partial: Option<syn::Path>,
+    pub include_partial_generics: bool,
     pub unit: Option<syn::Path>,
 }
 
@@ -516,6 +504,7 @@ impl ModelOptions {
         let mut partial = None;
         let mut in_source_crate = false;
         let mut unit = None;
+        let mut include_partial_generics = false;
 
         for attr in attrs {
             if !attr.path().is_ident("db") {
@@ -526,6 +515,11 @@ impl ModelOptions {
                     if meta.path.is_ident("table") {
                         let value: syn::Path = meta.value()?.parse()?;
                         table = Some(value);
+                        return Ok(());
+                    }
+
+                    if meta.path.is_ident("include_partial_generics") {
+                        include_partial_generics = true;
                         return Ok(());
                     }
 
@@ -560,6 +554,7 @@ impl ModelOptions {
         Ok(Self { table,
                   in_source_crate,
                   partial,
+                  include_partial_generics,
                   unit })
     }
 }
@@ -631,12 +626,16 @@ impl TryFrom<syn::DeriveInput> for Model {
             }
         };
 
+        let o = options.clone();
+
         Ok(Self { ident,
-                  generics,
-                  in_source_crate: options.in_source_crate,
-                  table: options.table,
-                  partial: options.partial,
+                  generics: generics.clone(),
+                  in_source_crate: o.in_source_crate,
+                  table: o.table,
+                  partial: o.partial,
                   fields,
+                  where_clause: generics.where_clause,
+                  opts: options.clone(),
                   unit })
     }
 }

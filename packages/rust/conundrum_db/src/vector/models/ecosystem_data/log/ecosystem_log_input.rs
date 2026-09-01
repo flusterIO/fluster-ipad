@@ -8,7 +8,7 @@ use crate::vector::models::ecosystem_data::log::{
     ecosystem_log_intention::EcosystemLogIntention, ecosystem_log_severity::EcosystemLogSeverity,
 };
 
-#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy, DBSchema)]
+#[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct EcosystemLogInput {
     pub title: String,
     pub message: Option<String>,

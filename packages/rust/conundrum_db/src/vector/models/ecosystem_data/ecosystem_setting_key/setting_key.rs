@@ -4,7 +4,11 @@ use conundrum::ecosystem::{
     db::{
         db::ArcMutexDB,
         db_default_constants::DEFAULT_MAX_SYNC_THREADS,
-        db_traits::{db_entity::DBEntity, db_identifiable::DatabaseIdentifiable, entity_crud::EntityCRUD},
+        db_traits::{
+            db_entity::{DBEntity, DBSchema},
+            db_identifiable::DatabaseIdentifiable,
+            entity_crud::EntityCRUD,
+        },
         parameters::general::pagination::PaginationParams,
     },
     error_handling::db_error::{DatabaseError, DatabaseResult},
@@ -96,14 +100,14 @@ impl Setting {
                                 data: self.clone() }
     }
 
-    pub async fn save(&self, db: ArcMutexDB) -> DatabaseResult<()> {
+    pub async fn save<'a>(&self, db: ArcMutexDB) -> DatabaseResult<()> {
         let model = self.to_model();
-        <EcosystemSettingModel as EntityCRUD>::save_many(vec![model], Arc::clone(&db)).await?;
+        <EcosystemSettingModel as EntityCRUD<'a, <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::save_many(vec![model], Arc::clone(&db)).await?;
         Ok(())
     }
 
     pub async fn read(&self, db: ArcMutexDB) -> DatabaseResult<Self> {
-        let x = <EcosystemSettingModel as EntityCRUD>::get_by_predicate(Some(self.to_predicate("key")),
+        let x = <EcosystemSettingModel as EntityCRUD<'a, <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::get_by_predicate(Some(self.to_predicate("key")),
                                                                         Some(PaginationParams::single()),
                                                                         None,
                                                                         Arc::clone(&db)).await?;

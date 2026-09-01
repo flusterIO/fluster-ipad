@@ -29,7 +29,7 @@ pub struct ChatConversation {
     pub utime: DateTime,
 }
 
-impl From<ChatConversation> for <ChatConversation as DBEntity>::PartialUpdateType {
+impl From<ChatConversation> for <ChatConversation as DBSchema>::PartialUpdateType {
     fn from(value: ChatConversation) -> Self {
         Self { id: value.id.clone(),
                label: Some(value.label.clone()),
@@ -66,7 +66,7 @@ impl ChatConversation {
                 let item = _self.index_mut(0);
                 item.requires_label_update = true;
                 item.utime = DateTime::new_now();
-                let partial = <ChatConversation as DBEntity>::PartialUpdateType::from(item.clone());
+                let partial = <ChatConversation as DBSchema>::PartialUpdateType::from(item.clone());
                 ChatConversation::merge_by_primary_key(vec![partial], Arc::clone(&db)).await?;
                 log::info!("Updated one chat conversation.")
             }

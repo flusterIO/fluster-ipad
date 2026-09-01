@@ -85,7 +85,7 @@ importers:
         specifier: 5.6.0
         version: 5.6.0
       jinja:
-        specifier: ^0.13.4
+        specifier: 0.13.4
         version: 0.13.4
       jiti:
         specifier: 2.6.1
@@ -109,7 +109,7 @@ importers:
         specifier: 23.2.6
         version: 23.2.6
       swig:
-        specifier: ^1.4.2
+        specifier: 1.4.2
         version: 1.4.2
       syncpack:
         specifier: 13.0.4
@@ -536,7 +536,7 @@ importers:
   packages/rust/conundrum_docgen:
     devDependencies:
       jinja:
-        specifier: ^0.13.4
+        specifier: 0.13.4
         version: 0.13.4
 
   packages/rust/conundrum_frontend:
@@ -17812,7 +17812,7 @@ snapshots:
       safe-stable-stringify: 2.5.0
       ts-node: 10.9.2(@swc/core@1.15.18(@swc/helpers@0.5.18))(@swc/wasm@1.15.18)(@types/node@16.18.126)(typescript@4.9.4)
       typescript: 4.9.4
-      yargs: 17.7.2
+      yargs: 17.7.3
     transitivePeerDependencies:
       - '@swc/core'
       - '@swc/wasm'

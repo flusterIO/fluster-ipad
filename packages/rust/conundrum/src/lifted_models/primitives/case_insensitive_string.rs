@@ -18,7 +18,7 @@ impl DatabaseIdentifiable for CaseInsensitiveString {
     fn to_predicate(&self, field_key: &str) -> String {
         // TODO: I'm pretty sure there's some syntax to cast the data to lowercase as
         // well. This will be broken without that.
-        format!("{} = {}", field_key, self.0.to_lowercase().to_quoted_string_with_fallback())
+        format!("{} ILIKE {}", field_key, self.0.to_quoted_string_with_fallback())
     }
 }
 

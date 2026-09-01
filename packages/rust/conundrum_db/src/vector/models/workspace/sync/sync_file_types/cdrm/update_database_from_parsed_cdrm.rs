@@ -26,14 +26,14 @@ use crate::vector::models::{
     },
 };
 
-pub async fn update_database_from_parsed_cdrm(content: MdxParsingResult,
-                                              existing_note: Option<CdrmModel>,
-                                              file_content: String,
-                                              workspace_path: String,
-                                              relative_path: String,
-                                              db: ArcMutexDB,
-                                              context: ArcTokioMutex<SyncContext>)
-                                              -> DatabaseResult<()> {
+pub async fn update_database_from_parsed_cdrm<'a>(content: MdxParsingResult,
+                                                  existing_note: Option<CdrmModel<'a>>,
+                                                  file_content: String,
+                                                  workspace_path: String,
+                                                  relative_path: String,
+                                                  db: ArcMutexDB,
+                                                  context: ArcTokioMutex<SyncContext>)
+                                                  -> DatabaseResult<()> {
     let title =
         get_title_group(file_content.clone(),
                         vec![],

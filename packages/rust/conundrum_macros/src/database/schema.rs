@@ -14,7 +14,7 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     for field in input.fields.clone() {
         let field_name = field.ident.clone();
 
-        if field.is_skipped() {
+        if field.is_skipped() || field.options.partial.skip_fields {
             continue;
         }
 
@@ -54,10 +54,6 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
         }
     };
 
-    let primary_ident = &input.primary_field()?.ident;
-    let primary_type = &input.primary_field()?.ty;
-    let primary_key = input.primary_field()?.key.as_str();
-
     let schema_impl = match input.unit.clone() {
         Some(um) => {
             let ty = um.ty.clone();
@@ -80,6 +76,9 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
             }
         }
         None => {
+            let primary_ident = &input.primary_field()?.ident;
+            let primary_type = &input.primary_field()?.ty;
+            let primary_key = input.primary_field()?.key.as_str();
             quote! {
             fn merge_keys() -> &'static [&'static str] {
                 &[#primary_key]
@@ -100,10 +99,26 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
         }
     };
 
-    let id_type = input.primary_field_with_nested_type_fallback();
+    let id_type = input.primary_field_type_with_nested_type_fallback();
+    // let partial_type = match input.unit {
+    //     Some(um) => {
+    //         let q = um.ty.clone();
+    //         quote!{
+    //             #q
+    //         }
+    //     }
+    //     None => {
+    //         quote!{
+    //             #partial_name
+    //         }
+    //     }
+    // };
+    let partial_name = input.partial_type_or_partial_name()?;
     Ok(quote! {
         impl #crate_id::ecosystem::db::db_traits::db_entity::DBSchema for #name {
             type IDType = #id_type;
+            type PartialUpdateType = #partial_name;
+
             #schema_impl
         }
         impl #crate_id::ecosystem::db::db_traits::db_entity::ArrowFields for #name {

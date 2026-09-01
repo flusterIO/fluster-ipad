@@ -4,7 +4,10 @@ use conundrum::{
     ecosystem::{
         db::{
             db::ArcMutexDB,
-            db_traits::entity_crud::{EntityCRUD, filter_one},
+            db_traits::{
+                db_entity::DBSchema,
+                entity_crud::{EntityCRUD, filter_one},
+            },
         },
         error_handling::db_error::{DatabaseError, DatabaseResult},
     },
@@ -23,18 +26,19 @@ use crate::vector::models::{
     },
 };
 
-pub async fn sync_conundrum_path(fp: WorkspaceRelativePath<PathBuf>,
-                                 database: ArcMutexDB,
-                                 ctx: ArcTokioMutex<SyncContext>)
-                                 -> DatabaseResult<()> {
+pub async fn sync_conundrum_path<'a>(fp: WorkspaceRelativePath<PathBuf>,
+                                     database: ArcMutexDB,
+                                     ctx: ArcTokioMutex<SyncContext>)
+                                     -> DatabaseResult<()> {
     let workspace_path = fp.workspace_path.to_str().ok_or(DatabaseError::SerializationError)?.to_string();
     let relative_path = fp.relative_path.to_str().ok_or(DatabaseError::SerializationError)?.to_string();
-    let existing_notes = CdrmModel::get_by_predicate(Some(format!("ws_root = {} AND relative_path = {}",
-                                                                  workspace_path.to_quoted_string()?,
-                                                                  relative_path.to_quoted_string()?)),
-                                                     None,
-                                                     None,
-                                                     Arc::clone(&database)).await?;
+    let existing_notes =
+        <CdrmModel as EntityCRUD<'a, <CdrmModel as DBSchema>::PartialUpdateType>>::get_by_predicate(Some(format!("ws_root = {} AND relative_path = {}",
+                                                                 workspace_path.to_quoted_string()?,
+                                                                 relative_path.to_quoted_string()?)),
+                                                    None,
+                                                    None,
+                                                    Arc::clone(&database)).await?;
     let existing_note = filter_one(existing_notes)?;
     let existing_content = existing_note.clone().map(|x| x.0.content.0.clone());
     let file_content = tokio::fs::read_to_string(fp.absolutize()).await

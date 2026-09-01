@@ -24,8 +24,8 @@ use crate::vector::models::{
 };
 
 #[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, fake::Dummy, DatabaseEntity)]
-#[db(table = DatabaseTable::Pdf, unit = BinaryBasedContent<PdfBinary, TextBasedChunk, ParseConundrumOptions>)]
-pub struct PdfModel(BinaryBasedContent<PdfBinary, TextBasedChunk, ParseConundrumOptions>);
+#[db(table = DatabaseTable::Pdf, unit = BinaryBasedContent)]
+pub struct PdfModel<'a>(BinaryBasedContent<'a, PdfBinary, TextBasedChunk, ParseConundrumOptions>);
 
 // impl FromFilePath<DatabaseError> for PdfModel {
 //     async fn from_file_path(fp: impl AsRef<std::path::Path>) -> Result<Self,

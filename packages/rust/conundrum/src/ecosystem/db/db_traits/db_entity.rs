@@ -17,9 +17,9 @@ use serde_arrow::{
     to_record_batch,
 };
 
-/// Deprecated, I'm pretty sure.
 pub trait DBSchema: ArrowFields {
     type IDType: DatabaseIdentifiable;
+    type PartialUpdateType;
     fn schema() -> DatabaseResult<Schema> {
         let fields = Self::arrow_fields()?;
         let schema = arrow_schema::Schema::new(fields);
@@ -43,12 +43,7 @@ pub trait ArrowFields {
     fn arrow_fields() -> DatabaseResult<Vec<Arc<Field>>>;
 }
 
-/// An entity refers to an object *exactly* as it appears in the database, or as
-/// close to that as we can get with Rust types. If you're looking for something
-/// more composed and usable, look into the equivalent 'Model'.
 pub trait DBEntity: DBSchema
     where <Self as DBSchema>::IDType: DatabaseIdentifiable {
-    type PartialUpdateType;
     fn table() -> DatabaseTable;
-    // fn save_self(&self, db: &ArcMutexDB) -> DatabaseResult<()>;
 }

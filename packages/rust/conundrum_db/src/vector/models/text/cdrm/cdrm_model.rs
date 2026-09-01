@@ -34,10 +34,10 @@ use crate::vector::models::{
 
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy, DatabaseEntity)]
 #[serde(transparent)]
-#[db(table = DatabaseTable::Cdrm, unit = TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>)]
-pub struct CdrmModel(pub TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>);
+#[db(table = DatabaseTable::Cdrm, unit = TextBasedContent)]
+pub struct CdrmModel<'a>(pub TextBasedContent<'a, CdrmContent, TextBasedChunk, ParseConundrumOptions>);
 
-impl CdrmModel {
+impl<'a> CdrmModel<'a> {
     pub async fn get_related_frontmatter(&self, db: ArcMutexDB) -> DatabaseResult<Option<FrontMatter>> {
         let predicate = self.0.id.to_predicate("note_id");
         let items = FrontMatter::get_by_predicate(Some(predicate),
