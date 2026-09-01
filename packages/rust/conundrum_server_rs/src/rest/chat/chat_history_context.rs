@@ -5,6 +5,7 @@ use conundrum::{
     ecosystem::error_handling::db_error::DatabaseResult,
     lifted_models::primitives::db_id::DatabaseId,
 };
+use conundrum_db::vector::models::ai::any_message::AnyChatMessage;
 
 /// ## TO-DO
 ///
@@ -13,21 +14,20 @@ use conundrum::{
 ///   recency.
 /// - [ ] Allow storing of permanent 'memory' chunks in a separate table
 pub struct ChatHistoryContext<C, M>
-    where C: ConversationStore,
+    where C: ConversationStore<AnyChatMessage>,
           M: MemoryStore {
     pub conversations: Arc<C>,
     pub memories: Arc<M>,
 }
 
 impl<C, M> ChatHistoryContext<C, M>
-    where C: ConversationStore,
+    where C: ConversationStore<AnyChatMessage>,
           M: MemoryStore
 {
     pub async fn build_context(&self,
                                conversation_id: DatabaseId,
                                user_message: &str)
                                -> DatabaseResult<ChatHistoryContext<C, M>> {
-        
         todo!()
     }
 }

@@ -13,7 +13,7 @@ pub struct ChatConversationClient {
     pub messages: Vec<AnyChatMessage>,
 }
 
-impl ConversationStore for ChatConversationClient {
+impl ConversationStore<AnyChatMessage> for ChatConversationClient {
     /// ## To-Do
     ///
     /// - [ ] Chunk messages

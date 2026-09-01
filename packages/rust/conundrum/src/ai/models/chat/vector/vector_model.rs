@@ -6,7 +6,8 @@ use fake::Dummy;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use rig::embeddings::Embedding;
 
-pub const DB_VECTOR_DIMENSIONS: i32 = 2560;
+pub const DB_VECTOR_LOCAL_DIMENSIONS: i32 = 2560;
+pub const DB_VECTOR_REMOTE_DIMENSIONS: i32 = 3072;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct DBVector(pub Vec<f64>);
@@ -35,7 +36,7 @@ impl DatabaseField for DBVector {
                    arrow_schema::DataType::FixedSizeList(Arc::new(Field::new("item",
                                                                              arrow_schema::DataType::Float32,
                                                                              true)),
-                                                         DB_VECTOR_DIMENSIONS),
+                                                         DB_VECTOR_LOCAL_DIMENSIONS),
                    nullable)
     }
 }

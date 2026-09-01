@@ -1,17 +1,20 @@
 use arrow_array::{RecordBatch, RecordBatchIterator};
 use conundrum::{
-    ai::rig::rig_client_remote::RigClientRemote,
+    ai::{models::chat::vector::vector_model::DB_VECTOR_LOCAL_DIMENSIONS, rig::rig_client_remote::RigClientRemote},
     ecosystem::{
-        db::{db::ArcMutexDB, db_traits::db_entity::DBSchema, tables::DatabaseTable},
+        db::{
+            db::ArcMutexDB,
+            db_traits::db_entity::{ArrowFields, DBSchema},
+            tables::DatabaseTable,
+        },
         error_handling::{
             db_error::DatabaseError,
             server_error::{ServerError, ServerResult},
         },
     },
 };
-use conundrum_db::vector::models::{
-    ai::tool::{mcp_tool_record::MCPToolRecord, tool_definition_list::ToolDefinitionList},
-    vector::vector::DB_VECTOR_DIMENSIONS,
+use conundrum_db::vector::models::ai::tool::{
+    mcp_tool_record::MCPToolRecord, tool_definition_list::ToolDefinitionList,
 };
 use indoc::formatdoc;
 use rig::{client::EmbeddingsClient, embeddings::EmbeddingModel};
@@ -27,7 +30,8 @@ pub async fn create_tool_index(db: ArcMutexDB) -> ServerResult<()> {
                                               })?;
     // TODO: Get the user's settings from the DB here if they exist and select the
     // proper model.
-    let embedding_model = client.0.embedding_model_with_ndims("qwen3-embedding:4b", DB_VECTOR_DIMENSIONS as usize);
+    let embedding_model =
+        client.0.embedding_model_with_ndims("qwen3-embedding:4b", DB_VECTOR_LOCAL_DIMENSIONS as usize);
 
     let mut tool_records: Vec<MCPToolRecord> = Vec::new();
 
@@ -64,7 +68,7 @@ pub async fn create_tool_index(db: ArcMutexDB) -> ServerResult<()> {
                         log::error!("Table Generation Error: {:?}", e);
                         ServerError::DatabaseError(DatabaseError::FailToCreateTable(DatabaseTable::MCPToolRecord))
                     })?;
-    let tool_fields = MCPToolRecord::arrow_fields()?;
+    let tool_fields = <MCPToolRecord as ArrowFields>::arrow_fields()?;
     let record_batch = to_record_batch(&tool_fields, &tool_records).map_err(|e| {
                                                                        log::error!("Error: {:?}", e);
                                                                        DatabaseError::SerializationError

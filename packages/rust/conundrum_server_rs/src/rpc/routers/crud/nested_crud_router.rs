@@ -20,39 +20,32 @@ use conundrum::{
 };
 use conundrum_db::vector::models::{
     academic::{
-        assignment::{
-            academic_assignment_entity::AssignmentEntity, academic_assignment_entity_partial::AssignmentEntityPartial,
-        },
-        question::flashcard::{flashcard_entity::FlashCardEntity, flashcard_entity_partial::FlashCardEntityPartial},
+        assignment::academic_assignment_entity::AssignmentEntity,
+        question::flashcard::flashcard_entity::FlashCardEntity,
     },
     ecosystem_data::{
-        ecosystem_application_settings::{
-            keyboard_shortcut::KeyboardShortcut, keyboard_shortcut_partial::KeyboardShortcutPartial,
-        },
-        server_state::server_state::ServerState,
+        ecosystem_application_settings::keyboard_shortcut::KeyboardShortcut, server_state::server_state::ServerState,
     },
-    git::{git_repository_entity::GitRepositoryEntity, git_repository_partial::GitRepositoryPartial},
-    taggables::{
-        auto_taggable::AutoTaggable, auto_taggable_partial::AutoTaggablePartial, subject::Subject, tag::Tag,
-        taggable_update_partial::TaggablePartial, topic::Topic,
-    },
-    workspace::{user_workspace::UserWorkspace, user_workspace_partial::UserWorkspacePartial},
+    git::git_repository_entity::GitRepositoryEntity,
+    taggables::{auto_taggable::AutoTaggable, subject::Subject, tag::Tag, topic::Topic},
+    workspace::user_workspace::UserWorkspace,
 };
 use rspc::{Procedure, Router};
 
 pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
-    let workspace_crud = crud_router!(UserWorkspace, UserWorkspacePartial);
-    let tag_crud = crud_router!(Tag, TaggablePartial);
-    let topic_crud = crud_router!(Topic, TaggablePartial);
-    let subject_crud = crud_router!(Subject, TaggablePartial);
-    let git_repo_crud = crud_router!(GitRepositoryEntity, GitRepositoryPartial);
-    let auto_taggable_crud = crud_router!(AutoTaggable, AutoTaggablePartial);
-    let assignment_crud = crud_router!(AssignmentEntity, AssignmentEntityPartial);
-    let flashcard_crud = crud_router!(FlashCardEntity, FlashCardEntityPartial);
-    let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, KeyboardShortcutPartial);
-    let user_message_crud = crud_router!(UserMessage, UserMessage);
-    let ai_message_crud = crud_router!(AIMessage, AIMessage);
-    let system_prompt_message_crud = crud_router!(SystemPromptMessage, SystemPromptMessage);
+    let workspace_crud = crud_router!(UserWorkspace, <UserWorkspace as DBSchema>::PartialUpdateType);
+    let tag_crud = crud_router!(Tag, <Tag as DBSchema>::PartialUpdateType);
+    let topic_crud = crud_router!(Topic, <Topic as DBSchema>::PartialUpdateType);
+    let subject_crud = crud_router!(Subject, <Subject as DBSchema>::PartialUpdateType);
+    let git_repo_crud = crud_router!(GitRepositoryEntity, <GitRepositoryEntity as DBSchema>::PartialUpdateType);
+    let auto_taggable_crud = crud_router!(AutoTaggable, <AutoTaggable as DBSchema>::PartialUpdateType);
+    let assignment_crud = crud_router!(AssignmentEntity, <AssignmentEntity as DBSchema>::PartialUpdateType);
+    let flashcard_crud = crud_router!(FlashCardEntity, <FlashCardEntity as DBSchema>::PartialUpdateType);
+    let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, <KeyboardShortcut as DBSchema>::PartialUpdateType);
+    let user_message_crud = crud_router!(UserMessage, <UserMessage as DBSchema>::PartialUpdateType);
+    let ai_message_crud = crud_router!(AIMessage, <AIMessage as DBSchema>::PartialUpdateType);
+    let system_prompt_message_crud =
+        crud_router!(SystemPromptMessage, <SystemPromptMessage as DBSchema>::PartialUpdateType);
     let chat_conversation_crud = get_chat_conversation_crud();
     let agent_description_crud = crud_router!(AgentDescription, <AgentDescription as DBSchema>::PartialUpdateType);
     let tool_execution_crud = crud_router!(ToolExecution, ToolExecution);
