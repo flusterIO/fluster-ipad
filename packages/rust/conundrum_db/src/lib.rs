@@ -1,4 +1,4 @@
-#![recursion_limit = "1024"]
+#![recursion_limit = "2048"]
 #![allow(clippy::module_inception)]
 //! # Conundrum: The Data Layer
 //!

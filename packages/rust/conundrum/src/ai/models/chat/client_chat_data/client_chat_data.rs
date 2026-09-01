@@ -42,11 +42,12 @@ impl ClientChatData {
                                                                                     self.convo_id.clone(),
                                                                                     self.agent_id.clone())
                                       });
-        let tool_executions: Vec<ToolExecution> =
+        let tool_executions =
             self.tool_calls
                 .iter()
-                .map(|x: &<ToolExecution as DBSchema>::PartialUpdateType| {
-                    ToolExecution::from_with_convo_info(x.clone(), self.convo_id.clone(), self.agent_id.clone())
+                .cloned()
+                .map(|x: <ToolExecution as DBSchema>::PartialUpdateType| {
+                    <ToolExecution as FromWithConvoInformation<<ToolExecution as DBSchema>::PartialUpdateType>>::from_with_convo_info(x, self.convo_id.clone(), self.agent_id.clone())
                 })
                 .collect::<Vec<ToolExecution>>();
         (user_message, reasoning_blocks, system_prompt, tool_executions)

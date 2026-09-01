@@ -28,6 +28,12 @@ pub enum DatabaseTable {
     #[strum(to_string = "html")]
     #[serde(rename = "html")]
     HTML,
+    #[strum(to_string = "pdf")]
+    #[serde(rename = "pdf")]
+    Pdf,
+    #[strum(to_string = "notebook")]
+    #[serde(rename = "notebook")]
+    Notebook,
     #[strum(to_string = "front_matter")]
     #[serde(rename = "front_matter")]
     FrontMatter,
@@ -145,6 +151,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "documentation_chunk")]
     #[serde(rename = "documentation_chunk")]
     DocumentationChunk,
+    #[strum(to_string = "notebook_cell_chunk")]
+    #[serde(rename = "notebook_cell_chunk")]
+    NotebookCellChunk,
 }
 
 impl Hash for DatabaseTable {

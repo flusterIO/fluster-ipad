@@ -2,7 +2,10 @@ use std::sync::Arc;
 
 use conundrum::{
     ecosystem::{
-        db::{db::ArcMutexDB, db_traits::db_identifiable::DatabaseIdentifiable},
+        db::{
+            db::ArcMutexDB,
+            db_traits::{db_field::DatabaseField, db_identifiable::DatabaseIdentifiable},
+        },
         error_handling::db_error::DatabaseResult,
     },
     lang::lib::std_lib_impls::json_string::QuotedString,
@@ -57,5 +60,11 @@ impl UniqueSettingKey {
                                         data }
             }
         })
+    }
+}
+
+impl DatabaseField for UniqueSettingKey {
+    fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
+        String::field_definition(field_key, nullable)
     }
 }

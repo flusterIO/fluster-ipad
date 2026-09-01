@@ -5,6 +5,7 @@ use conundrum::{
         db_traits::{
             db_entity::{DBEntity, DBSchema},
             db_field::DatabaseField,
+            into_partial::IntoPartial,
         },
         tables::DatabaseTable,
     },
@@ -27,4 +28,13 @@ pub struct FrontMatter {
     pub note_id: DatabaseId,
     pub source_type: FrontMatterSourceType,
     pub data: FrontMatterResult,
+}
+
+impl IntoPartial<FrontMatterPartial> for FrontMatter {
+    fn into_partial(&self) -> FrontMatterPartial {
+        FrontMatterPartial { id: self.id.clone(),
+                             note_id: Some(self.note_id.clone()),
+                             source_type: Some(self.source_type.clone()),
+                             data: Some(self.data.clone()) }
+    }
 }

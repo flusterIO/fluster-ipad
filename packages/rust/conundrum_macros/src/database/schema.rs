@@ -2,7 +2,7 @@ use proc_macro::TokenStream;
 use quote::quote;
 use syn::{DeriveInput, GenericArgument, PathArguments, Type, parse_macro_input};
 
-use crate::database::model::Model;
+use crate::database::model::model::Model;
 
 pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     let name = &input.ident;
@@ -14,19 +14,19 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     for field in input.fields.clone() {
         let field_name = field.ident.clone();
 
-        if field.is_skipped() || field.options.partial.skip_fields {
+        if field.is_skipped() || field.options.partial.skip_arrow || field.options.skip_arrow {
             continue;
         }
 
         let analyzed = analyze_type(&field.ty);
 
-        let options = field.options;
+        let options = field.options.clone();
 
         let nullable = options.nullable.unwrap_or(analyzed.nullable);
 
         let name = options.rename.unwrap_or_else(|| field_name.to_string());
 
-        let field_type = analyzed.ty;
+        let field_type = field.field_arrow_type();
 
         generated_fields.push(quote! {
                   std::sync::Arc::new(
@@ -100,28 +100,34 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     };
 
     let id_type = input.primary_field_type_with_nested_type_fallback();
-    // let partial_type = match input.unit {
-    //     Some(um) => {
-    //         let q = um.ty.clone();
-    //         quote!{
-    //             #q
-    //         }
-    //     }
-    //     None => {
-    //         quote!{
-    //             #partial_name
-    //         }
-    //     }
-    // };
     let partial_name = input.partial_type_or_partial_name()?;
+    let (generics, where_clause) = match input.opts.include_generics {
+        true => {
+            let g = input.generics.clone();
+            if let Some(w) = input.where_clause.clone() {
+                (quote! {
+                     #g
+                 },
+                 quote! {
+                     #w
+                 })
+            } else {
+                (quote! {
+                     #g
+                 },
+                 quote! {})
+            }
+        }
+        false => (quote! {}, quote! {}),
+    };
     Ok(quote! {
-        impl #crate_id::ecosystem::db::db_traits::db_entity::DBSchema for #name {
+        impl #generics #crate_id::ecosystem::db::db_traits::db_entity::DBSchema for #name #generics #where_clause {
             type IDType = #id_type;
-            type PartialUpdateType = #partial_name;
+            type PartialUpdateType = #partial_name #generics;
 
             #schema_impl
         }
-        impl #crate_id::ecosystem::db::db_traits::db_entity::ArrowFields for #name {
+        impl #generics #crate_id::ecosystem::db::db_traits::db_entity::ArrowFields for #name #generics #where_clause {
             fn arrow_fields()
                 -> #crate_id::ecosystem::error_handling::db_error::DatabaseResult<
                         Vec<std::sync::Arc<arrow_schema::Field>>
@@ -142,57 +148,6 @@ pub fn derive_db_schema(input: TokenStream) -> TokenStream {
         Ok(tokens) => tokens.into(),
         Err(error) => error.to_compile_error().into(),
     }
-}
-
-#[derive(Clone, Debug)]
-struct FieldOptions {
-    rename: Option<String>,
-    nullable: Option<bool>,
-    skip: bool,
-}
-
-fn parse_field_options(field: &syn::Field) -> syn::Result<FieldOptions> {
-    let mut options = FieldOptions { rename: None,
-                                     nullable: None,
-                                     skip: false };
-
-    for attr in &field.attrs {
-        if !attr.path().is_ident("db") {
-            continue;
-        }
-
-        attr.parse_nested_meta(|meta| {
-                if meta.path.is_ident("skip") {
-                    options.skip = true;
-                    return Ok(());
-                }
-
-                if meta.path.is_ident("nullable") {
-                    options.nullable = Some(true);
-                    return Ok(());
-                }
-
-                if meta.path.is_ident("rename") {
-                    let value: syn::LitStr = meta.value()?.parse()?;
-                    options.rename = Some(value.value());
-                    return Ok(());
-                }
-
-                if meta.path.is_ident("nullable") {
-                    let value: syn::LitBool = meta.value()?.parse()?;
-                    options.nullable = Some(value.value);
-                    return Ok(());
-                }
-
-                if meta.path.is_ident("partial") {
-                    return Ok(());
-                }
-
-                Err(meta.error("unknown #[db(...)] option"))
-            })?;
-    }
-
-    Ok(options)
 }
 
 struct AnalyzedType {

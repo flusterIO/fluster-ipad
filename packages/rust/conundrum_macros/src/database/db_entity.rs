@@ -1,4 +1,4 @@
-use crate::database::model::Model;
+use crate::database::model::model::Model;
 use proc_macro::TokenStream;
 use quote::quote;
 use syn::{DeriveInput, parse_macro_input};
@@ -32,7 +32,7 @@ pub fn generate_db_entity(model: &Model) -> Result<proc_macro2::TokenStream, syn
     }
 
     Ok(quote! {
-        impl<'a> #crate_id::ecosystem::db::db_traits::db_entity::DBEntity for #ident {
+        impl #crate_id::ecosystem::db::db_traits::db_entity::DBEntity for #ident {
 
             fn table() -> #crate_id::ecosystem::db::tables::DatabaseTable {
                 #table

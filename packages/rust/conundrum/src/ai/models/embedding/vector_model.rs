@@ -18,7 +18,7 @@ use crate::{
 };
 
 pub trait VectorModel<'a, PrimaryIdType: DatabaseIdentifiable + Display = DatabaseId>:
-    DBEntity + DBSchema + EntityCRUD<'a, Self::UpdatePartial> {
+    DBEntity + DBSchema + EntityCRUD<Self::UpdatePartial> {
     type UpdatePartial: DBSchema + Clone + Serialize;
     /// Returns (DocumentId, ChunkReferenceKey) in that order.
     ///

@@ -14,7 +14,7 @@ use std::sync::Arc;
 
 use crate::vector::models::ai::ai_interactions::AIInteractions;
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DBSchema)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
 pub struct BinaryFileModel {
     pub id: DatabaseId,
     pub ws_path: Option<WorkspaceRelativeStringPath>,

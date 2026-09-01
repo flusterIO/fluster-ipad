@@ -33,7 +33,7 @@ pub async fn sync_conundrum_path<'a>(fp: WorkspaceRelativePath<PathBuf>,
     let workspace_path = fp.workspace_path.to_str().ok_or(DatabaseError::SerializationError)?.to_string();
     let relative_path = fp.relative_path.to_str().ok_or(DatabaseError::SerializationError)?.to_string();
     let existing_notes =
-        <CdrmModel as EntityCRUD<'a, <CdrmModel as DBSchema>::PartialUpdateType>>::get_by_predicate(Some(format!("ws_root = {} AND relative_path = {}",
+        <CdrmModel as EntityCRUD< <CdrmModel as DBSchema>::PartialUpdateType>>::get_by_predicate(Some(format!("ws_root = {} AND relative_path = {}",
                                                                  workspace_path.to_quoted_string()?,
                                                                  relative_path.to_quoted_string()?)),
                                                     None,

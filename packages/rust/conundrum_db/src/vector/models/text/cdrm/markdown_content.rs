@@ -40,6 +40,10 @@ impl From<String> for MarkdownContent {
 }
 
 impl TextBasedContent<ParseConundrumOptions> for MarkdownContent {
+    fn inner_text(&self) -> String {
+        self.0.clone()
+    }
+
     async fn get_parsed_content(&self, opts: ParseConundrumOptions) -> AIResult<String> {
         let x = run_conundrum(opts).map_err(|e| {
                                        log::error!("Fail to parse Conundrum content: {:#?}", e);

@@ -25,11 +25,12 @@ use crate::vector::models::ecosystem_data::ecosystem_setting_key::{
 
 /// Warning: Don't use this directly. Use the enum to handle all interactions
 /// with the DB for typesafetey.
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy, DBDefaultCrud, DBPartial)]
-#[db(table = DatabaseTable::EcosystemSetting)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy, DBDefaultCrud)]
+#[db(table = DatabaseTable::EcosystemSetting, partial_self)]
 pub struct EcosystemSettingModel {
     #[db(primary)]
     pub key: UniqueSettingKey,
+    #[db(partial(required))]
     pub data: Setting,
 }
 
@@ -42,13 +43,14 @@ impl From<UniqueSettingKey> for EcosystemSettingModel {
 
 impl EcosystemSettingModel {
     pub async fn get_by_setting_key(key: UniqueSettingKey, db: ArcMutexDB) -> DatabaseResult<Option<Self>> {
-        EcosystemSettingModel::get_one_by_predicate(Some(format!("key = {}", key.to_string().to_quoted_string()?)),
-                                                    None,
-                                                    Arc::clone(&db)).await
+        <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::get_one_by_predicate(Some(format!("key = {}",
+                                                                                 key.to_string().to_quoted_string()?)),
+                                                                    None,
+                                                                    Arc::clone(&db)).await
     }
 
     pub async fn save(&self, db: ArcMutexDB) -> DatabaseResult<()> {
-        EcosystemSettingModel::merge_by_primary_key(vec![self.clone()], Arc::clone(&db)).await
+        <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![self.clone()], Arc::clone(&db)).await
     }
 }
 
@@ -63,6 +65,7 @@ impl ArrowFields for EcosystemSettingModel {
 
 impl DBSchema for EcosystemSettingModel {
     type IDType = UniqueSettingKey;
+    type PartialUpdateType = EcosystemSettingModel;
 
     fn merge_keys() -> &'static [&'static str] {
         &["key"]
@@ -102,8 +105,6 @@ impl DBSchema for EcosystemSettingModel {
 }
 
 impl DBEntity for EcosystemSettingModel {
-    type PartialUpdateType = EcosystemSettingModel;
-
     fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
         DatabaseTable::EcosystemSetting
     }

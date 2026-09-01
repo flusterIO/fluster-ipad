@@ -31,7 +31,7 @@ pub fn filter_one<T>(items: Vec<T>) -> DatabaseResult<Option<T>>
     }
 }
 
-pub trait EntityCRUD<'a, UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Clone + Serialize {
+pub trait EntityCRUD<UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Clone + Serialize {
     type IDType: DatabaseIdentifiable;
     async fn save_many(items: Vec<Self>, db: ArcMutexDB) -> DatabaseResult<()>
         where Self: Sized {

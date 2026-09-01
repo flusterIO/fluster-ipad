@@ -22,7 +22,25 @@ pub struct DBTableDescription {
 impl From<DatabaseTable> for DBTableDescription {
     fn from(value: DatabaseTable) -> Self {
         match value {
-
+            
+            DatabaseTable::Pdf => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds pdf's for the user. Use the tools available to you to query and transform this data so that you help the user achieve their goals.
+                        "}.to_string() },
+            DatabaseTable::Notebook => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds notebooks for the user where the notebook is a valid `.ipynb` file. Query this table using the tools available to you, and consider notebooks to be of equal importance to conundrum, typst and other user inserted content.
+                        "}.to_string() },
+            DatabaseTable::NotebookCellChunk => DBTableDescription { table: value.clone(),
+                                                                 entity_name: value.to_model_name(),
+                                                                 is_joining_table: false,
+                                                                 description: indoc! {"
+                        This table holds notecells that have been chunked and embedded. While these results will be provided to you, query this table as needed with the tools available to you to help the user further expand their knowledge base.
+                        "}.to_string() },
             DatabaseTable::EcosystemSetting => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,

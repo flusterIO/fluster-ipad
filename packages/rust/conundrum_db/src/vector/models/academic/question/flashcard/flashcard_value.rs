@@ -101,7 +101,7 @@ impl DatabaseFieldRepresentation<DatabaseResult<String>> for FlashcardValue {
     }
 }
 
-impl<T> DatabaseField<T> for FlashcardValue {
+impl DatabaseField for FlashcardValue {
     fn field_definition(field_key: &'static str, nullable: bool) -> Field {
         String::field_definition(field_key, nullable)
     }

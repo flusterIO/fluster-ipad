@@ -6,6 +6,7 @@ use conundrum::ecosystem::{
         db_default_constants::DEFAULT_MAX_SYNC_THREADS,
         db_traits::{
             db_entity::{DBEntity, DBSchema},
+            db_field::DatabaseField,
             db_identifiable::DatabaseIdentifiable,
             entity_crud::EntityCRUD,
         },
@@ -102,12 +103,12 @@ impl Setting {
 
     pub async fn save<'a>(&self, db: ArcMutexDB) -> DatabaseResult<()> {
         let model = self.to_model();
-        <EcosystemSettingModel as EntityCRUD<'a, <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::save_many(vec![model], Arc::clone(&db)).await?;
+        <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::save_many(vec![model], Arc::clone(&db)).await?;
         Ok(())
     }
 
     pub async fn read(&self, db: ArcMutexDB) -> DatabaseResult<Self> {
-        let x = <EcosystemSettingModel as EntityCRUD<'a, <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::get_by_predicate(Some(self.to_predicate("key")),
+        let x = <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::get_by_predicate(Some(self.to_predicate("key")),
                                                                         Some(PaginationParams::single()),
                                                                         None,
                                                                         Arc::clone(&db)).await?;
@@ -128,5 +129,11 @@ impl Setting {
                    }.ok_or_else(|| DatabaseError::InvalidSetting(self.to_string()))?;
 
         Ok(item.data.clone())
+    }
+}
+
+impl DatabaseField for Setting {
+    fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
+        String::field_definition(field_key, nullable)
     }
 }

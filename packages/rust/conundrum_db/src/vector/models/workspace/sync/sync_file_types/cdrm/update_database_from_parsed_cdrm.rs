@@ -4,7 +4,11 @@ use conundrum::{
     ecosystem::{
         db::{
             db::ArcMutexDB,
-            db_traits::{db_entity::DBEntity, entity_crud::EntityCRUD},
+            db_traits::{
+                db_entity::{DBEntity, DBSchema},
+                entity_crud::EntityCRUD,
+                into_partial::IntoPartial,
+            },
         },
         error_handling::db_error::DatabaseResult,
     },
@@ -27,7 +31,7 @@ use crate::vector::models::{
 };
 
 pub async fn update_database_from_parsed_cdrm<'a>(content: MdxParsingResult,
-                                                  existing_note: Option<CdrmModel<'a>>,
+                                                  existing_note: Option<CdrmModel>,
                                                   file_content: String,
                                                   workspace_path: String,
                                                   relative_path: String,
@@ -55,7 +59,7 @@ pub async fn update_database_from_parsed_cdrm<'a>(content: MdxParsingResult,
     };
 
     let cloned_db = Arc::clone(&db);
-    <CdrmModel as EntityCRUD>::merge_by_primary_key(vec![model.clone()], cloned_db).await?;
+    <CdrmModel as EntityCRUD< <CdrmModel as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![model.into_partial()], cloned_db).await?;
     let existing_frontmatter = model.get_related_frontmatter(Arc::clone(&db)).await?;
     if let Some(new_frontmatter) = match existing_frontmatter {
         Some(mut fm) => {
@@ -71,7 +75,7 @@ pub async fn update_database_from_parsed_cdrm<'a>(content: MdxParsingResult,
                                                                     source_type: FrontMatterSourceType::Cdrm,
                                                                     data: fm.clone() }),
     } {
-        <FrontMatter as EntityCRUD>::merge_by_primary_key(vec![new_frontmatter], Arc::clone(&db)).await?;
+        <FrontMatter as EntityCRUD< <FrontMatter as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![new_frontmatter.into_partial()], Arc::clone(&db)).await?;
     }
 
     let mut ctx = context.clone().lock_owned().await;

@@ -11,7 +11,9 @@ use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::{
-    notebook::ipynb_content::IpynbContent,
+    notebook::{
+        ipynb_content::IpynbContent, ipynb_parse_params::IpynbParseParameters, notebook_cell_chunk::NotebookCellChunk,
+    },
     text::{
         cdrm::cdrm_content::CdrmContent,
         text_based_content::{text_based_chunk::TextBasedChunk, text_based_content::TextBasedContent},
@@ -21,4 +23,5 @@ use crate::vector::models::{
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy, DatabaseEntity)]
 #[serde(transparent)]
 #[db(table = DatabaseTable::Notebook, unit = TextBasedContent)]
-pub struct NotebookModel<'a>(TextBasedContent<'a, IpynbContent, TextBasedChunk, ParseConundrumOptions>);
+pub struct NotebookModel(TextBasedContent<IpynbContent, NotebookCellChunk, IpynbParseParameters>);
+

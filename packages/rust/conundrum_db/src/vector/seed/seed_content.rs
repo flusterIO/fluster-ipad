@@ -16,12 +16,12 @@ use conundrum::{
 use serde::Serialize;
 
 pub trait SeedContent {
-    async fn try_seed(&self, db: ArcMutexDB) -> DatabaseResult<()>;
+    async fn try_seed<'a>(&self, db: ArcMutexDB) -> DatabaseResult<()>;
 }
 
 pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerStateType>:
     Chunk<ParseParameters, ChunkType, ServerStateType>
-    where ChunkType: DBSchema + EntityCRUD<'a, PartialUpdateType> + Clone + Serialize,
+    where ChunkType: DBSchema + EntityCRUD<PartialUpdateType> + Clone + Serialize,
           PartialUpdateType: Clone + DBSchema + Serialize {
     fn table() -> DatabaseTable;
     async fn try_seed(&self, db: ArcMutexDB, opts: ParseParameters, state: Arc<ServerStateType>) -> DatabaseResult<()> {

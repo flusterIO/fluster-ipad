@@ -12,6 +12,12 @@ use crate::vector::models::{ecosystem_data::server_state::server_state::ServerSt
 #[derive(Serialize, Deserialize, Clone, Debug, Dummy, specta::Type)]
 pub struct CdrmContent(pub String);
 
+impl DatabaseFieldLarge for CdrmContent {
+    fn field_definition_large(field_key: &'static str, nullable: bool) -> Field {
+        String::field_definition_large(field_key, nullable)
+    }
+}
+
 impl DatabaseField for CdrmContent {
     fn field_definition(field_key: &'static str, nullable: bool) -> Field {
         String::field_definition_large(field_key, nullable)

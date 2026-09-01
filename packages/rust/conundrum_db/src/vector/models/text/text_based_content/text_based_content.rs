@@ -21,12 +21,12 @@ use crate::vector::models::{
 };
 
 #[derive(Serialize, Deserialize, Clone, Debug, DBSchema, DBPartial, specta::Type)]
-#[db(include_partial_generics)]
-pub struct TextBasedContent<'a, ContentType, ChunkType, ParseParameters>
-    where ContentType: Serialize + Debug + Deserialize<'a> + Dummy<Faker>,
-          ChunkType: Serialize + Debug + Deserialize<'a>,
-          Self: Deserialize<'a> {
+#[db(include_partial_generics, include_generics = true, manual_partial_dummy)]
+pub struct TextBasedContent<ContentType, ChunkType, ParseParameters>
+    where ContentType: Serialize + Debug + Dummy<Faker> + DatabaseField + DatabaseFieldLarge,
+          ChunkType: Serialize + Debug {
     pub id: DatabaseId,
+    #[db(arrow = String)]
     pub content: ContentType,
     pub title: Option<String>,
     pub ai_generated: AIGeneratedStatus,
@@ -36,30 +36,59 @@ pub struct TextBasedContent<'a, ContentType, ChunkType, ParseParameters>
     pub utime: DateTime,
     pub last_sync: Option<DateTime>,
     pub ai: AIInteractions,
-    #[db(partial(skip_fields))]
     #[serde(default)]
+    #[db(partial(skip_arrow))]
     pub chunk_type: PhantomData<ChunkType>,
-    #[db(partial(skip_fields))]
     #[serde(default)]
+    #[db(partial(skip_arrow))]
     pub parse_params: PhantomData<ParseParameters>,
 }
 
 impl<'a,
-     ContentType: TextBasedContentTrait<ParseParameters, ChunkType> + Serialize + Debug,
-     ChunkType: Serialize + Debug + Deserialize<'a>,
-     ParseParameters> Dummy<Faker> for TextBasedContent<'a, ContentType, ChunkType, ParseParameters>
+     ContentType: TextBasedContentTrait<ParseParameters, ChunkType>
+         + Serialize
+         + Debug
+         + Dummy<Faker>
+         + DatabaseField
+         + DatabaseFieldLarge,
+     ChunkType: Serialize + Debug,
+     ParseParameters> Dummy<Faker> for TextBasedContent<ContentType, ChunkType, ParseParameters>
 {
     fn dummy_with_rng<R: fake::rand::prelude::RngExt + ?Sized>(config: &Faker, rng: &mut R) -> Self {
         todo!()
     }
 }
 
-impl<'a, ContentType, ChunkType, ParseParams> TextBasedContent<'a, ContentType, ChunkType, ParseParams>
-    where ChunkType: Serialize + Debug + Deserialize<'a>,
-          ContentType:
-              TextBasedContentTrait<ParseParams, ChunkType> + Serialize + Debug + Deserialize<'a> + Dummy<Faker>
+impl<'a,
+     ContentType: TextBasedContentTrait<ParseParameters, ChunkType>
+         + Serialize
+         + Debug
+         + Dummy<Faker>
+         + DatabaseField
+         + DatabaseFieldLarge,
+     ChunkType: Serialize + Debug,
+     ParseParameters> Dummy<Faker> for TextBasedContentPartial<ContentType, ChunkType, ParseParameters>
 {
-    pub fn new(content: ContentType, title: Option<String>, workspace_path: String, relative_path: String) -> Self {
+    fn dummy_with_rng<R: fake::rand::prelude::RngExt + ?Sized>(config: &Faker, rng: &mut R) -> Self {
+        todo!()
+    }
+}
+
+impl<'a, ContentType, ChunkType, ParseParams> TextBasedContent<ContentType, ChunkType, ParseParams>
+    where ChunkType: Serialize + Debug,
+          ContentType: TextBasedContentTrait<ParseParams, ChunkType>
+              + Serialize
+              + Debug
+              + Deserialize<'a>
+              + Dummy<Faker>
+              + DatabaseFieldLarge
+              + DatabaseField
+{
+    pub fn new(content: ContentType,
+               title: Option<String>,
+               workspace_path: String,
+               relative_path: String)
+               -> TextBasedContent<ContentType, ChunkType, ParseParams> {
         TextBasedContent { id: DatabaseId::new(),
                            content,
                            title,
@@ -72,5 +101,24 @@ impl<'a, ContentType, ChunkType, ParseParams> TextBasedContent<'a, ContentType, 
                            ai: AIInteractions::default(),
                            chunk_type: PhantomData::<ChunkType>::default(),
                            parse_params: PhantomData::<ParseParams>::default() }
+    }
+
+    pub fn new_partial(content: Option<ContentType>,
+                       title: Option<String>,
+                       workspace_path: Option<String>,
+                       relative_path: Option<String>)
+                       -> TextBasedContentPartial<ContentType, ChunkType, ParseParams> {
+        TextBasedContentPartial { id: DatabaseId::new(),
+                                  content,
+                                  title: Some(title),
+                                  ai_generated: Some(AIGeneratedStatus::None),
+                                  ws_root: Some(workspace_path),
+                                  relative_path: Some(relative_path),
+                                  ctime: Some(DateTime::new_now()),
+                                  utime: Some(DateTime::new_now()),
+                                  last_sync: Some(None),
+                                  ai: Some(AIInteractions::default()),
+                                  chunk_type: Some(PhantomData::<ChunkType>::default()),
+                                  parse_params: Some(PhantomData::<ParseParams>::default()) }
     }
 }

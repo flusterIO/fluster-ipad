@@ -9,9 +9,10 @@ use conundrum::ecosystem::{
     },
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
+use serde::Serialize;
 
 pub async fn save_entities<'a, T, IDType>(items: Vec<T>, db: ArcMutexDB) -> DatabaseResult<()>
-    where T: DBSchema + DBEntity + Clone + Debug {
+    where T: DBSchema + DBEntity + Clone + Debug + Serialize {
     let schema = <T as DBSchema>::schema().map(Arc::new)?;
     let _db = db.clone().lock_owned().await;
     let table = <T as DBEntity>::table();

@@ -1,4 +1,4 @@
-use crate::database::model::Model;
+use crate::database::model::model::Model;
 use quote::quote;
 use syn::{DeriveInput, Ident, Path, PathSegment, TypePath, parse_macro_input, punctuated::Punctuated};
 
@@ -20,7 +20,7 @@ pub fn gen_default_crud(input: &Model) -> Result<proc_macro2::TokenStream, syn::
     let self_ident = input.ident.clone();
     let id_type = input.primary_field_type_with_nested_type_fallback();
     Ok(quote! {
-        impl<'a> #crate_id::ecosystem::db::db_traits::entity_crud::EntityCRUD<'a, #partial_type> for #self_ident {
+        impl #crate_id::ecosystem::db::db_traits::entity_crud::EntityCRUD< #partial_type> for #self_ident {
             type IDType = #id_type;
             async fn get_by_predicate(predicate: Option<String>,
                                       pagination: Option<#crate_id::ecosystem::db::parameters::general::pagination::PaginationParams>,

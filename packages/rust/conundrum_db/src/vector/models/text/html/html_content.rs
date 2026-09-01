@@ -29,6 +29,12 @@ use crate::vector::models::{
 #[derive(Serialize, Deserialize, Clone, Debug)]
 pub struct HTMLContent(String);
 
+impl DatabaseFieldLarge for HTMLContent {
+    fn field_definition_large(field_key: &'static str, nullable: bool) -> Field {
+        String::field_definition_large(field_key, nullable)
+    }
+}
+
 impl DatabaseField for HTMLContent {
     fn field_definition(field_key: &'static str, nullable: bool) -> Field {
         String::field_definition_large(field_key, nullable)

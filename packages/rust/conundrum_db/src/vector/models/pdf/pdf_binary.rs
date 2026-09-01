@@ -2,9 +2,12 @@ use std::sync::Arc;
 
 use conundrum::{
     ai::rig::ai_traits::chunk::Chunk,
-    ecosystem::error_handling::{
-        ai_error::{AIError, AIResult},
-        db_error::DatabaseError,
+    ecosystem::{
+        db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge},
+        error_handling::{
+            ai_error::{AIError, AIResult},
+            db_error::DatabaseError,
+        },
     },
     lang::runtime::{queries::get_title::get_title_group, run_conundrum::ParseConundrumOptions},
 };
@@ -27,6 +30,18 @@ use crate::vector::models::{
 /// - [ ] Extract tables
 #[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, fake::Dummy)]
 pub struct PdfBinary(Binary);
+
+impl DatabaseField for PdfBinary {
+    fn field_definition(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
+        Binary::field_definition_large(field_key, nullable)
+    }
+}
+
+impl DatabaseFieldLarge for PdfBinary {
+    fn field_definition_large(field_key: &'static str, nullable: bool) -> arrow_schema::Field {
+        Binary::field_definition_large(field_key, nullable)
+    }
+}
 
 impl BinaryBasedContent<ParseConundrumOptions> for PdfBinary {
     fn bytes(&self) -> Vec<u8> {
