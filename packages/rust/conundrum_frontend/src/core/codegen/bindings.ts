@@ -144,11 +144,11 @@ export type DOMId = string
 
 export type DatabaseId = string
 
-export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -156,7 +156,7 @@ export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdr
 /**
  * ---- Chunks ----
  */
-"cdrm_vec" | "message_chunk" | "mcp_tool" | "documentation_chunk"
+"cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk"
 
 /**
  * # DateTime
@@ -203,7 +203,7 @@ export type FrontMatterResult = { ignored_parsers: string[]; title: string | nul
 
 export type GeneralCodeBlock = { language: SupportedCodeBlockSyntax; meta_data: string | null; depth: number; content: string; full_match: string; id: DOMId }
 
-export type JsonValue = null | boolean | number | string | JsonValue[] | Partial<{ [key in string]: JsonValue }>
+export type JsonContent = string
 
 export type MCPToolName = "hello_world" | "query_workspaces"
 
@@ -366,7 +366,7 @@ ctrl: boolean }[] } | { key: "crud.qa_pair.get_by_predicate"; input: { predicate
  * and M.D. level biology is a 100, and elementary math like 2 + 2 is
  * 0.
  */
-difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[] } | { key: "crud.subject.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.system_prompt_message.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { id: DatabaseId; body: string; convo_id: DatabaseId; ctime: DateTime }[] } | { key: "crud.tag.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.tool_execution.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonValue; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime })[] } | { key: "crud.topic.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.user_message.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { id: DatabaseId; convo_id: DatabaseId; 
+difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[] } | { key: "crud.subject.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.system_prompt_message.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { id: DatabaseId; body: string; convo_id: DatabaseId; ctime: DateTime }[] } | { key: "crud.tag.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[] } | { key: "crud.tool_execution.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonContent | null; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime })[] } | { key: "crud.topic.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[] } | { key: "crud.user_message.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: { id: DatabaseId; convo_id: DatabaseId; 
 /**
  * If the sender is the user, this is the agent requested. If the sender is
  * AI, this is the AI sending the response.
@@ -405,11 +405,11 @@ resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[] } | { key: "des
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
  */
-entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -417,7 +417,7 @@ entity_name: string; is_joining_table: boolean; description: string }[] } | { ke
 /**
  * ---- Chunks ----
  */
-"cdrm_vec" | "message_chunk" | "mcp_tool" | "documentation_chunk"; result: { table: DatabaseTable; 
+"cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk"; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -445,11 +445,11 @@ message: string | null;
 /**
  * A description of the event logged written directly to AI.
  */
-ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "settings.read"; input: "first-name" | "last-name" | "profession" | "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method" | "auto-clean-vectors" | "max-sync-threads"; result: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey } | null } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "ollama.list_models"; input: null; result: ({ id: string; name: string | null; desc: string | null; model_type: string | null; ctime: DateTime | null; max_context: number | null })[] } | { key: "remote_ai.list_models"; input: null; result: ({ id: string; name: string | null; desc: string | null; model_type: string | null; ctime: DateTime | null; max_context: number | null })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "settings.read"; input: "first-name" | "last-name" | "profession" | "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method" | "auto-clean-vectors" | "max-sync-threads"; result: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey } | null } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -457,11 +457,11 @@ ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSe
 /**
  * ---- Chunks ----
  */
-"cdrm_vec" | "message_chunk" | "mcp_tool" | "documentation_chunk")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
+"cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
 /**
  * Stores just the `AcademicResultMetricKey` and the value.
  */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | 
+"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -469,7 +469,7 @@ ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSe
 /**
  * ---- Chunks ----
  */
-"cdrm_vec" | "message_chunk" | "mcp_tool" | "documentation_chunk"; result: { table: DatabaseTable; 
+"cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk"; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -513,20 +513,7 @@ instructions: string | null; always_include_tools: MCPToolNameList;
  * A scalar that will be applied to the temperature assigned to each task.
  * Defaults to 1, the same as being null.
  */
-temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[]; result: null } | { key: "crud.agent_description.update_many"; input: ({ id: DatabaseId; 
-/**
- * The name that the AI should be referred to as. AI should reference this
- * field when a user asks for another agent by name.
- */
-name: string | null; 
-/**
- * The model to use
- */
-model: string | null; reasoning: boolean | null; is_local: boolean | null; 
-/**
- * System level instructions
- */
-instructions: string | null; always_include_tools: MCPToolNameList | null; temperature_scalar: number | null; primary_task: AgentPrimaryTask | null })[]; result: null } | { key: "crud.agent_message.delete_by_predicate"; input: string; result: null } | { key: "crud.agent_message.save_many"; input: { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; body: string; ctime: DateTime }[]; result: null } | { key: "crud.agent_message.update_many"; input: { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; body: string; ctime: DateTime }[]; result: null } | { key: "crud.assignment.delete_by_predicate"; input: string; result: null } | { key: "crud.assignment.save_many"; input: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[]; result: null } | { key: "crud.assignment.update_many"; input: ({ id: DatabaseId; label: string | null; description: string | null; due_at: DateTime | null })[]; result: null } | { key: "crud.auto_taggable.delete_by_predicate"; input: string; result: null } | { key: "crud.auto_taggable.save_many"; input: { id: DatabaseId; 
+temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[]; result: null } | { key: "crud.agent_description.update_many"; input: ({ id: DatabaseId; name: string | null; max_tokens: number | null; allow_tools: boolean | null; embedding_mode: VectorMode | null; chat_mode: VectorMode | null; model: string | null; reasoning: boolean | null; is_local: boolean | null; instructions: string | null; always_include_tools: MCPToolNameList | null; temperature_scalar: number | null; primary_task: AgentPrimaryTask | null; ctime: DateTime | null; utime: DateTime | null })[]; result: null } | { key: "crud.agent_message.delete_by_predicate"; input: string; result: null } | { key: "crud.agent_message.save_many"; input: { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; body: string; ctime: DateTime }[]; result: null } | { key: "crud.agent_message.update_many"; input: ({ id: DatabaseId; convo_id: DatabaseId | null; agent_id: DatabaseId | null; body: string | null; ctime: DateTime | null })[]; result: null } | { key: "crud.assignment.delete_by_predicate"; input: string; result: null } | { key: "crud.assignment.save_many"; input: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[]; result: null } | { key: "crud.assignment.update_many"; input: ({ id: DatabaseId; label: string | null; description: string | null; due_at: DateTime | null; ctime: DateTime | null; utime: DateTime | null })[]; result: null } | { key: "crud.auto_taggable.delete_by_predicate"; input: string; result: null } | { key: "crud.auto_taggable.save_many"; input: { id: DatabaseId; 
 /**
  * The value of the taggable that will be automatically applied.
  */
@@ -542,7 +529,7 @@ value: string; variant: TaggableVariant;
  * `/Users/bigsexy/notes/`, then a valid glob to match files in this
  * directory might look like `physics/*.{mdx,cdrm,md}`.
  */
-glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[]; result: null } | { key: "crud.chat_conversation.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_conversation.delete_conversation"; input: string; result: null } | { key: "crud.chat_conversation.save_many"; input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[]; result: null } | { key: "crud.chat_conversation.update_many"; input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[]; result: null } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ id?: DatabaseId; 
+glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; ctime: DateTime | null; utime: DateTime | null })[]; result: null } | { key: "crud.chat_conversation.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_conversation.delete_conversation"; input: string; result: null } | { key: "crud.chat_conversation.save_many"; input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[]; result: null } | { key: "crud.chat_conversation.update_many"; input: ({ id: DatabaseId; label: string | null; desc: string | null; requires_label_update: boolean | null; ctime: DateTime | null; utime: DateTime | null })[]; result: null } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ id?: DatabaseId; 
 /**
  * Will match the root of the workspace if this is a workspace repository,
  * otherwise user's can optionally set this to a local path to allow AI
@@ -576,16 +563,7 @@ is_workspace?: boolean;
  * Permissions regarding access to the file system can be found
  * on the settings page of the Conundrum dashboard.
  */
-allow_ai_access: boolean; local_vector: DBVector; remote_vector: DBVector })[]; result: null } | { key: "crud.git_repository.update_many"; input: ({ 
-/**
- * Will match the root of the workspace if this is a workspace repository.
- */
-fs_path: string | null; url: string | null; id: DatabaseId; 
-/**
- * A descriptive label used for both the UI and as further information for
- * AI.
- */
-label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[]; result: null } | { key: "crud.keyboard_shortcut.delete_by_predicate"; input: string; result: null } | { key: "crud.keyboard_shortcut.save_many"; input: { action: EcosystemApplicationAction; key: string; 
+allow_ai_access: boolean; local_vector: DBVector; remote_vector: DBVector })[]; result: null } | { key: "crud.git_repository.update_many"; input: ({ id: DatabaseId; fs_path: string | null; url: string | null; label: string | null; ai: AIInteractions | null; is_workspace: boolean | null; allow_ai_access: boolean | null; local_vector: DBVector | null; remote_vector: DBVector | null })[]; result: null } | { key: "crud.keyboard_shortcut.delete_by_predicate"; input: string; result: null } | { key: "crud.keyboard_shortcut.save_many"; input: { action: EcosystemApplicationAction; key: string; 
 /**
  * The meta key was pressed.
  */
@@ -601,52 +579,19 @@ alt: boolean;
 /**
  * The 'crl' key was pressed.
  */
-ctrl: boolean }[]; result: null } | { key: "crud.keyboard_shortcut.update_many"; input: ({ action: EcosystemApplicationAction; key: string | null; 
-/**
- * The shift key was pressed.
- */
-shift: boolean | null; 
-/**
- * The meta key was pressed.
- */
-meta: boolean | null; 
-/**
- * The 'alt' ey was pressed.
- */
-alt: boolean | null; 
-/**
- * The 'option' key was pressed.
- */
-ctrl: boolean | null })[]; result: null } | { key: "crud.qa_pair.delete_by_predicate"; input: string; result: null } | { key: "crud.qa_pair.save_many"; input: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; 
+ctrl: boolean }[]; result: null } | { key: "crud.keyboard_shortcut.update_many"; input: ({ action: EcosystemApplicationAction; key: string | null; shift: boolean | null; meta: boolean | null; alt: boolean | null; ctrl: boolean | null })[]; result: null } | { key: "crud.qa_pair.delete_by_predicate"; input: string; result: null } | { key: "crud.qa_pair.save_many"; input: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; 
 /**
  * The difficulty field is not optional for AI. AI should always provide an
  * estimated difficulty score using a scale where Ph.D. level physics
  * and M.D. level biology is a 100, and elementary math like 2 + 2 is
  * 0.
  */
-difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[]; result: null } | { key: "crud.qa_pair.update_many"; input: ({ id: DatabaseId; question: string | null; answer: FlashcardValue | null; explanation: string | null; correct_responses: number | null; incorrect_responses: number | null; difficulty: number | null })[]; result: null } | { key: "crud.subject.delete_by_predicate"; input: string; result: null } | { key: "crud.subject.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[]; result: null } | { key: "crud.subject.update_many"; input: ({ 
-/**
- * The value will never be updated, only used for comparison.
- */
-value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.system_prompt_message.delete_by_predicate"; input: string; result: null } | { key: "crud.system_prompt_message.save_many"; input: { id: DatabaseId; body: string; convo_id: DatabaseId; ctime: DateTime }[]; result: null } | { key: "crud.system_prompt_message.update_many"; input: { id: DatabaseId; body: string; convo_id: DatabaseId; ctime: DateTime }[]; result: null } | { key: "crud.tag.delete_by_predicate"; input: string; result: null } | { key: "crud.tag.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[]; result: null } | { key: "crud.tag.update_many"; input: ({ 
-/**
- * The value will never be updated, only used for comparison.
- */
-value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.tool_execution.delete_by_predicate"; input: string; result: null } | { key: "crud.tool_execution.save_many"; input: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonValue; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime })[]; result: null } | { key: "crud.tool_execution.update_many"; input: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonValue; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime })[]; result: null } | { key: "crud.topic.delete_by_predicate"; input: string; result: null } | { key: "crud.topic.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[]; result: null } | { key: "crud.topic.update_many"; input: ({ 
-/**
- * The value will never be updated, only used for comparison.
- */
-value: string; location: TagLocation | null; last_access: DateTime | null })[]; result: null } | { key: "crud.user_message.delete_by_predicate"; input: string; result: null } | { key: "crud.user_message.save_many"; input: { id: DatabaseId; convo_id: DatabaseId; 
+difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[]; result: null } | { key: "crud.qa_pair.update_many"; input: ({ id: DatabaseId; question: string | null; answer: FlashcardValue | null; explanation: string | null; correct_responses: number | null; incorrect_responses: number | null; difficulty: number | null; ctime: DateTime | null; utime: DateTime | null; last_access: DateTime | null })[]; result: null } | { key: "crud.subject.delete_by_predicate"; input: string; result: null } | { key: "crud.subject.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[]; result: null } | { key: "crud.subject.update_many"; input: ({ value: CaseInsensitiveString; location: TagLocation | null; ctime: DateTime | null; last_access: DateTime | null; ai: AIInteractions | null })[]; result: null } | { key: "crud.system_prompt_message.delete_by_predicate"; input: string; result: null } | { key: "crud.system_prompt_message.save_many"; input: { id: DatabaseId; body: string; convo_id: DatabaseId; ctime: DateTime }[]; result: null } | { key: "crud.system_prompt_message.update_many"; input: ({ id: DatabaseId; body: string | null; convo_id: DatabaseId | null; ctime: DateTime | null })[]; result: null } | { key: "crud.tag.delete_by_predicate"; input: string; result: null } | { key: "crud.tag.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[]; result: null } | { key: "crud.tag.update_many"; input: ({ value: CaseInsensitiveString; location: TagLocation | null; ai: AIInteractions | null; ctime: DateTime | null; last_access: DateTime | null })[]; result: null } | { key: "crud.tool_execution.delete_by_predicate"; input: string; result: null } | { key: "crud.tool_execution.save_many"; input: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonContent | null; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime })[]; result: null } | { key: "crud.tool_execution.update_many"; input: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonContent | null; convo_id: DatabaseId | null; agent_id: DatabaseId | null; ctime: DateTime | null })[]; result: null } | { key: "crud.topic.delete_by_predicate"; input: string; result: null } | { key: "crud.topic.save_many"; input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[]; result: null } | { key: "crud.topic.update_many"; input: ({ value: CaseInsensitiveString; location: TagLocation | null; ctime: DateTime | null; last_access: DateTime | null; ai: AIInteractions | null })[]; result: null } | { key: "crud.user_message.delete_by_predicate"; input: string; result: null } | { key: "crud.user_message.save_many"; input: { id: DatabaseId; convo_id: DatabaseId; 
 /**
  * If the sender is the user, this is the agent requested. If the sender is
  * AI, this is the AI sending the response.
  */
-agent_id: DatabaseId; body: string; ctime: DateTime }[]; result: null } | { key: "crud.user_message.update_many"; input: { id: DatabaseId; convo_id: DatabaseId; 
-/**
- * If the sender is the user, this is the agent requested. If the sender is
- * AI, this is the AI sending the response.
- */
-agent_id: DatabaseId; body: string; ctime: DateTime }[]; result: null } | { key: "crud.user_workspace.delete_by_predicate"; input: string; result: null } | { key: "crud.user_workspace.save_many"; input: ({ 
+agent_id: DatabaseId; body: string; ctime: DateTime }[]; result: null } | { key: "crud.user_message.update_many"; input: ({ id: DatabaseId; convo_id: DatabaseId | null; agent_id: DatabaseId | null; body: string | null; ctime: DateTime | null })[]; result: null } | { key: "crud.user_workspace.delete_by_predicate"; input: string; result: null } | { key: "crud.user_workspace.save_many"; input: ({ 
 /**
  * The path to the root of the workspace and the primary key for the
  * workspace.
@@ -675,12 +620,7 @@ ignore_hidden: boolean;
  * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
-resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ 
-/**
- * The path to the root of the workspace and the primary key for the
- * workspace. This is still required to update the proper item.
- */
-root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null } | { key: "settings.save"; input: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey }; result: null }; subscriptions: never }
+resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null; ctime: DateTime | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null } | { key: "settings.save"; input: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey }; result: null }; subscriptions: never }
 
 export type ReasoningBlock = { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; content: string; ctime: DateTime }
 
@@ -779,9 +719,9 @@ export type TaggableVariant = "tag" | "topic" | "subject"
 
 export type TokenExpendeture = { total: number; incoming: number; outgoing: number }
 
-export type ToolExecution = { id: DatabaseId; tool_name: MCPToolName; args: JsonValue; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime }
+export type ToolExecution = { id: DatabaseId; tool_name: MCPToolName; args: JsonContent | null; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime }
 
-export type ToolExecutionPartial = { tool_name: MCPToolName; args: JsonValue }
+export type ToolExecutionPartial = { id: DatabaseId; tool_name: MCPToolName; args: JsonContent | null; convo_id: DatabaseId | null; agent_id: DatabaseId | null; ctime: DateTime | null }
 
 export type UIParams = { dark_mode: boolean; 
 /**
@@ -848,38 +788,38 @@ export type Procedures = {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; name: string | null; max_tokens: number | null; allow_tools: boolean; embedding_mode: VectorMode; chat_mode: VectorMode; model: string; reasoning: boolean; is_local: boolean; instructions: string | null; always_include_tools: MCPToolNameList; temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ id: DatabaseId; name: string | null; max_tokens: number | null; allow_tools: boolean; embedding_mode: VectorMode; chat_mode: VectorMode; model: string; reasoning: boolean; is_local: boolean; instructions: string | null; always_include_tools: MCPToolNameList; temperature_scalar: number; primary_task: AgentPrimaryTask | null; ctime: DateTime; utime: DateTime })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ id: DatabaseId; name: string | null; model: string | null; reasoning: boolean | null; is_local: boolean | null; instructions: string | null; always_include_tools: MCPToolNameList | null; temperature_scalar: number | null; primary_task: AgentPrimaryTask | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; name: string | null; max_tokens: number | null; allow_tools: boolean | null; embedding_mode: VectorMode | null; chat_mode: VectorMode | null; model: string | null; reasoning: boolean | null; is_local: boolean | null; instructions: string | null; always_include_tools: MCPToolNameList | null; temperature_scalar: number | null; primary_task: AgentPrimaryTask | null; ctime: DateTime | null; utime: DateTime | null })[], output: null, error: unknown },
 },
 	agent_message: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; body: string; ctime: DateTime }[], error: unknown },
 	save_many: { kind: "mutation", input: { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; body: string; ctime: DateTime }[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; body: string; ctime: DateTime }[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; convo_id: DatabaseId | null; agent_id: DatabaseId | null; body: string | null; ctime: DateTime | null })[], output: null, error: unknown },
 },
 	assignment: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ id: DatabaseId; label: string; description: string | null; due_at: DateTime | null; ctime: DateTime; utime: DateTime })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ id: DatabaseId; label: string | null; description: string | null; due_at: DateTime | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; label: string | null; description: string | null; due_at: DateTime | null; ctime: DateTime | null; utime: DateTime | null })[], output: null, error: unknown },
 },
 	auto_taggable: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { id: DatabaseId; value: string; variant: TaggableVariant; glob: string; ctime: DateTime; utime: DateTime }[], error: unknown },
 	save_many: { kind: "mutation", input: { id: DatabaseId; value: string; variant: TaggableVariant; glob: string; ctime: DateTime; utime: DateTime }[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; utime: DateTime | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; ctime: DateTime | null; utime: DateTime | null })[], output: null, error: unknown },
 },
 	chat_conversation: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	delete_conversation: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; ctime: DateTime; utime?: DateTime })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; label: string | null; desc: string | null; requires_label_update: boolean | null; ctime: DateTime | null; utime: DateTime | null })[], output: null, error: unknown },
 },
 	git_repository: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id?: DatabaseId; fs_path: string | null; url: string | null; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; local_vector: DBVector; remote_vector: DBVector })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ id?: DatabaseId; fs_path: string | null; url: string | null; label: string; ai: AIInteractions; is_workspace?: boolean; allow_ai_access: boolean; local_vector: DBVector; remote_vector: DBVector })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ fs_path: string | null; url: string | null; id: DatabaseId; label: string | null; is_workspace: boolean | null; allow_ai_access: boolean | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; fs_path: string | null; url: string | null; label: string | null; ai: AIInteractions | null; is_workspace: boolean | null; allow_ai_access: boolean | null; local_vector: DBVector | null; remote_vector: DBVector | null })[], output: null, error: unknown },
 },
 	keyboard_shortcut: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
@@ -891,54 +831,54 @@ export type Procedures = {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ id?: DatabaseId; question: string; answer: FlashcardValue; explanation: string | null; correct_responses?: number; incorrect_responses?: number; difficulty: number | null; ctime?: DateTime; utime?: DateTime; last_access?: DateTime })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ id: DatabaseId; question: string | null; answer: FlashcardValue | null; explanation: string | null; correct_responses: number | null; incorrect_responses: number | null; difficulty: number | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; question: string | null; answer: FlashcardValue | null; explanation: string | null; correct_responses: number | null; incorrect_responses: number | null; difficulty: number | null; ctime: DateTime | null; utime: DateTime | null; last_access: DateTime | null })[], output: null, error: unknown },
 },
 	subject: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], error: unknown },
 	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ value: CaseInsensitiveString; location: TagLocation | null; ctime: DateTime | null; last_access: DateTime | null; ai: AIInteractions | null })[], output: null, error: unknown },
 },
 	system_prompt_message: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { id: DatabaseId; body: string; convo_id: DatabaseId; ctime: DateTime }[], error: unknown },
 	save_many: { kind: "mutation", input: { id: DatabaseId; body: string; convo_id: DatabaseId; ctime: DateTime }[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: { id: DatabaseId; body: string; convo_id: DatabaseId; ctime: DateTime }[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; body: string | null; convo_id: DatabaseId | null; ctime: DateTime | null })[], output: null, error: unknown },
 },
 	tag: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[], error: unknown },
 	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ai: AIInteractions; ctime: DateTime; last_access: DateTime }[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ value: CaseInsensitiveString; location: TagLocation | null; ai: AIInteractions | null; ctime: DateTime | null; last_access: DateTime | null })[], output: null, error: unknown },
 },
 	tool_execution: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
-	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonValue; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime })[], error: unknown },
-	save_many: { kind: "mutation", input: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonValue; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonValue; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime })[], output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonContent | null; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime })[], error: unknown },
+	save_many: { kind: "mutation", input: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonContent | null; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; tool_name: MCPToolName; args: JsonContent | null; convo_id: DatabaseId | null; agent_id: DatabaseId | null; ctime: DateTime | null })[], output: null, error: unknown },
 },
 	topic: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], error: unknown },
 	save_many: { kind: "mutation", input: { value: CaseInsensitiveString; location: TagLocation; ctime: DateTime; last_access: DateTime; ai: AIInteractions }[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ value: string; location: TagLocation | null; last_access: DateTime | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ value: CaseInsensitiveString; location: TagLocation | null; ctime: DateTime | null; last_access: DateTime | null; ai: AIInteractions | null })[], output: null, error: unknown },
 },
 	user_message: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; body: string; ctime: DateTime }[], error: unknown },
 	save_many: { kind: "mutation", input: { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; body: string; ctime: DateTime }[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; body: string; ctime: DateTime }[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ id: DatabaseId; convo_id: DatabaseId | null; agent_id: DatabaseId | null; body: string | null; ctime: DateTime | null })[], output: null, error: unknown },
 },
 	user_workspace: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null; ctime: DateTime | null })[], output: null, error: unknown },
 },
 },
 	describe: {
 	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
-	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "message_chunk" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | "workspace_repository" | "milestone_alarm" | "cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
@@ -952,14 +892,20 @@ export type Procedures = {
 	create: { kind: "mutation", input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }, output: null, error: unknown },
 	get_many: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ id: DatabaseId; title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[], error: unknown },
 },
+	ollama: {
+	list_models: { kind: "query", input: null, output: ({ id: string; name: string | null; desc: string | null; model_type: string | null; ctime: DateTime | null; max_context: number | null })[], error: unknown },
+},
+	remote_ai: {
+	list_models: { kind: "query", input: null, output: ({ id: string; name: string | null; desc: string | null; model_type: string | null; ctime: DateTime | null; max_context: number | null })[], error: unknown },
+},
 	rpc_health: { kind: "query", input: null, output: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean }, error: unknown },
 	settings: {
 	read: { kind: "query", input: "first-name" | "last-name" | "profession" | "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method" | "auto-clean-vectors" | "max-sync-threads", output: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey } | null, error: unknown },
 	save: { kind: "mutation", input: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey }, output: null, error: unknown },
 },
 	tables: {
-	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "message_chunk" | "mcp_tool" | "documentation_chunk")[], error: unknown },
-	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "workspace_repository" | "milestone_alarm" | "cdrm_vec" | "message_chunk" | "mcp_tool" | "documentation_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | "workspace_repository" | "milestone_alarm" | "cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk")[], error: unknown },
+	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | "workspace_repository" | "milestone_alarm" | "cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	version: { kind: "query", input: null, output: { database: SchemaVersion; server: ServerVersion }, error: unknown },
 	workspace_management: {

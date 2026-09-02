@@ -17,7 +17,6 @@ use specta::Type;
 #[serde_as]
 #[derive(Serialize, Deserialize, Clone, Debug, Type)]
 #[serde(transparent)]
-#[typeshare::typeshare]
 pub struct DateTime(#[specta(type = String)] i64);
 
 impl Dummy<Faker> for DateTime {
@@ -43,6 +42,12 @@ impl FromStr for DateTime {
                                    DatabaseError::SerializationError
                                })?;
         Ok(Self(n))
+    }
+}
+
+impl From<u64> for DateTime {
+    fn from(value: u64) -> Self {
+        Self(value as i64)
     }
 }
 

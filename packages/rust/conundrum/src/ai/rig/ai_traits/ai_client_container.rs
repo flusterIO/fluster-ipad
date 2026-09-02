@@ -3,7 +3,10 @@ use rig::embeddings::{Embedding, EmbeddingModel};
 
 use crate::{
     ai::{
-        models::agent::{agent_description::AgentDescription, agent_primary_task::AgentPrimaryTask},
+        models::{
+            agent::{agent_description::AgentDescription, agent_primary_task::AgentPrimaryTask},
+            model::model_description::ModelDescription,
+        },
         rig::ai_traits::{conundrum_agent::ConundrumAgent, into_embedding_description::IntoEmbeddingDescription},
     },
     ecosystem::error_handling::ai_error::{AIError, AIResult},
@@ -18,6 +21,8 @@ pub trait AIClientContainer {
     fn get_agent(&self, desc: AgentDescription, task_base_temperature: f64) -> Self::AgentContainer;
     /// Throws an error if the environment is invalid, otherwise returns null.
     async fn validate_environment() -> AIResult<()>;
+
+    async fn list_models(&self) -> AIResult<Vec<ModelDescription>>;
 }
 
 pub trait AIClientEmbedder<T>: AIClientContainer

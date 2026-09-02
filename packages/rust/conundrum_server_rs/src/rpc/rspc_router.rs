@@ -17,7 +17,8 @@ use crate::rpc::{
         agent::agent_router::get_agent_router, cdrm::cdrm_router::get_cdrm_router, code::code_router::get_code_router,
         crud::nested_crud_router::get_nested_crud_router, describe::describe_router::get_describe_router,
         fs::fs_router::get_fs_router, initialization::initialization_router::get_initialization_router,
-        log::logger_router::get_logger_router, settings::settings_router::get_settings_router,
+        log::logger_router::get_logger_router, ollama::ollama_router::get_ollama_router,
+        remote_ai::remote_ai_router::get_remote_ai_router, settings::settings_router::get_settings_router,
         table::table_router::get_table_router,
         workspace_management::workspace_management_router::get_workspace_management_router,
     },
@@ -28,6 +29,8 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<Arc<ServerState
     let fs_router = get_fs_router();
     let logger_router = get_logger_router();
     let table_router = get_table_router();
+    let ollama_router = get_ollama_router();
+    let remote_ai_router = get_remote_ai_router();
     let initialization_router = get_initialization_router();
     // let mut study_router = get_study_router();
     let workspace_router = get_workspace_management_router();
@@ -45,6 +48,8 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<Arc<ServerState
                                                .nest("cdrm", cdrm_router)
                                                .nest("describe", describe_router)
                                                .nest("agent", agent_router)
+                                               .nest("ollama", ollama_router)
+                                               .nest("remote_ai", remote_ai_router)
                                                .nest("crud", crud_router)
                                                .nest("initialize", initialization_router)
                                                .nest("settings", settings_router)

@@ -56,7 +56,7 @@ export const ChatInput = (): ReactNode => {
                 <PromptInputTextarea placeholder={placeholder} />
             </PromptInputBody>
             <PromptInputFooter>
-                <PromptInputTools>
+                <PromptInputTools className="flex flex-row gap-x-4 px-3">
                     <AgentSelectInputButton />
                     <MicSelector />
                     {thinking ? (

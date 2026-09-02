@@ -111,6 +111,16 @@ impl ModelField {
         data
     }
 
+    pub fn serde_macro(&self) -> TokenStream {
+        if let Some(default_value) = &self.options.partial.default {
+            quote! {
+                #[serde(default = #default_value)]
+            }
+        } else {
+            quote! {}
+        }
+    }
+
     pub fn partial_field_macros_tokens(&self, is_primary_field: bool) -> TokenStream {
         let s = self.partial_field_macros(is_primary_field);
         match s.len() {

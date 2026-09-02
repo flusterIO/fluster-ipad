@@ -6,6 +6,8 @@ pub struct PartialOptions {
     pub skip_arrow: bool,
     pub required: bool,
     pub patch: bool,
+    /// Optionally applied to serde default.
+    pub default: Option<String>,
 }
 
 #[allow(clippy::derivable_impls)]
@@ -14,6 +16,7 @@ impl Default for PartialOptions {
         Self { skip: false,
                skip_arrow: false,
                required: false,
+               default: None,
                patch: false }
     }
 }

@@ -61,6 +61,12 @@ pub fn parse_partial(options: &mut PartialOptions, meta: syn::meta::ParseNestedM
                 return Ok(());
             }
 
+            if meta.path.is_ident("default") {
+                let value: syn::LitStr = meta.value()?.parse()?;
+                options.default = Some(value.value());
+                return Ok(());
+            }
+
             Err(meta.error(format!("unknown partial option: {}",
                                    meta.path
                                        .get_ident()

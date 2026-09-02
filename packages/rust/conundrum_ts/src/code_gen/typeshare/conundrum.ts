@@ -70,19 +70,6 @@ export type CssColor = CL;
 
 export type DOMId = string;
 
-/**
- * The developers of Surreal should be punched in the fucking eye. Make up your
- * mind. Is your db flexible or not? Make the types public or just be postgres
- * with pg-vector.
- * 
- * For anyone that sees this: Use Lance, or Neo, or something else. The only
- * reason I'm using surreal is because I was without internet for a few days
- * and I wanted to make progress, I already had Surreal installed. I'd go back
- * to Lance right now and undo 2 weeks worth of work just to get rid of this
- * half-axxed DB. I already miss the reliable arrow support of Lance instead of
- * serializing to sql strings and json objects. No wonder it's slow as shit.
- * It's the DB that does everything but nothing well.
- */
 export type DatabaseId = string;
 
 export type GridColumnProps = GridColumnsMap;
@@ -1617,7 +1604,7 @@ export enum MCPToolName {
 export interface ToolExecution {
 	id: DatabaseId;
 	tool_name: MCPToolName;
-	args: Value;
+	args?: JsonContent;
 	convo_id: DatabaseId;
 	agent_id?: DatabaseId;
 	ctime: DateTime;
@@ -1945,6 +1932,10 @@ export enum DatabaseTable {
 	Topic = "topic",
 	Subject = "subject",
 	Cdrm = "cdrm",
+	HTML = "html",
+	Pdf = "pdf",
+	Notebook = "notebook",
+	FrontMatter = "front_matter",
 	TypstContent = "typst",
 	UserWorkspace = "user_workspace",
 	WorkspacePath = "workspace_path",
@@ -1973,13 +1964,19 @@ export enum DatabaseTable {
 	EcosystemSetting = "ecosystem_setting",
 	LongTermGoal = "long_term_goal",
 	ShortTermGoal = "short_term_goal",
+	Alarm = "alarm",
+	StreetAddress = "street_address",
+	PhoneContact = "phone_contact",
 	/** --- 'Joining' tables --- */
 	WorkspaceRepository = "workspace_repository",
 	MilestoneAlarm = "milestone_alarm",
-	/** ---- Vectors ---- */
-	MarkdownChunk = "cdrm_vec",
+	/** ---- Chunks ---- */
+	CdrmChunk = "cdrm_chunk",
+	MarkdownChunk = "markdown_chunk",
+	MessageChunk = "message_chunk",
 	MCPToolRecord = "mcp_tool",
 	DocumentationChunk = "documentation_chunk",
+	NotebookCellChunk = "notebook_cell_chunk",
 }
 
 export enum DocumentationComponentName {

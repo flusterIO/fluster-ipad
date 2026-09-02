@@ -6,6 +6,8 @@ pub mod describe;
 pub mod fs;
 pub mod initialization;
 pub mod log;
+pub mod ollama;
+pub mod remote_ai;
 pub mod settings;
 pub mod study;
 pub mod sync;

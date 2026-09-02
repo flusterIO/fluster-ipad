@@ -1,7 +1,7 @@
 use crate::{
     ai::{
         agents::local_agent::LocalAgent,
-        models::agent::agent_description::AgentDescription,
+        models::{agent::agent_description::AgentDescription, model::model_description::ModelDescription},
         rig::ai_traits::{
             ai_client_container::{AIClientContainer, AIClientEmbedder},
             from_agent_description::FromAgentDescription,
@@ -11,7 +11,7 @@ use crate::{
     ecosystem::error_handling::ai_error::{AIError, AIResult},
 };
 use rig::{
-    client::{EmbeddingsClient, ProviderClient},
+    client::{EmbeddingsClient, ModelListingClient, ProviderClient},
     providers::ollama::{self, Client as OllamaClient, OllamaApiKey},
 };
 
@@ -69,6 +69,14 @@ impl AIClientContainer for RigClientLocal {
                                     AIError::InvalidEnvironment("ollama".to_string())
                                 })?;
         Ok(())
+    }
+
+    async fn list_models(&self) -> AIResult<Vec<crate::ai::models::model::model_description::ModelDescription>> {
+        let m = self.0.list_models().await.map_err(|e| {
+                                               log::error!("Error: {:#?}", e);
+                                               AIError::InvalidLocalProvider
+                                           })?;
+        Ok(m.data.iter().map(|x| ModelDescription::from(x.clone())).collect::<Vec<ModelDescription>>())
     }
 }
 

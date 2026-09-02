@@ -1,7 +1,7 @@
 use crate::{
     ai::{
         agents::remote_agent::RemoteAgent,
-        models::agent::agent_description::AgentDescription,
+        models::{agent::agent_description::AgentDescription, model::model_description::ModelDescription},
         rig::ai_traits::{
             ai_client_container::{AIClientContainer, AIClientEmbedder},
             from_agent_description::FromAgentDescription,
@@ -11,7 +11,7 @@ use crate::{
     ecosystem::error_handling::ai_error::{AIError, AIResult},
 };
 use rig::{
-    client::{EmbeddingsClient, ProviderClient},
+    client::{EmbeddingsClient, ModelListingClient, ProviderClient},
     providers::openai::{Client as OpenAIClient, TEXT_EMBEDDING_3_LARGE},
 };
 
@@ -67,6 +67,14 @@ impl AIClientContainer for RigClientRemote {
                                               AIError::InvalidEnvironment("openai".to_string())
                                           })?;
         Ok(())
+    }
+
+    async fn list_models(&self) -> AIResult<Vec<crate::ai::models::model::model_description::ModelDescription>> {
+        let models = self.0.list_models().await.map_err(|e| {
+                                                    log::error!("AI Error: {:#?}", e);
+                                                    AIError::InvalidRemoteProvider
+                                                })?;
+        Ok(models.data.iter().map(|x| ModelDescription::from(x.clone())).collect::<Vec<ModelDescription>>())
     }
 }
 

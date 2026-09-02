@@ -123,15 +123,18 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
             let field_type = &field.ty;
             let is_primary_field = primary_field.is_some_and(|x| *x == field.clone());
             let fm = field.partial_field_macros_tokens(is_primary_field);
+            let serde_macro = field.serde_macro();
 
             if partial_options.required || is_primary_field {
                 partial_fields.push(quote! {
                                         #fm
+                                        #serde_macro
                                         pub #field_ident: #field_type
                                     });
             } else {
                 partial_fields.push(quote! {
                                         #fm
+                                        #serde_macro
                                         pub #field_ident: Option<#field_type>
                                     });
             }

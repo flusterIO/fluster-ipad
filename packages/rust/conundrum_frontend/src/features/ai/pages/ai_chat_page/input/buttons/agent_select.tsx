@@ -1,17 +1,13 @@
-import { OllamaModelSelect } from '#/ai/components/ollama_model_select/ollama_model_select'
-import { PromptInputButton } from '@/components/ai_elements/prompt_input'
-import { PersonStandingIcon } from 'lucide-react'
-import React, { type ReactNode } from 'react'
+import { SharedModelSelect } from "#/ai/components/shared_model_select/shared_model_select";
+import { PromptInputButton } from "@/components/ai_elements/prompt_input";
+import React, { type ReactNode } from "react";
 
 export const AgentSelectInputButton = (): ReactNode => {
     return (
-        <PromptInputButton>
-            <OllamaModelSelect>
-                <PersonStandingIcon />
-            </OllamaModelSelect>
+        <PromptInputButton className="mx-3">
+            <SharedModelSelect />
         </PromptInputButton>
-    )
-}
+    );
+};
 
-
-AgentSelectInputButton.displayName = "AgentSelectInputButton"
+AgentSelectInputButton.displayName = "AgentSelectInputButton";

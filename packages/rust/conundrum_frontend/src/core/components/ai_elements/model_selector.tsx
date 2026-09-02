@@ -165,7 +165,7 @@ export type ModelSelectorLogoProps = Omit<
     | "aihubmix"
     | "fireworks-ai"
     | "modelscope"
-    | "llama"
+    | "ollama"
     | "scaleway"
     | "amazon-bedrock"
     | "cerebras"

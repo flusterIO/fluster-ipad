@@ -26,6 +26,10 @@ use std::sync::Arc;
 static USER_WORKSPACE_PRIMARY_KEY: &str = "root";
 static USER_WORKSPACE_MERGE_KEYS: &[&str] = &[USER_WORKSPACE_PRIMARY_KEY];
 
+pub fn default_partial_ctime() -> Option<DateTime> {
+    Some(DateTime::new_now())
+}
+
 #[derive(Serialize, Deserialize, Clone, Debug, Type, Dummy, DatabaseEntity)]
 #[db(table = DatabaseTable::UserWorkspace)]
 pub struct UserWorkspace {
@@ -49,9 +53,11 @@ pub struct UserWorkspace {
     /// Where `physics/images/recent_plot.png` is a path nested within the
     /// `resource_dir` directory.
     #[serde(default = "Default::default")]
+    #[db(partial(default = "Default::default"))]
     pub resource_dir: String,
     pub ai: AIInteractions,
     #[serde(default = "DateTime::new_now")]
+    #[db(partial(default = "default_partial_ctime"))]
     pub ctime: DateTime,
 }
 
