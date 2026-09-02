@@ -20,7 +20,7 @@ pub fn get_workspace_management_router() -> Router<Arc<ServerState>> {
     Router::<Arc<ServerState>>::new()
     .procedure("parsable_file_count", Procedure::<Arc<ServerState>, String, UserWorkspaceCountData>::builder::<ServerError>().query(|state: Arc<ServerState>, params: String | async move {
         let predicate = format!("root=\"{}\"", params);
-        let wp = UserWorkspace::get_by_predicate(Some(predicate.clone()), Some(PaginationParams::single()), None, Arc::clone(&state.db)).await.map_err(|e| {
+        let wp = UserWorkspace::get_by_predicate(Some(predicate.clone()), Some(PaginationParams::single()), None, state.db.clone()).await.map_err(|e| {
                         ServerError::DatabaseError(e)
                     })?;
         match wp.len() {

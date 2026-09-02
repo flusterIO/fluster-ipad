@@ -2,7 +2,7 @@ use std::{ops::Index, sync::Arc};
 
 use crate::ecosystem::{
     db::{
-        db::ArcMutexDB,
+        db_client::db_client::DBClient,
         db_traits::{
             db_entity::{DBEntity, DBSchema},
             db_identifiable::DatabaseIdentifiable,
@@ -33,10 +33,10 @@ pub fn filter_one<T>(items: Vec<T>) -> DatabaseResult<Option<T>>
 
 pub trait EntityCRUD<UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Clone + Serialize {
     type IDType: DatabaseIdentifiable;
-    async fn save_many(items: Vec<Self>, db: ArcMutexDB) -> DatabaseResult<()>
+    async fn save_many(items: Vec<Self>, db: DBClient) -> DatabaseResult<()>
         where Self: Sized {
         let schema = Self::schema().map(Arc::new)?;
-        let _db = db.clone().lock_owned().await;
+        let _db = db.inner_arc().lock_owned().await;
         let table = <Self as DBEntity>::table();
         let tbl = open_table(_db, table.clone()).await.inspect_err(|e| {
                                                            log::error!("Table Error: {:?}", e);
@@ -59,24 +59,24 @@ pub trait EntityCRUD<UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Cl
         log::info!("Successfully saved {} `{}` models", items.len(), table.to_model_name());
         Ok(())
     }
-    async fn save_one(item: Self, db: ArcMutexDB) -> DatabaseResult<()>
+    async fn save_one(item: Self, db: DBClient) -> DatabaseResult<()>
         where Self: Sized {
-        Self::save_many(vec![item], Arc::clone(&db)).await
+        Self::save_many(vec![item], db.clone()).await
     }
 
     async fn get_by_predicate(predicate: Option<String>,
                               pagination: Option<PaginationParams>,
                               sort: Option<Vec<SortQuery>>,
-                              db: ArcMutexDB)
+                              db: DBClient)
                               -> DatabaseResult<Vec<Self>>
         where Self: Sized {
         // crate::get_by_predicate
         todo!()
     }
 
-    async fn delete_by_predicate<'b>(predicate: &'b str, db: ArcMutexDB) -> DatabaseResult<()> {
+    async fn delete_by_predicate<'b>(predicate: &'b str, db: DBClient) -> DatabaseResult<()> {
         let tbl = <Self as DBEntity>::table();
-        let _db = db.clone().lock_owned().await;
+        let _db = db.inner_clone().lock_owned().await;
         let db_tbl = open_table(_db, tbl.clone()).await?;
         // let pk = Self::primary_key();
         db_tbl.delete(predicate).await.map_err(|e| {
@@ -87,13 +87,13 @@ pub trait EntityCRUD<UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Cl
         Ok(())
     }
 
-    async fn delete_by_primary_key(id: <Self as DBSchema>::IDType, db: ArcMutexDB) -> DatabaseResult<()> {
+    async fn delete_by_primary_key(id: <Self as DBSchema>::IDType, db: DBClient) -> DatabaseResult<()> {
         Self::delete_by_predicate(id.to_predicate(Self::primary_key()).as_str(), db).await
     }
 
-    async fn merge_by_primary_key(items: Vec<UpdatePartial>, db: ArcMutexDB) -> DatabaseResult<()> {
+    async fn merge_by_primary_key(items: Vec<UpdatePartial>, db: DBClient) -> DatabaseResult<()> {
         let tbl = <Self as DBEntity>::table();
-        let _db = db.clone().lock_owned().await;
+        let _db = db.inner_clone().lock_owned().await;
         let db_tbl = open_table(_db, tbl.clone()).await?;
         let merge_keys = Self::merge_keys();
 
@@ -120,10 +120,9 @@ pub trait EntityCRUD<UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Cl
 
     async fn get_one_by_predicate(predicate: Option<String>,
                                   sort: Option<Vec<SortQuery>>,
-                                  db: ArcMutexDB)
+                                  db: DBClient)
                                   -> DatabaseResult<Option<Self>> {
-        let res =
-            Self::get_by_predicate(predicate.clone(), Some(PaginationParams::single()), sort, Arc::clone(&db)).await?;
+        let res = Self::get_by_predicate(predicate.clone(), Some(PaginationParams::single()), sort, db.clone()).await?;
         match res.len() {
             0 => Ok(None),
             1 => {

@@ -59,7 +59,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<Arc<ServerState
                                                           }))
                                                .procedure("rpc_health",
                                                           Procedure::builder::<ServerError>().query(|ctx: Arc<ServerState>, _: ()| async move {
-                                                              let health = ServerHealthReport::new(Arc::clone(&ctx.db)).await?;
+                                                              let health = ServerHealthReport::new(ctx.db.clone()).await?;
                                                               Ok(health)
                                                           }))
                                                .procedure("version",

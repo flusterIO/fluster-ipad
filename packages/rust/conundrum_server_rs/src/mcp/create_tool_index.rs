@@ -3,7 +3,7 @@ use conundrum::{
     ai::{models::chat::vector::vector_model::DB_VECTOR_LOCAL_DIMENSIONS, rig::rig_client_remote::RigClientRemote},
     ecosystem::{
         db::{
-            db::ArcMutexDB,
+            db_client::db_client::DBClient,
             db_traits::db_entity::{ArrowFields, DBSchema},
             tables::DatabaseTable,
         },
@@ -22,7 +22,7 @@ use rig_lancedb::{LanceDbVectorIndex, SearchParams};
 use serde_arrow::to_record_batch;
 use std::sync::Arc;
 
-pub async fn create_tool_index(db: ArcMutexDB) -> ServerResult<()> {
+pub async fn create_tool_index(db: DBClient) -> ServerResult<()> {
     let tool_list = ToolDefinitionList::new_all_tools();
     let client = RigClientRemote::initialize().map_err(|e| {
                                                   let e: DatabaseError = e.into();
@@ -57,7 +57,7 @@ pub async fn create_tool_index(db: ArcMutexDB) -> ServerResult<()> {
     }
 
     let table_name = DatabaseTable::MCPToolRecord.to_string();
-    let _db = db.clone().lock_owned().await;
+    let _db = db.inner_arc().lock_owned().await;
     let tool_record_schema = MCPToolRecord::schema()?;
     let arc_schema = Arc::new(tool_record_schema);
     let _table = _db.create_empty_table(table_name, arc_schema.clone())

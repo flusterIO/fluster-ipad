@@ -3,7 +3,7 @@ use std::{fmt::Debug, sync::Arc};
 use arrow_array::RecordBatchIterator;
 use conundrum::ecosystem::{
     db::{
-        db::ArcMutexDB,
+        db_client::db_client::DBClient,
         db_traits::db_entity::{DBEntity, DBSchema},
         helpers::open_table::open_table,
     },
@@ -11,10 +11,10 @@ use conundrum::ecosystem::{
 };
 use serde::Serialize;
 
-pub async fn save_entities<'a, T, IDType>(items: Vec<T>, db: ArcMutexDB) -> DatabaseResult<()>
+pub async fn save_entities<'a, T, IDType>(items: Vec<T>, db: DBClient) -> DatabaseResult<()>
     where T: DBSchema + DBEntity + Clone + Debug + Serialize {
     let schema = <T as DBSchema>::schema().map(Arc::new)?;
-    let _db = db.clone().lock_owned().await;
+    let _db = db.inner_arc().lock_owned().await;
     let table = <T as DBEntity>::table();
     let tbl = open_table(_db, table.clone()).await.inspect_err(|e| {
                                                        log::error!("Table Error: {:?}", e);

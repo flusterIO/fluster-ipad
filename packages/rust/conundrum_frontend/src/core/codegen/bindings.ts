@@ -144,11 +144,7 @@ export type DOMId = string
 
 export type DatabaseId = string
 
-export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
-/**
- * Stores just the `AcademicResultMetricKey` and the value.
- */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
+export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -156,7 +152,7 @@ export type DatabaseTable = "ecosystem_log" | "tag" | "topic" | "subject" | "cdr
 /**
  * ---- Chunks ----
  */
-"cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk"
+"cdrm_chunk" | "typst_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk" | "html_chunk"
 
 /**
  * # DateTime
@@ -405,11 +401,7 @@ resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[] } | { key: "des
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
  */
-entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
-/**
- * Stores just the `AcademicResultMetricKey` and the value.
- */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
+entity_name: string; is_joining_table: boolean; description: string }[] } | { key: "describe.table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -417,7 +409,7 @@ entity_name: string; is_joining_table: boolean; description: string }[] } | { ke
 /**
  * ---- Chunks ----
  */
-"cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk"; result: { table: DatabaseTable; 
+"cdrm_chunk" | "typst_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk" | "html_chunk"; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -445,11 +437,7 @@ message: string | null;
 /**
  * A description of the event logged written directly to AI.
  */
-ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "ollama.list_models"; input: null; result: ({ id: string; name: string | null; desc: string | null; model_type: string | null; ctime: DateTime | null; max_context: number | null })[] } | { key: "remote_ai.list_models"; input: null; result: ({ id: string; name: string | null; desc: string | null; model_type: string | null; ctime: DateTime | null; max_context: number | null })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "settings.read"; input: "first-name" | "last-name" | "profession" | "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method" | "auto-clean-vectors" | "max-sync-threads"; result: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey } | null } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
-/**
- * Stores just the `AcademicResultMetricKey` and the value.
- */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
+ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity; ctime: DateTime })[] } | { key: "ollama.list_models"; input: null; result: ({ id: string; name: string | null; desc: string | null; model_type: string | null; ctime: DateTime | null; max_context: number | null })[] } | { key: "remote_ai.list_models"; input: null; result: ({ id: string; name: string | null; desc: string | null; model_type: string | null; ctime: DateTime | null; max_context: number | null })[] } | { key: "rpc_health"; input: null; result: { table_reports: TableHealthReport[]; is_healthy: boolean; all_tables_exist: boolean } } | { key: "settings.read"; input: "first-name" | "last-name" | "profession" | "auto-sync-on-new-chat" | "auto-sync-on-new-msg" | "local-ai-preference" | "save-log-duration" | "log-vector-gen-method" | "auto-clean-vectors" | "max-sync-threads"; result: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey } | null } | { key: "tables.current_tables"; input: null; result: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -457,11 +445,7 @@ ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSe
 /**
  * ---- Chunks ----
  */
-"cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | 
-/**
- * Stores just the `AcademicResultMetricKey` and the value.
- */
-"numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
+"cdrm_chunk" | "typst_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk" | "html_chunk")[] } | { key: "tables.describe_table"; input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | 
 /**
  * --- 'Joining' tables ---
  */
@@ -469,7 +453,7 @@ ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSe
 /**
  * ---- Chunks ----
  */
-"cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk"; result: { table: DatabaseTable; 
+"cdrm_chunk" | "typst_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk" | "html_chunk"; result: { table: DatabaseTable; 
 /**
  * A user facing name for this entity. Example: 'workspace' for the
  * `user_workspace` table.
@@ -620,7 +604,7 @@ ignore_hidden: boolean;
  * Where `physics/images/recent_plot.png` is a path nested within the
  * `resource_dir` directory.
  */
-resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null; ctime: DateTime | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null } | { key: "settings.save"; input: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey }; result: null }; subscriptions: never }
+resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[]; result: null } | { key: "crud.user_workspace.update_many"; input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir?: string | null; ai: AIInteractions | null; ctime?: DateTime | null })[]; result: null } | { key: "initialize.step_1_init_db"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "initialize.step_2_init_tool_index"; input: Record<string, never>; result: { local_client_access: boolean; remote_client_access: boolean; all_tables_exist: boolean; any_tables_exist: boolean; is_online: boolean } } | { key: "log.create"; input: { title: string; message: string | null; ai_description: string; purpose: EcosystemLogIntention; severity: EcosystemLogSeverity }; result: null } | { key: "settings.save"; input: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey }; result: null }; subscriptions: never }
 
 export type ReasoningBlock = { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; content: string; ctime: DateTime }
 
@@ -873,12 +857,12 @@ export type Procedures = {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[], error: unknown },
 	save_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean; ignore_hidden: boolean; resource_dir?: string; ai: AIInteractions; ctime?: DateTime })[], output: null, error: unknown },
-	update_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir: string | null; ai: AIInteractions | null; ctime: DateTime | null })[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: ({ root: string; label: string | null; respect_gitignore: boolean | null; ignore_hidden: boolean | null; resource_dir?: string | null; ai: AIInteractions | null; ctime?: DateTime | null })[], output: null, error: unknown },
 },
 },
 	describe: {
 	all_tables: { kind: "query", input: null, output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }[], error: unknown },
-	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | "workspace_repository" | "milestone_alarm" | "cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | "workspace_repository" | "milestone_alarm" | "cdrm_chunk" | "typst_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk" | "html_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
@@ -904,8 +888,8 @@ export type Procedures = {
 	save: { kind: "mutation", input: { category: "Personalization"; data: PersonalizationSettingKey } | { category: "Sync"; data: SyncSettingKey } | { category: "AI"; data: AISettingKey } | { category: "Storage"; data: StorageSettingKey }, output: null, error: unknown },
 },
 	tables: {
-	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | "workspace_repository" | "milestone_alarm" | "cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk")[], error: unknown },
-	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "numeric_academic_res_metric" | "rational_academic_res_metric" | "custom_academic_res_metric" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | "workspace_repository" | "milestone_alarm" | "cdrm_chunk" | "markdown_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
+	current_tables: { kind: "query", input: null, output: ("ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | "workspace_repository" | "milestone_alarm" | "cdrm_chunk" | "typst_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk" | "html_chunk")[], error: unknown },
+	describe_table: { kind: "query", input: "ecosystem_log" | "tag" | "topic" | "subject" | "cdrm" | "html" | "pdf" | "notebook" | "front_matter" | "typst" | "user_workspace" | "workspace_path" | "qa_pair" | "chat_conversation" | "agent_message" | "system_prompt_message" | "user_message" | "reasoning_block" | "tool_execution" | "academic_res_metric" | "bib_entry" | "auto_taggable" | "milestone" | "assignment" | "assignment_tag" | "assignment_topic" | "assignment_subject" | "agent_description" | "git_repository" | "keyboard_shortcut" | "ecosystem_setting" | "long_term_goal" | "short_term_goal" | "alarm" | "street_address" | "phone_contact" | "workspace_repository" | "milestone_alarm" | "cdrm_chunk" | "typst_chunk" | "message_chunk" | "mcp_tool" | "documentation_chunk" | "notebook_cell_chunk" | "html_chunk", output: { table: DatabaseTable; entity_name: string; is_joining_table: boolean; description: string }, error: unknown },
 },
 	version: { kind: "query", input: null, output: { database: SchemaVersion; server: ServerVersion }, error: unknown },
 	workspace_management: {

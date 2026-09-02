@@ -5,7 +5,7 @@ use conundrum::{
     ai::rig::features::chat::convo_context::ArcMutexConversationContext,
     ecosystem::{
         db::{
-            db::ArcMutexDB,
+            db_client::db_client::DBClient,
             db_traits::{
                 db_entity::{DBEntity, DBSchema},
                 db_identifiable::DatabaseIdentifiable,
@@ -53,12 +53,12 @@ impl IntoPartial<<CdrmModel as DBSchema>::PartialUpdateType> for CdrmModel {
 }
 
 impl CdrmModel {
-    pub async fn get_related_frontmatter(&self, db: ArcMutexDB) -> DatabaseResult<Option<FrontMatter>> {
+    pub async fn get_related_frontmatter(&self, db: DBClient) -> DatabaseResult<Option<FrontMatter>> {
         let predicate = self.0.id.to_predicate("note_id");
         let items = <FrontMatter as EntityCRUD<<FrontMatter as DBSchema>::PartialUpdateType>>::get_by_predicate(Some(predicate),
                                                                   Some(PaginationParams::single()),
                                                                   None,
-                                                                  Arc::clone(&db)).await?;
+                                                                  db.clone()).await?;
         let item = filter_one(items)?;
         Ok(item)
     }

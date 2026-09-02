@@ -4,7 +4,7 @@ use conundrum::{
     ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk},
     ecosystem::{
         db::{
-            db::ArcMutexDB,
+            db_client::db_client::DBClient,
             db_traits::{db_entity::DBSchema, entity_crud::EntityCRUD, local_default::DefaultLocalVectorGeneration},
             parameters::ai::schema_parameters::SchemaParameters,
             tables::DatabaseTable,
@@ -16,7 +16,7 @@ use conundrum::{
 use serde::Serialize;
 
 pub trait SeedContent {
-    async fn try_seed<'a>(&self, db: ArcMutexDB) -> DatabaseResult<()>;
+    async fn try_seed<'a>(&self, db: DBClient) -> DatabaseResult<()>;
 }
 
 pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerStateType>:
@@ -24,7 +24,7 @@ pub trait SeedChunks<'a, ChunkType, PartialUpdateType, ParseParameters, ServerSt
     where ChunkType: DBSchema + EntityCRUD<PartialUpdateType> + Clone + Serialize,
           PartialUpdateType: Clone + DBSchema + Serialize {
     fn table() -> DatabaseTable;
-    async fn try_seed(&self, db: ArcMutexDB, opts: ParseParameters, state: Arc<ServerStateType>) -> DatabaseResult<()> {
+    async fn try_seed(&self, db: DBClient, opts: ParseParameters, state: Arc<ServerStateType>) -> DatabaseResult<()> {
         let chunks = self.try_chunk(opts, Arc::clone(&state)).await.map_err(|e| {
                                                                         log::error!("AI Error: {:#?}", e);
                                                                         DatabaseError::AIError(e)

@@ -10,7 +10,7 @@ use conundrum::{
         rig::ai_traits::chunk::Chunk,
     },
     ecosystem::{
-        db::{db::ArcMutexDB, db_traits::entity_crud::EntityCRUD},
+        db::{db_client::db_client::DBClient, db_traits::entity_crud::EntityCRUD},
         error_handling::{ai_error::AIResult, db_error::DatabaseResult},
     },
     lang::runtime::run_conundrum::ParseConundrumOptions,
@@ -26,11 +26,11 @@ pub enum AnyChatMessage {
 }
 
 impl AnyChatMessage {
-    pub async fn save(&self, db: ArcMutexDB) -> DatabaseResult<()> {
+    pub async fn save(&self, db: DBClient) -> DatabaseResult<()> {
         match self {
-            Self::SystemPrompt(s) => SystemPromptMessage::save_many(vec![s.clone()], std::sync::Arc::clone(&db)).await,
-            Self::Agent(s) => AIMessage::save_many(vec![s.clone()], std::sync::Arc::clone(&db)).await,
-            Self::User(s) => UserMessage::save_many(vec![s.clone()], std::sync::Arc::clone(&db)).await,
+            Self::SystemPrompt(s) => SystemPromptMessage::save_many(vec![s.clone()], db.clone()).await,
+            Self::Agent(s) => AIMessage::save_many(vec![s.clone()], db.clone()).await,
+            Self::User(s) => UserMessage::save_many(vec![s.clone()], db.clone()).await,
         }
     }
 }

@@ -1,12 +1,17 @@
 use conundrum::{
     bibliography::{bib_entry::BibEntry, split_bibtex_by_entries::split_biblatex_to_raw_strings},
-    ecosystem::error_handling::db_error::{DatabaseError, DatabaseResult},
+    ecosystem::{
+        db::tables::DatabaseTable,
+        error_handling::db_error::{DatabaseError, DatabaseResult},
+    },
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
+use conundrum_macros::DatabaseEntity;
 use rayon::iter::{IntoParallelRefIterator, ParallelIterator};
 use serde::{Deserialize, Serialize};
 
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, DatabaseEntity)]
+#[db(table = DatabaseTable::BibEntry)]
 pub struct BibEntryModel {
     pub id: DatabaseId,
     /// The key of the biblatex entry, used as an id for this entry in the

@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use conundrum::{
-    ecosystem::{db::db::ArcMutexDB, error_handling::db_error::DatabaseResult},
+    ecosystem::{db::db_client::db_client::DBClient, error_handling::db_error::DatabaseResult},
     lang::runtime::run_conundrum::ParseConundrumOptions,
 };
 
@@ -14,9 +14,9 @@ use crate::vector::{
     },
 };
 
-pub async fn seed_db(db: ArcMutexDB, state: std::sync::Arc<ServerState>) -> DatabaseResult<()> {
-    SeedDocumentation::default().try_seed(Arc::clone(&db), ParseConundrumOptions::for_chunking(), Arc::clone(&state))
+pub async fn seed_db(db: DBClient, state: std::sync::Arc<ServerState>) -> DatabaseResult<()> {
+    SeedDocumentation::default().try_seed(db.clone(), ParseConundrumOptions::for_chunking(), Arc::clone(&state))
                                 .await?;
-    SettingsSeeder {}.try_seed(Arc::clone(&db)).await?;
+    // SettingsSeeder {}.try_seed(Arc::clone(&db)).await?;
     Ok(())
 }

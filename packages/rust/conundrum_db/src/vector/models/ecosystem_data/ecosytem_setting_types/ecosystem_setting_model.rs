@@ -2,7 +2,7 @@ use arrow_array::{RecordBatch, StringArray};
 use conundrum::{
     ecosystem::{
         db::{
-            db::ArcMutexDB,
+            db_client::db_client::DBClient,
             db_traits::{
                 db_entity::{ArrowFields, DBEntity, DBSchema},
                 db_field::DatabaseField,
@@ -42,15 +42,15 @@ impl From<UniqueSettingKey> for EcosystemSettingModel {
 }
 
 impl EcosystemSettingModel {
-    pub async fn get_by_setting_key(key: UniqueSettingKey, db: ArcMutexDB) -> DatabaseResult<Option<Self>> {
+    pub async fn get_by_setting_key(key: UniqueSettingKey, db: DBClient) -> DatabaseResult<Option<Self>> {
         <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::get_one_by_predicate(Some(format!("key = {}",
                                                                                  key.to_string().to_quoted_string()?)),
                                                                     None,
-                                                                    Arc::clone(&db)).await
+                                                                    db.clone()).await
     }
 
-    pub async fn save(&self, db: ArcMutexDB) -> DatabaseResult<()> {
-        <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![self.clone()], Arc::clone(&db)).await
+    pub async fn save(&self, db: DBClient) -> DatabaseResult<()> {
+        <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![self.clone()], db.clone()).await
     }
 }
 
@@ -59,7 +59,7 @@ impl ArrowFields for EcosystemSettingModel {
         )
         -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
     {
-        Ok(vec![Arc::new(String::field_definition("key", false)), Arc::new(String::field_definition("key", false)),])
+        Ok(vec![Arc::new(String::field_definition("key", false)), Arc::new(String::field_definition("data", false)),])
     }
 }
 

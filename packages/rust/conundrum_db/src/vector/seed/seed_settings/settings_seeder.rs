@@ -1,6 +1,7 @@
 use std::sync::Arc;
 
 use conundrum::ecosystem::db::{
+    db_client::db_client::DBClient,
     db_traits::{db_entity::DBSchema, entity_crud::EntityCRUD},
     tables::DatabaseTable,
 };
@@ -17,13 +18,11 @@ use crate::vector::{
 pub struct SettingsSeeder {}
 
 impl SeedContent for SettingsSeeder {
-    async fn try_seed<'a>(&self,
-                          db: conundrum::ecosystem::db::db::ArcMutexDB)
-                          -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<()> {
+    async fn try_seed<'a>(&self, db: DBClient) -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<()> {
         for setting_key in UniqueSettingKey::iter() {
             let default_setting = Setting::from(setting_key);
             let model = default_setting.to_model();
-            <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![model], Arc::clone(&db)).await?;
+            <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![model], db.clone()).await?;
         }
         Ok(())
     }

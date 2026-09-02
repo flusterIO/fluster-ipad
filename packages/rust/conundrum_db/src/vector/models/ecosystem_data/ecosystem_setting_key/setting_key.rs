@@ -2,7 +2,7 @@ use std::{fmt::Display, ops::Index, str::FromStr, sync::Arc};
 
 use conundrum::ecosystem::{
     db::{
-        db::ArcMutexDB,
+        db_client::db_client::DBClient,
         db_default_constants::DEFAULT_MAX_SYNC_THREADS,
         db_traits::{
             db_entity::{DBEntity, DBSchema},
@@ -101,17 +101,17 @@ impl Setting {
                                 data: self.clone() }
     }
 
-    pub async fn save<'a>(&self, db: ArcMutexDB) -> DatabaseResult<()> {
+    pub async fn save<'a>(&self, db: DBClient) -> DatabaseResult<()> {
         let model = self.to_model();
-        <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::save_many(vec![model], Arc::clone(&db)).await?;
+        <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::save_many(vec![model], db.clone()).await?;
         Ok(())
     }
 
-    pub async fn read(&self, db: ArcMutexDB) -> DatabaseResult<Self> {
+    pub async fn read(&self, db: DBClient) -> DatabaseResult<Self> {
         let x = <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::get_by_predicate(Some(self.to_predicate("key")),
                                                                         Some(PaginationParams::single()),
                                                                         None,
-                                                                        Arc::clone(&db)).await?;
+                                                                        db.clone()).await?;
         let item = match x.len() {
                        0 => {
                            log::warn!("Setting not found for the `{}` key.", self);

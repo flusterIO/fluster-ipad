@@ -23,7 +23,7 @@ use crate::{
         },
     },
     ecosystem::{
-        db::{db::ArcMutexDB, db_traits::entity_crud::EntityCRUD},
+        db::{db_client::db_client::DBClient, db_traits::entity_crud::EntityCRUD},
         error_handling::{
             ai_error::AIError,
             db_error::{DatabaseError, DatabaseResult},
@@ -80,10 +80,10 @@ pub enum ChatEvent {
 }
 
 impl ChatEvent {
-    pub async fn side_effect(&self, context: ArcMutexConversationContext, database: ArcMutexDB) -> DatabaseResult<()> {
+    pub async fn side_effect(&self, context: ArcMutexConversationContext, database: DBClient) -> DatabaseResult<()> {
         match self {
             Self::ToolCall(c) => {
-                ToolExecution::save_many(vec![c.clone()], Arc::clone(&database)).await?;
+                ToolExecution::save_many(vec![c.clone()], database.clone()).await?;
                 Ok(())
             }
             Self::ReasoningBlock { text, } => {
@@ -93,7 +93,7 @@ impl ChatEvent {
                                                        agent_id: ctx.agent.clone(),
                                                        content: text.clone(),
                                                        ctime: DateTime::new_now() };
-                ReasoningBlock::save_many(vec![reasoning_block], Arc::clone(&database)).await?;
+                ReasoningBlock::save_many(vec![reasoning_block], database.clone()).await?;
                 ctx.clear_current_reasoning_accumulator();
                 drop(ctx);
                 Ok(())
@@ -126,7 +126,7 @@ impl ChatEvent {
                                                            agent_id: ctx.agent.clone(),
                                                            content: reasoning_content.clone(),
                                                            ctime: DateTime::new_now() };
-                    ReasoningBlock::save_many(vec![reasoning_block], Arc::clone(&database)).await?;
+                    ReasoningBlock::save_many(vec![reasoning_block], database.clone()).await?;
                 } else {
                     log::warn!("Attempted to save a reasoning block but could not find any content. If you have reasoning turned off ignore this warning, otherwise this may indicate an issue.");
                 }
@@ -136,7 +136,7 @@ impl ChatEvent {
                                                     convo_id: ctx.convo.clone(),
                                                     agent_id: ctx.agent.clone(),
                                                     ctime: DateTime::new_now() };
-                    AIMessage::save_many(vec![agent_message], Arc::clone(&database)).await?;
+                    AIMessage::save_many(vec![agent_message], database.clone()).await?;
                 } else {
                     log::warn!("Attempted to save an agent message but could not find any content.");
                 }

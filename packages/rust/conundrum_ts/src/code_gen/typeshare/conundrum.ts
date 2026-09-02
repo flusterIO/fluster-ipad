@@ -1936,7 +1936,7 @@ export enum DatabaseTable {
 	Pdf = "pdf",
 	Notebook = "notebook",
 	FrontMatter = "front_matter",
-	TypstContent = "typst",
+	Typst = "typst",
 	UserWorkspace = "user_workspace",
 	WorkspacePath = "workspace_path",
 	QAPair = "qa_pair",
@@ -1955,10 +1955,6 @@ export enum DatabaseTable {
 	AssignmentTopic = "assignment_topic",
 	AssignmentSubject = "assignment_subject",
 	AgentDescription = "agent_description",
-	/** Stores just the `AcademicResultMetricKey` and the value. */
-	NumericAcademicResultMetric = "numeric_academic_res_metric",
-	RationalScoreAcademicResultMetric = "rational_academic_res_metric",
-	CustomAcademicResultMetric = "custom_academic_res_metric",
 	GitRepository = "git_repository",
 	KeyboardShortcut = "keyboard_shortcut",
 	EcosystemSetting = "ecosystem_setting",
@@ -1972,11 +1968,12 @@ export enum DatabaseTable {
 	MilestoneAlarm = "milestone_alarm",
 	/** ---- Chunks ---- */
 	CdrmChunk = "cdrm_chunk",
-	MarkdownChunk = "markdown_chunk",
+	TypstChunk = "typst_chunk",
 	MessageChunk = "message_chunk",
 	MCPToolRecord = "mcp_tool",
 	DocumentationChunk = "documentation_chunk",
 	NotebookCellChunk = "notebook_cell_chunk",
+	HTMLChunk = "html_chunk",
 }
 
 export enum DocumentationComponentName {

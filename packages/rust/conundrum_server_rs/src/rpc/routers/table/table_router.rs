@@ -22,7 +22,7 @@ pub fn get_table_router() -> Router<Arc<ServerState>> {
     Router::<Arc<ServerState>>::new()
         .procedure("current_tables",
                                             Procedure::<Arc<ServerState>, (), Vec<DatabaseTable>>::builder::<ServerError>().query(|context: Arc<ServerState>, _: ()| async move {
-                                                let db = context.db.clone().lock_owned().await;
+                                                let db = context.db.inner_arc().lock_owned().await;
                                                 let r = db.table_names()
                                                     .execute()
                                                     .await

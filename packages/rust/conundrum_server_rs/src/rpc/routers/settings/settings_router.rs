@@ -14,13 +14,13 @@ use std::sync::Arc;
 pub fn get_settings_router() -> Router<Arc<ServerState>> {
     Router::<Arc<ServerState>>::new().procedure("save",
                                             Procedure::<Arc<ServerState>, Setting, ()>::builder::<ServerError>().mutation(|state: Arc<ServerState>, req: Setting| async move {
-                                                req.save(Arc::clone(&state.db)).await?;
+                                                req.save(state.db.clone()).await?;
                                                                                    Ok(())
                                                                                }))
 .procedure("read",
                                             Procedure::<Arc<ServerState>, UniqueSettingKey, Option<Setting>>::builder::<ServerError>().query(|state: Arc<ServerState>, req: UniqueSettingKey| async move {
                                                 let predicate = req.to_predicate("key");
-                                                let models = EcosystemSettingModel::get_by_predicate(Some(predicate), Some(PaginationParams::single()), None, Arc::clone(&state.db)).await
+                                                let models = EcosystemSettingModel::get_by_predicate(Some(predicate), Some(PaginationParams::single()), None, state.db.clone()).await
                                                     .map_err(ServerError::DatabaseError)?;
                                                 match models.len() {
                                                     0 => {

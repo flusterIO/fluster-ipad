@@ -25,7 +25,7 @@ pub fn gen_default_crud(input: &Model) -> Result<proc_macro2::TokenStream, syn::
             async fn get_by_predicate(predicate: Option<String>,
                                       pagination: Option<#crate_id::ecosystem::db::parameters::general::pagination::PaginationParams>,
                                       sort: Option<Vec<#crate_id::ecosystem::db::parameters::general::sort_query::SortQuery>>,
-                                      db: #crate_id::ecosystem::db::db::ArcMutexDB)
+                                      db: #crate_id::ecosystem::db::db_client::db_client::DBClient)
                                       -> #crate_id::ecosystem::error_handling::db_error::DatabaseResult<Vec<Self>>
                 where Self: Sized {
                 #crate_id::get_by_predicate!(#self_ident, db, predicate, pagination, sort)

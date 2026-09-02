@@ -5,7 +5,7 @@ use serde::Serialize;
 use crate::{
     ecosystem::{
         db::{
-            db::ArcMutexDB,
+            db_client::db_client::DBClient,
             db_traits::{
                 db_entity::{DBEntity, DBSchema},
                 db_identifiable::DatabaseIdentifiable,
@@ -41,11 +41,11 @@ pub trait VectorModel<'a, PrimaryIdType: DatabaseIdentifiable + Display = Databa
     /// one piece.
     async fn clean_related_chunks(&self,
                                   document_identifable_value: PrimaryIdType,
-                                  locked_db: ArcMutexDB)
+                                  locked_db: DBClient)
                                   -> DatabaseResult<()> {
         let (_, id) = Self::chunk_field_keys();
         let predicate = format!("{} = \"{}\"", id, document_identifable_value);
-        Self::delete_by_predicate(predicate.as_str(), std::sync::Arc::clone(&locked_db)).await?;
+        Self::delete_by_predicate(predicate.as_str(), locked_db.clone()).await?;
         Ok(())
     }
 }

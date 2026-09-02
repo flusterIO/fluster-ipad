@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use conundrum::ecosystem::{
-    db::db::ArcMutexDB,
+    db::db_client::db_client::DBClient,
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
 use lancedb::database;
@@ -19,8 +19,8 @@ use crate::vector::models::ecosystem_data::{
 pub struct SettingsClient;
 
 impl SettingsClient {
-    async fn get_setting(setting_key: UniqueSettingKey, db: ArcMutexDB) -> EcosystemSettingModel {
-        if let Ok(res) = EcosystemSettingModel::get_by_setting_key(setting_key.clone(), Arc::clone(&db)).await {
+    async fn get_setting(setting_key: UniqueSettingKey, db: DBClient) -> EcosystemSettingModel {
+        if let Ok(res) = EcosystemSettingModel::get_by_setting_key(setting_key.clone(), db.clone()).await {
             match res {
                 Some(s) => s,
                 None => {
@@ -34,8 +34,8 @@ impl SettingsClient {
         }
     }
 
-    pub async fn should_clean_vectors(database: ArcMutexDB) -> DatabaseResult<bool> {
-        let setting = SettingsClient::get_setting(UniqueSettingKey::AutoCleanVectors, Arc::clone(&database)).await;
+    pub async fn should_clean_vectors(database: DBClient) -> DatabaseResult<bool> {
+        let setting = SettingsClient::get_setting(UniqueSettingKey::AutoCleanVectors, database.clone()).await;
         match setting.data {
             Setting::AI(k) => match k {
                 AISettingKey::AutoCleanVectors(b) => Ok(b),
@@ -45,8 +45,8 @@ impl SettingsClient {
         }
     }
 
-    pub async fn max_sync_threads(database: ArcMutexDB) -> DatabaseResult<u16> {
-        let setting = SettingsClient::get_setting(UniqueSettingKey::MaxSyncThreads, Arc::clone(&database)).await;
+    pub async fn max_sync_threads(database: DBClient) -> DatabaseResult<u16> {
+        let setting = SettingsClient::get_setting(UniqueSettingKey::MaxSyncThreads, database.clone()).await;
         match setting.data {
             Setting::Sync(k) => match k {
                 SyncSettingKey::MaxSyncThreads(b) => Ok(b),

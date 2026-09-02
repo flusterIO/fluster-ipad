@@ -4,11 +4,12 @@ use conundrum::{
     ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk, conundrum_agent::ConundrumAgent},
     ecosystem::{
         db::{
-            db::ArcMutexDB,
+            db_client::{db_client::DBClient, db_client_trait::DBClient as DBClientTrait},
             db_traits::{
                 db_entity::{DBEntity, DBSchema},
                 entity_crud::EntityCRUD,
             },
+            helpers::open_table::open_table,
             tables::DatabaseTable,
         },
         error_handling::{
@@ -76,15 +77,24 @@ impl<'a>
     }
 
     async fn try_seed(&self,
-                      db: ArcMutexDB,
+                      arc_db: DBClient,
                       opts: ParseConundrumOptions,
                       state: std::sync::Arc<ServerState>)
                       -> DatabaseResult<()> {
         let chunks = self.try_chunk(opts, Arc::clone(&state)).await.map_err(DatabaseError::AIError)?;
-        // TextBasedChunk::save_many(lc, Arc::clone(&db)).await.inspect_err(|e| {
-        //                                                          log::error!("Failed
-        // to save seed content: {:#?}", e);
-        // })?;
+        arc_db.clear_table(<Self as SeedChunks<'a,
+                                               DocumentationChunk,
+                                               <DocumentationChunk as DBSchema>::PartialUpdateType,
+                                               ParseConundrumOptions,
+                                               ServerState>>::table())
+              .await?;
+        <DocumentationChunk as EntityCRUD<<DocumentationChunk as DBSchema>::PartialUpdateType>>::save_many(chunks, arc_db.clone()).await.inspect_err(|e| {
+                                                                                        log::error!(
+                                                                                                    "Failed
+        to save seed content: {:#?}",
+                                                                                                    e
+            );
+                                                                                    })?;
         Ok(())
     }
 }

@@ -3,7 +3,7 @@ use std::{path::PathBuf, sync::Arc};
 use conundrum::{
     ecosystem::{
         db::{
-            db::ArcMutexDB,
+            db_client::db_client::DBClient,
             db_traits::{
                 db_entity::DBSchema,
                 entity_crud::{EntityCRUD, filter_one},
@@ -27,7 +27,7 @@ use crate::vector::models::{
 };
 
 pub async fn sync_conundrum_path<'a>(fp: WorkspaceRelativePath<PathBuf>,
-                                     database: ArcMutexDB,
+                                     database: DBClient,
                                      ctx: ArcTokioMutex<SyncContext>)
                                      -> DatabaseResult<()> {
     let workspace_path = fp.workspace_path.to_str().ok_or(DatabaseError::SerializationError)?.to_string();
@@ -38,7 +38,7 @@ pub async fn sync_conundrum_path<'a>(fp: WorkspaceRelativePath<PathBuf>,
                                                                  relative_path.to_quoted_string()?)),
                                                     None,
                                                     None,
-                                                    Arc::clone(&database)).await?;
+                                                    database.clone()).await?;
     let existing_note = filter_one(existing_notes)?;
     let existing_content = existing_note.clone().map(|x| x.0.content.0.clone());
     let file_content = tokio::fs::read_to_string(fp.absolutize()).await
@@ -72,7 +72,7 @@ pub async fn sync_conundrum_path<'a>(fp: WorkspaceRelativePath<PathBuf>,
                                      file_content.clone(),
                                      workspace_path.clone(),
                                      relative_path.clone(),
-                                     Arc::clone(&database),
+                                     database.clone(),
                                      Arc::clone(&ctx)).await?;
     Ok(())
 }

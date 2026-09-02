@@ -21,13 +21,13 @@ pub fn get_agent_router() -> Router<Arc<ServerState>> {
     Router::<Arc<ServerState>>::new().procedure("save_chat_data",
                                             Procedure::<Arc<ServerState>, ClientChatData, ()>::builder::<ServerError>().mutation(|state: Arc<ServerState>, req: ClientChatData| async move {
                                                 let (user_message, reasoning_blocks, system_prompt, tool_executions) = req.expand();
-                                                UserMessage::save_many(vec![user_message], Arc::clone(&state.db)).await?;
+                                                UserMessage::save_many(vec![user_message], state.db.clone()).await?;
                                                 ReasoningBlock::save_many(reasoning_blocks
-                                                    , Arc::clone(&state.db)).await?;
+                                                    , state.db.clone()).await?;
                                                 if let Some(sp) = system_prompt {
-                                                    SystemPromptMessage::save_many(vec![sp], Arc::clone(&state.db)).await?;
+                                                    SystemPromptMessage::save_many(vec![sp], state.db.clone()).await?;
                                                 }
-                                                ToolExecution::save_many(tool_executions, Arc::clone(&state.db)).await?;
+                                                ToolExecution::save_many(tool_executions, state.db.clone()).await?;
                                                 Ok(())
                                                                                }))
 .procedure("load_chat_history",
@@ -38,11 +38,11 @@ pub fn get_agent_router() -> Router<Arc<ServerState>> {
                                                     per_page: req.max_count
                                                 });
                                                 let sort = Some(vec![SortQuery::order_by_ctime()]);
-                                                let user_messages = UserMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), Arc::clone(&state.db)).await?;
-                                                let system_prompts = SystemPromptMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), Arc::clone(&state.db)).await?;
-                                                let agent_reasoning = ReasoningBlock::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), Arc::clone(&state.db)).await?;
-                                                let agent_messages = AIMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), Arc::clone(&state.db)).await?;
-                                                let tool_executions = ToolExecution::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), Arc::clone(&state.db)).await?;
+                                                let user_messages = UserMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), state.db.clone()).await?;
+                                                let system_prompts = SystemPromptMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), state.db.clone()).await?;
+                                                let agent_reasoning = ReasoningBlock::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), state.db.clone()).await?;
+                                                let agent_messages = AIMessage::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), state.db.clone()).await?;
+                                                let tool_executions = ToolExecution::get_by_predicate(Some(predicate.clone()), pag.clone(), sort.clone(), state.db.clone()).await?;
                                                 Ok((user_messages, system_prompts, agent_messages, agent_reasoning, tool_executions))
                                                                                }))
 }

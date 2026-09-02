@@ -5,7 +5,7 @@ use conundrum::{
         models::chat::chat_message::chat_context_policy::ChatContextPolicy,
         traits::chat_history_context::ConversationStore,
     },
-    ecosystem::db::db::ArcMutexDB,
+    ecosystem::db::db_client::db_client::DBClient,
 };
 use conundrum_db::vector::models::ai::any_message::AnyChatMessage;
 
@@ -21,9 +21,9 @@ impl ConversationStore<AnyChatMessage> for ChatConversationClient {
     /// - [ ] Embed messages (Local)
     async fn append(&mut self,
                     message: AnyChatMessage,
-                    db: ArcMutexDB)
+                    db: DBClient)
                     -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<()> {
-        message.save(Arc::clone(&db)).await?;
+        message.save(db.clone()).await?;
         self.messages.push(message);
         Ok(())
     }
@@ -49,7 +49,7 @@ impl ConversationStore<AnyChatMessage> for ChatConversationClient {
     async fn history(&self,
                      conversation_id: conundrum::lifted_models::primitives::db_id::DatabaseId,
                      policy: ChatContextPolicy,
-                     db: ArcMutexDB)
+                     db: DBClient)
                      -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<AnyChatMessage>> {
         todo!()
     }

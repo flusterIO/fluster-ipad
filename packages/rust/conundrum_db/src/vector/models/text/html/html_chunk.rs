@@ -7,5 +7,5 @@ use crate::vector::models::text::text_based_content::text_based_chunk::TextBased
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
 #[serde(transparent)]
-#[db(table = DatabaseTable::TypstChunk, unit = TextBasedChunk)]
-pub struct TypstChunk(TextBasedChunk);
+#[db(table = DatabaseTable::HTMLChunk, unit = TextBasedChunk)]
+pub struct HTMLChunk(TextBasedChunk);

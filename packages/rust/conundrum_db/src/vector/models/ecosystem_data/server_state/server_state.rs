@@ -14,7 +14,7 @@ use rust_mcp_sdk::{
 use conundrum::{
     ai::rig::{rig_client_local::RigClientLocal, rig_client_remote::RigClientRemote},
     ecosystem::{
-        db::db::get_database,
+        db::{db::get_database, db_client::db_client::DBClient},
         error_handling::db_error::{DatabaseError, DatabaseResult},
     },
     lang::lib::shared::utility_types::ArcTokioMutex,
@@ -23,7 +23,7 @@ use tokio::sync::Mutex;
 
 #[derive(Clone)]
 pub struct ServerState {
-    pub db: ArcTokioMutex<Connection>,
+    pub db: DBClient,
     pub local_client: Option<ArcTokioMutex<RigClientLocal>>,
     pub remote_client: Option<ArcTokioMutex<RigClientRemote>>,
 }

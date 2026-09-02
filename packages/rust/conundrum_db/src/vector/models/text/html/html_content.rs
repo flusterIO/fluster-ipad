@@ -9,6 +9,7 @@ use conundrum::{
     },
     lang::runtime::{queries::get_title::get_title_group, run_conundrum::ParseConundrumOptions},
 };
+use fake::Dummy;
 use html_to_markdown_rs::{ConversionOptions, convert};
 use serde::{Deserialize, Serialize};
 
@@ -26,7 +27,7 @@ use crate::vector::models::{
 /// - [x] Extract text as markdown
 /// - [ ] Extract tables
 /// - [ ] Extract images
-#[derive(Serialize, Deserialize, Clone, Debug)]
+#[derive(Serialize, Deserialize, Clone, Debug, Dummy, specta::Type)]
 pub struct HTMLContent(String);
 
 impl DatabaseFieldLarge for HTMLContent {

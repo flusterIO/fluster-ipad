@@ -3,7 +3,7 @@ use std::sync::Arc;
 use conundrum::{
     ecosystem::{
         db::{
-            db::ArcMutexDB,
+            db_client::db_client::DBClient,
             db_traits::{db_field::DatabaseField, db_identifiable::DatabaseIdentifiable},
         },
         error_handling::db_error::DatabaseResult,
@@ -50,8 +50,8 @@ impl DatabaseIdentifiable for UniqueSettingKey {
 }
 
 impl UniqueSettingKey {
-    pub async fn read_setting(&self, database: ArcMutexDB) -> DatabaseResult<EcosystemSettingModel> {
-        let setting = EcosystemSettingModel::get_by_setting_key(self.clone(), Arc::clone(&database)).await?;
+    pub async fn read_setting(&self, database: DBClient) -> DatabaseResult<EcosystemSettingModel> {
+        let setting = EcosystemSettingModel::get_by_setting_key(self.clone(), database.clone()).await?;
         Ok(match setting {
             Some(s) => s,
             None => {

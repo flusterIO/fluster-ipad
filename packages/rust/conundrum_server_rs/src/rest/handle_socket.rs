@@ -58,7 +58,7 @@ pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
                     ctx.convo = cid.clone();
                     drop(ctx);
                     let conversation = ChatConversation::new(cid.clone(), None);
-                    let _ = conversation.make_require_update(Arc::clone(&state.db))
+                    let _ = conversation.make_require_update(state.db.clone())
                                         .await
                                         .inspect_err(|e| {
                                             log::error!("Conversation Error: {:#?}", e);
@@ -67,8 +67,8 @@ pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
                     drop(ctx);
                 }
                 let user_message: UserMessage = UserMessage::from(msg);
-                let db = Arc::clone(&state.db);
-                let _ = UserMessage::save_many(vec![user_message.clone()], Arc::clone(&db)).await.inspect_err(|e| {
+                let db = state.db.clone();
+                let _ = UserMessage::save_many(vec![user_message.clone()], db.clone()).await.inspect_err(|e| {
                     log::error!("Conundrum failed attempting to save the submitted user message: {:#?}", e);
                 });
                 let mut stream = client_result.stream_chat_response(user_message, vec![]).await;
@@ -78,7 +78,7 @@ pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
                             match ChatEvent::try_from_with_convo_info(data, &Arc::clone(&CHAT_CONTEXT)).await {
                                 Ok(event) => {
                                     let ctx = Arc::clone(&CHAT_CONTEXT);
-                                    let db_clone = Arc::clone(&state.db);
+                                    let db_clone = state.db.clone();
                                     let _ = event.side_effect(ctx, db_clone).await.inspect_err(|e| {
                                         if !matches!(e, DatabaseError::AIError(AIError::SkippingIrrelevantAIOutput)) {
                                                                                       log::error!("Error: {:#?}", e);

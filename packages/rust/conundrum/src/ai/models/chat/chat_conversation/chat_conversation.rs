@@ -2,7 +2,7 @@ use std::ops::IndexMut;
 use std::sync::Arc;
 
 use crate::ai::models::chat::chat_conversation::vector_mode::VectorMode;
-use crate::ecosystem::db::db::ArcMutexDB;
+use crate::ecosystem::db::db_client::db_client::DBClient;
 use crate::ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema};
 use crate::ecosystem::db::db_traits::db_field::DatabaseField;
 use crate::ecosystem::db::db_traits::db_identifiable::DatabaseIdentifiable;
@@ -51,23 +51,23 @@ impl ChatConversation {
     }
 
     /// Required over the merge method to preserve the conversation ctime.
-    pub async fn make_require_update(&self, db: ArcMutexDB) -> DatabaseResult<()> {
+    pub async fn make_require_update(&self, db: DBClient) -> DatabaseResult<()> {
         let predicate = self.id.to_predicate("id");
-        let mut _self = ChatConversation::get_by_predicate(Some(predicate),
-                                                           Some(PaginationParams::single()),
-                                                           None,
-                                                           Arc::clone(&db)).await?;
+        let mut _self: Vec<ChatConversation> = <ChatConversation as EntityCRUD<ChatConversationPartial>>::get_by_predicate(Some(predicate),
+                                                                           Some(PaginationParams::single()),
+                                                                           None,
+                                                                           db.clone()).await?;
         match _self.clone().len() {
             0 => {
                 log::info!("Chat Conversation not found. Creating a new one.");
-                ChatConversation::save_many(vec![self.clone()], Arc::clone(&db)).await?;
+                <ChatConversation as EntityCRUD<<ChatConversation as DBSchema>::PartialUpdateType>>::save_many(vec![self.clone()], db.clone()).await?;
             }
             1 => {
                 let item = _self.index_mut(0);
                 item.requires_label_update = true;
                 item.utime = DateTime::new_now();
                 let partial = <ChatConversation as DBSchema>::PartialUpdateType::from(item.clone());
-                ChatConversation::merge_by_primary_key(vec![partial], Arc::clone(&db)).await?;
+                <ChatConversation as EntityCRUD<<ChatConversation as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![partial], db.clone()).await?;
                 log::info!("Updated one chat conversation.")
             }
             _ => {

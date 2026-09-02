@@ -127,23 +127,11 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  description: indoc! {"
                     This is a bibliography entry that is important to the user's knowledge graph. Using bibliography entries to traverse their knowledge base, helping them to reach their short and long term goals.
                         "}.to_string() },
-            DatabaseTable::NumericAcademicResultMetric => DBTableDescription { table: value.clone(),
-                                                                 entity_name: value.to_model_name(),
-                                                                 is_joining_table: false,
-                                                                 description: indoc! {"
-                    This table represents an 'academic result' that is represented as a single number, such as the score on a test or the result of a single experiment. Query this table for recent changes to stay on top of the user's academic progress, so that you can help them continue to grow academically.
-                        "}.to_string() },
             DatabaseTable::GitRepository => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,
                                                                  description: indoc! {"
                     This table represents a git repository that is important to the user's knowledge base. Learn as much as you can from these repositories, and respond accordingly. If it's a Jupyter notebook, take notes on the findings of the notebook to further your own knowledge for retrieval later. If it's an 'awesome list', consider suggesting ways they may integrate that technology with their current work.
-                        "}.to_string() },
-            DatabaseTable::RationalScoreAcademicResultMetric => DBTableDescription { table: value.clone(),
-                                                                 entity_name: value.to_model_name(),
-                                                                 is_joining_table: false,
-                                                                 description: indoc! {"
-                    This is an 'academic result' that is best represented as a fraction in rational form, such as 8/10 that one might find on an exam. As with all academic results, stay on top of the user's latest results to help them continue their growth.
                         "}.to_string() },
             DatabaseTable::WorkspaceRepository => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
@@ -151,12 +139,6 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  description: formatdoc! {"
                     This is a joining table, joining the `{}` table to the `{}` table so user's can manage their workspace through git. Since the application you are supporting works with users of varying technical backgrounds, you should offer to help less technical users manage git. The Conundrum git interface requires only that the repo is a standard git repo, not a bare repository. You should be able to commit, branch, merge and otherwise modify the git status without breaking the interface with Conundrum.
                         ", DatabaseTable::UserWorkspace, DatabaseTable::GitRepository} },
-            DatabaseTable::CustomAcademicResultMetric => DBTableDescription { table: value.clone(),
-                                                                 entity_name: value.to_model_name(),
-                                                                 is_joining_table: false,
-                                                                 description: indoc! {"
-                    This is an 'academic result' that does not easily fit in with other standard result metrics. Use the associated key to infer the result type (standard deviation, percent error, etc) so that you can continue to help users stay on top of their academic goals.
-                        "}.to_string() },
             DatabaseTable::QAPair => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,
@@ -201,13 +183,13 @@ impl From<DatabaseTable> for DBTableDescription {
                                                                  description: indoc! {"
                     Many of the Conundrum models can accept 'front-matter', or a tabular block at the front of the note (usually yaml) that allows a user to insert things like tags, topics and subjects without modifying the content of the note.
                         "}.to_string() },
-            DatabaseTable::MarkdownChunk => DBTableDescription { table: value.clone(),
+            DatabaseTable::TypstChunk => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,
                                                                  description: indoc! {"
-                    This is a 'chunk' of markdown, parsed from either Conundrum, html, or another text based input. While many of these other tables provide a way to traverse the user's knowledge base through graph oriented tools, this is your way to perform vector similarity search within the database.
+                    This is a 'chunk' of typst content. This content will be provided to you, but you can query it using the tools available as needed.
                         "}.to_string() },
-            DatabaseTable::TypstContent => DBTableDescription { table: value.clone(),
+            DatabaseTable::Typst => DBTableDescription { table: value.clone(),
                                                                  entity_name: value.to_model_name(),
                                                                  is_joining_table: false,
                                                                  description: indoc! {"
@@ -289,6 +271,10 @@ impl From<DatabaseTable> for DBTableDescription {
                 This table holds conundrum chunks that will be provided to you. It's unnecessary to explore this table yourself.
                 "}.to_string(),
             },
+            DatabaseTable::HTMLChunk => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
+                This table holds html chunks that will be provided to you. It's unnecessary to explore this table yourself.
+                "}.to_string(),
+            },
             DatabaseTable::AgentDescription => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
                 This tool describes your 'colleagues', or other agents that you may request access to if your tools permit.
                 "}.to_string(),
@@ -296,7 +282,7 @@ impl From<DatabaseTable> for DBTableDescription {
             DatabaseTable::MCPToolRecord => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
                     This is the vector index that contains all of the tools you will need to help the user reach their goals. Query it frequently, and take notes as needed to help you recall the tools that most frequently help this specific user.
                 "}.to_string()
-            }
+            },
         }
     }
 }

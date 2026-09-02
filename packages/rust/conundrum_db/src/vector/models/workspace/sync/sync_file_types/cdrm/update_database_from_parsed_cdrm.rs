@@ -3,7 +3,7 @@ use std::sync::Arc;
 use conundrum::{
     ecosystem::{
         db::{
-            db::ArcMutexDB,
+            db_client::db_client::DBClient,
             db_traits::{
                 db_entity::{DBEntity, DBSchema},
                 entity_crud::EntityCRUD,
@@ -35,7 +35,7 @@ pub async fn update_database_from_parsed_cdrm<'a>(content: MdxParsingResult,
                                                   file_content: String,
                                                   workspace_path: String,
                                                   relative_path: String,
-                                                  db: ArcMutexDB,
+                                                  db: DBClient,
                                                   context: ArcTokioMutex<SyncContext>)
                                                   -> DatabaseResult<()> {
     let title =
@@ -58,9 +58,9 @@ pub async fn update_database_from_parsed_cdrm<'a>(content: MdxParsingResult,
                                                 relative_path.clone())),
     };
 
-    let cloned_db = Arc::clone(&db);
+    let cloned_db = db.clone();
     <CdrmModel as EntityCRUD< <CdrmModel as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![model.into_partial()], cloned_db).await?;
-    let existing_frontmatter = model.get_related_frontmatter(Arc::clone(&db)).await?;
+    let existing_frontmatter = model.get_related_frontmatter(db.clone()).await?;
     if let Some(new_frontmatter) = match existing_frontmatter {
         Some(mut fm) => {
             if let Some(content_fm) = &content.front_matter {
@@ -75,7 +75,7 @@ pub async fn update_database_from_parsed_cdrm<'a>(content: MdxParsingResult,
                                                                     source_type: FrontMatterSourceType::Cdrm,
                                                                     data: fm.clone() }),
     } {
-        <FrontMatter as EntityCRUD< <FrontMatter as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![new_frontmatter.into_partial()], Arc::clone(&db)).await?;
+        <FrontMatter as EntityCRUD< <FrontMatter as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![new_frontmatter.into_partial()], db.clone()).await?;
     }
 
     let mut ctx = context.clone().lock_owned().await;

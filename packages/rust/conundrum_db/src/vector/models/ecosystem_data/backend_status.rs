@@ -23,7 +23,7 @@ impl FromAsync<Arc<ServerState>> for BackendStatus {
     async fn from_async(input: Arc<ServerState>) -> Self
         where Self: Sized {
         let is_online = check(None).await.is_ok();
-        let db = input.db.clone().lock_owned().await;
+        let db = input.db.inner_arc().lock_owned().await;
         let mut any_tables_exist = false;
         for k in DatabaseTable::iter() {
             if db.open_table(k.to_string()).execute().await.is_err() {

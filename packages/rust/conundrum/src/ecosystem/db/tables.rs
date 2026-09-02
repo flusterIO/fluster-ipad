@@ -39,7 +39,7 @@ pub enum DatabaseTable {
     FrontMatter,
     #[strum(to_string = "typst")]
     #[serde(rename = "typst")]
-    TypstContent,
+    Typst,
     #[strum(to_string = "user_workspace")]
     #[serde(rename = "user_workspace")]
     UserWorkspace,
@@ -94,16 +94,6 @@ pub enum DatabaseTable {
     #[strum(to_string = "agent_description")]
     #[serde(rename = "agent_description")]
     AgentDescription,
-    #[strum(to_string = "numeric_academic_res_metric")]
-    #[serde(rename = "numeric_academic_res_metric")]
-    /// Stores just the `AcademicResultMetricKey` and the value.
-    NumericAcademicResultMetric,
-    #[strum(to_string = "rational_academic_res_metric")]
-    #[serde(rename = "rational_academic_res_metric")]
-    RationalScoreAcademicResultMetric,
-    #[strum(to_string = "custom_academic_res_metric")]
-    #[serde(rename = "custom_academic_res_metric")]
-    CustomAcademicResultMetric,
     #[strum(to_string = "git_repository")]
     #[serde(rename = "git_repository")]
     GitRepository,
@@ -139,9 +129,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "cdrm_chunk")]
     #[serde(rename = "cdrm_chunk")]
     CdrmChunk,
-    #[strum(to_string = "markdown_chunk")]
-    #[serde(rename = "markdown_chunk")]
-    MarkdownChunk,
+    #[strum(to_string = "typst_chunk")]
+    #[serde(rename = "typst_chunk")]
+    TypstChunk,
     #[strum(to_string = "message_chunk")]
     #[serde(rename = "message_chunk")]
     MessageChunk,
@@ -154,6 +144,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "notebook_cell_chunk")]
     #[serde(rename = "notebook_cell_chunk")]
     NotebookCellChunk,
+    #[strum(to_string = "html_chunk")]
+    #[serde(rename = "html_chunk")]
+    HTMLChunk,
 }
 
 impl Hash for DatabaseTable {
@@ -164,7 +157,7 @@ impl Hash for DatabaseTable {
 
 impl DatabaseTable {
     pub fn all_temporary_tables() -> Vec<Self> {
-        vec![Self::MarkdownChunk, Self::DocumentationChunk]
+        vec![]
     }
 
     /// Deprecated. Surreal was a hugeeee mistake.
@@ -185,10 +178,7 @@ impl DatabaseTable {
     }
 
     pub fn is_temporary_vector_table(&self) -> bool {
-        match self {
-            Self::MarkdownChunk => true,
-            _ => false,
-        }
+        false
     }
 
     /// Returns a name of the struct stored in the table for displaying user

@@ -1,5 +1,5 @@
 use conundrum::ecosystem::{
-    db::{db::ArcMutexDB, db_table_description::DBTableDescription, tables::DatabaseTable},
+    db::{db_client::db_client::DBClient, db_table_description::DBTableDescription, tables::DatabaseTable},
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
 use strum::IntoEnumIterator;
@@ -14,8 +14,8 @@ pub struct ServerHealthReport {
 }
 
 impl ServerHealthReport {
-    pub async fn new(_db: ArcMutexDB) -> DatabaseResult<Self> {
-        let db = _db.clone().lock_owned().await;
+    pub async fn new(_db: DBClient) -> DatabaseResult<Self> {
+        let db = _db.inner_arc().lock_owned().await;
         let table_names = db.table_names().execute().await.map_err(|e| {
                                                                log::error!("Error: {:?}", e);
                                                                DatabaseError::FailToConnect
