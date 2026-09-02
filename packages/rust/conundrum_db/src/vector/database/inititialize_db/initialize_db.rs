@@ -42,7 +42,7 @@ use crate::vector::{
         ecosystem_data::{
             documentation::documentation_chunk::DocumentationChunk,
             ecosystem_application_settings::keyboard_shortcut::KeyboardShortcut,
-            ecosytem_setting_types::ecosystem_setting_model::EcosystemSettingModel, log::ecosystem_log::EcosystemLog,
+            ecosytem_setting_types::stringified_setting::EcosystemSettingEntity, log::ecosystem_log::EcosystemLog,
             server_state::server_state::ServerState,
         },
         git::git_repository_entity::GitRepositoryEntity,
@@ -93,7 +93,7 @@ pub async fn initialize_local_database(state: &Arc<ServerState>) -> DatabaseResu
                              schema: <DocumentationChunk as DBSchema>::schema().map(Arc::new)?,
                              set_indices: None },
              TableInitData { table: DatabaseTable::EcosystemSetting,
-                             schema: <EcosystemSettingModel as DBSchema>::schema().map(Arc::new)?,
+                             schema: <EcosystemSettingEntity as DBSchema>::schema().map(Arc::new)?,
                              set_indices: None },
              TableInitData { table: DatabaseTable::AgentDescription,
                              schema: <AgentDescription as DBSchema>::schema().map(Arc::new)?,
@@ -204,7 +204,7 @@ pub async fn initialize_local_database(state: &Arc<ServerState>) -> DatabaseResu
                              schema: <TypstModel as DBSchema>::schema().map(Arc::new)?,
                              set_indices: None },];
     let db_arc = get_database().await?;
-    let db = db_arc.inner_arc().lock_owned().await;
+    let db = Arc::clone(&db_arc.0).lock_owned().await;
 
     for td in table_data.iter() {
         log::info!("Initializing the {} table for the {} model", td.table, td.table.to_model_name());

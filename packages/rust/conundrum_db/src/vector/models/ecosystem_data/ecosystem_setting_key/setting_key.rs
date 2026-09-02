@@ -15,6 +15,7 @@ use conundrum::ecosystem::{
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
 use fake::Dummy;
+use serde::{Deserialize, Serialize};
 use serde_with::{DeserializeFromStr, SerializeDisplay, serde_as};
 
 use crate::vector::models::ecosystem_data::{
@@ -23,11 +24,14 @@ use crate::vector::models::ecosystem_data::{
         setting_key_trait::EcosystemSettingKey, storage_setting_key::StorageSettingKey,
         sync_setting_key::SyncSettingKey, unique_setting_key::UniqueSettingKey,
     },
-    ecosytem_setting_types::ecosystem_setting_model::EcosystemSettingModel,
+    ecosytem_setting_types::{
+        ecosystem_setting_model::EcosystemSettingModel, stringified_setting::EcosystemSettingEntity,
+        vector_generation_method::OptionalVectorGenerationMethod,
+    },
 };
 
 #[serde_as]
-#[derive(Clone, Debug, Dummy, specta::Type, SerializeDisplay, DeserializeFromStr)]
+#[derive(Clone, Debug, Dummy, specta::Type, Serialize, Deserialize)]
 #[serde(tag = "category", content = "data")]
 pub enum Setting {
     Personalization(PersonalizationSettingKey),
@@ -42,15 +46,19 @@ impl From<UniqueSettingKey> for Setting {
     fn from(value: UniqueSettingKey) -> Self {
         match value {
             UniqueSettingKey::FirstName => Self::Personalization(PersonalizationSettingKey::FirstName(String::new())),
-            UniqueSettingKey::LastName => Self::Personalization(PersonalizationSettingKey::FirstName(String::new())),
-            UniqueSettingKey::Profession => Self::Personalization(PersonalizationSettingKey::FirstName("Researcher".to_string())),
+            UniqueSettingKey::LastName => Self::Personalization(PersonalizationSettingKey::LastName(String::new())),
+            UniqueSettingKey::Profession => {
+                Self::Personalization(PersonalizationSettingKey::Profession("Researcher".to_string()))
+            }
             UniqueSettingKey::AutoSyncOnNewChat => Self::Sync(SyncSettingKey::AutoSyncOnNewChat(true)),
-            UniqueSettingKey::AutoSyncOnNewMsg => Self::Sync(SyncSettingKey::AutoSyncOnNewChat(false)),
+            UniqueSettingKey::AutoSyncOnNewMsg => Self::Sync(SyncSettingKey::AutoSyncOnNewMsg(false)),
             UniqueSettingKey::SaveLogDuration => Self::Storage(StorageSettingKey::SaveLogDuration(30.0)),
             UniqueSettingKey::LocalAiPreference => Self::AI(AISettingKey::LocalAiPreference(0.5)),
-            UniqueSettingKey::LogVectorGenMethod => Self::AI(AISettingKey::LogVectorGenMethod(crate::vector::models::ecosystem_data::ecosytem_setting_types::vector_generation_method::OptionalVectorGenerationMethod::LocalAndRemote)),
+            UniqueSettingKey::LogVectorGenMethod => {
+                Self::AI(AISettingKey::LogVectorGenMethod(OptionalVectorGenerationMethod::LocalAndRemote))
+            }
             UniqueSettingKey::AutoCleanVectors => Self::AI(AISettingKey::AutoCleanVectors(true)),
-            UniqueSettingKey::MaxSyncThreads => Self::Sync(SyncSettingKey::MaxSyncThreads(DEFAULT_MAX_SYNC_THREADS))
+            UniqueSettingKey::MaxSyncThreads => Self::Sync(SyncSettingKey::MaxSyncThreads(DEFAULT_MAX_SYNC_THREADS)),
         }
     }
 }
@@ -74,6 +82,20 @@ impl FromStr for Setting {
                                                     DatabaseError::SerializationError
                                                 })?;
         Ok(x)
+    }
+}
+
+impl Into<String> for Setting {
+    fn into(self) -> String {
+        self.to_string()
+    }
+}
+
+impl TryFrom<String> for Setting {
+    type Error = DatabaseError;
+
+    fn try_from(value: String) -> Result<Self, Self::Error> {
+        Self::from_str(value.as_str())
     }
 }
 
@@ -103,32 +125,35 @@ impl Setting {
 
     pub async fn save<'a>(&self, db: DBClient) -> DatabaseResult<()> {
         let model = self.to_model();
-        <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::save_many(vec![model], db.clone()).await?;
+        let entity = model.to_entity()?;
+        <EcosystemSettingEntity as EntityCRUD< <EcosystemSettingEntity as DBSchema>::PartialUpdateType>>::save_many(vec![entity], db.clone()).await?;
         Ok(())
     }
 
     pub async fn read(&self, db: DBClient) -> DatabaseResult<Self> {
-        let x = <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::get_by_predicate(Some(self.to_predicate("key")),
+        let x = <EcosystemSettingEntity as EntityCRUD< <EcosystemSettingEntity as DBSchema>::PartialUpdateType>>::get_by_predicate(Some(self.to_predicate("key")),
                                                                         Some(PaginationParams::single()),
                                                                         None,
                                                                         db.clone()).await?;
-        let item = match x.len() {
-                       0 => {
-                           log::warn!("Setting not found for the `{}` key.", self);
-                           None
-                       }
-                       1 => Some(x.index(0)),
-                       _ => {
-                           log::warn!(
-                                      "Multiple settings not found for the
+        let entity = match x.len() {
+                         0 => {
+                             log::warn!("Setting not found for the `{}` key.", self);
+                             None
+                         }
+                         1 => Some(x.index(0)),
+                         _ => {
+                             log::warn!(
+                                        "Multiple settings not found for the
 `{}` key.",
-                                      self
+                                        self
             );
-                           None
-                       }
-                   }.ok_or_else(|| DatabaseError::InvalidSetting(self.to_string()))?;
+                             None
+                         }
+                     }.ok_or_else(|| DatabaseError::InvalidSetting(self.to_string()))?;
 
-        Ok(item.data.clone())
+        let model = EcosystemSettingModel::try_from(entity.clone())?;
+
+        Ok(model.data.clone())
     }
 }
 

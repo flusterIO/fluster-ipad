@@ -15,7 +15,7 @@ use conundrum::{
 };
 use serde::Serialize;
 
-pub trait SeedContent {
+pub trait SeedContent: Default {
     async fn try_seed<'a>(&self, db: DBClient) -> DatabaseResult<()>;
 }
 

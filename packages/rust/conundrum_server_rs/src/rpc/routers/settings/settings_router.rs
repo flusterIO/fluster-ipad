@@ -6,6 +6,7 @@ use conundrum::ecosystem::error_handling::server_error::ServerError;
 use conundrum_db::vector::models::ecosystem_data::ecosystem_setting_key::setting_key::Setting;
 use conundrum_db::vector::models::ecosystem_data::ecosystem_setting_key::unique_setting_key::UniqueSettingKey;
 use conundrum_db::vector::models::ecosystem_data::ecosytem_setting_types::ecosystem_setting_model::EcosystemSettingModel;
+use conundrum_db::vector::models::ecosystem_data::ecosytem_setting_types::stringified_setting::EcosystemSettingEntity;
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use rspc::{Procedure, Router};
 use std::ops::Index;
@@ -18,25 +19,9 @@ pub fn get_settings_router() -> Router<Arc<ServerState>> {
                                                                                    Ok(())
                                                                                }))
 .procedure("read",
-                                            Procedure::<Arc<ServerState>, UniqueSettingKey, Option<Setting>>::builder::<ServerError>().query(|state: Arc<ServerState>, req: UniqueSettingKey| async move {
+                                            Procedure::<Arc<ServerState>, UniqueSettingKey, Setting>::builder::<ServerError>().query(|state: Arc<ServerState>, req: UniqueSettingKey| async move {
                                                 let predicate = req.to_predicate("key");
-                                                let models = EcosystemSettingModel::get_by_predicate(Some(predicate), Some(PaginationParams::single()), None, state.db.clone()).await
-                                                    .map_err(ServerError::DatabaseError)?;
-                                                match models.len() {
-                                                    0 => {
-                                                        log::warn!("Setting {} not found. This setting may just have not been set yet as this is not seeded with the database.", req);
-                                                        Ok(None)
-                                                    }
-                                                    1 => {
-                                                        let item = models.index(0);
-                                                        Ok(Some(item.data.clone()))
-                                                    }
-                                                    _ => {
-                                                        log::warn!("Found multiple settings with the {} keu. This ain't good.", req);
-                                                        Err(
-                                                            ServerError::DatabaseError(DatabaseError::InvalidSetting(req.to_string()))
-                                                        )
-                                                    }
-                                                }
+                                                let value = req.read_setting(state.db.clone()).await?;
+                                                Ok(value.data)
                                                                                }))
 }

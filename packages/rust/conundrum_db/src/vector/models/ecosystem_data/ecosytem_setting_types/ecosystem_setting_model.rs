@@ -19,19 +19,30 @@ use conundrum_macros::{DBDefaultCrud, DBPartial};
 use serde::{Deserialize, Serialize};
 use std::sync::Arc;
 
-use crate::vector::models::ecosystem_data::ecosystem_setting_key::{
-    setting_key::Setting, unique_setting_key::UniqueSettingKey,
+use crate::vector::models::ecosystem_data::{
+    ecosystem_setting_key::{setting_key::Setting, unique_setting_key::UniqueSettingKey},
+    ecosytem_setting_types::stringified_setting::EcosystemSettingEntity,
 };
 
 /// Warning: Don't use this directly. Use the enum to handle all interactions
 /// with the DB for typesafetey.
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy, DBDefaultCrud)]
-#[db(table = DatabaseTable::EcosystemSetting, partial_self)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, fake::Dummy)]
 pub struct EcosystemSettingModel {
-    #[db(primary)]
     pub key: UniqueSettingKey,
-    #[db(partial(required))]
     pub data: Setting,
+}
+
+impl TryFrom<EcosystemSettingEntity> for EcosystemSettingModel {
+    type Error = DatabaseError;
+
+    fn try_from(value: EcosystemSettingEntity) -> Result<Self, Self::Error> {
+        let data: Setting = serde_json::from_str(&value.data).map_err(|e| {
+                                                                 log::error!("Setting Serialization Error: {:#?}", e);
+                                                                 DatabaseError::SerializationError
+                                                             })?;
+        Ok(EcosystemSettingModel { key: value.key.clone(),
+                                   data })
+    }
 }
 
 impl From<UniqueSettingKey> for EcosystemSettingModel {
@@ -43,69 +54,23 @@ impl From<UniqueSettingKey> for EcosystemSettingModel {
 
 impl EcosystemSettingModel {
     pub async fn get_by_setting_key(key: UniqueSettingKey, db: DBClient) -> DatabaseResult<Option<Self>> {
-        <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::get_one_by_predicate(Some(format!("key = {}",
-                                                                                 key.to_string().to_quoted_string()?)),
-                                                                    None,
-                                                                    db.clone()).await
+        let entity = EcosystemSettingEntity::get_by_setting_key(key, db).await?;
+        let res = match entity {
+            Some(en) => {
+                let model = EcosystemSettingModel::try_from(en)?;
+                Some(model)
+            }
+            None => None,
+        };
+        Ok(res)
     }
 
     pub async fn save(&self, db: DBClient) -> DatabaseResult<()> {
-        <EcosystemSettingModel as EntityCRUD< <EcosystemSettingModel as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![self.clone()], db.clone()).await
-    }
-}
-
-impl ArrowFields for EcosystemSettingModel {
-    fn arrow_fields(
-        )
-        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
-    {
-        Ok(vec![Arc::new(String::field_definition("key", false)), Arc::new(String::field_definition("data", false)),])
-    }
-}
-
-impl DBSchema for EcosystemSettingModel {
-    type IDType = UniqueSettingKey;
-    type PartialUpdateType = EcosystemSettingModel;
-
-    fn merge_keys() -> &'static [&'static str] {
-        &["key"]
+        let entity = self.to_entity()?;
+        entity.save(db).await
     }
 
-    fn primary_key() -> &'static str {
-        "key"
-    }
-
-    fn set_primary_value(&mut self, value: UniqueSettingKey) {
-        self.key = value.clone();
-    }
-
-    fn primary_value(&self) -> UniqueSettingKey {
-        self.key.clone()
-    }
-
-    fn get_record_batch(data: Vec<Self>)
-                        -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<arrow_array::RecordBatch>
-        where Self: Sized + Clone + Serialize {
-        let schema = <Self as DBSchema>::schema()?;
-        let mut keys = Vec::new();
-        let mut datas = Vec::new();
-        for item in data {
-            keys.push(item.key.to_string());
-            let s = serde_json::to_string(&item.data).map_err(|e| {
-                                                         log::error!("Serialization Error: {:#?}", e);
-                                                         DatabaseError::SerializationError
-                                                     })?;
-            datas.push(s);
-        }
-        let batch =
-            RecordBatch::try_new(Arc::new(schema),
-                                 vec![Arc::new(StringArray::from(keys)), Arc::new(StringArray::from(datas)),]).unwrap();
-        Ok(batch)
-    }
-}
-
-impl DBEntity for EcosystemSettingModel {
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
-        DatabaseTable::EcosystemSetting
+    pub fn to_entity(&self) -> DatabaseResult<EcosystemSettingEntity> {
+        EcosystemSettingEntity::try_from(self.clone())
     }
 }

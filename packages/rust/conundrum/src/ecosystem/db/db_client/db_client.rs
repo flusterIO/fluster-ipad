@@ -30,6 +30,8 @@ impl DBClient {
     }
 
     pub fn inner_arc(&self) -> ArcTokioMutex<Connection> {
+        // Does this get de-refeenced immediately? I don't know... but I really don't
+        // want to have to change like 30 files again if I get rid of this method...
         Arc::clone(&self.0)
     }
 }

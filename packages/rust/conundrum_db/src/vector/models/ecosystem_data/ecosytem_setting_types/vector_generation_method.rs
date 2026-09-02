@@ -12,6 +12,7 @@
 #[strum(serialize_all = "kebab-case")]
 #[serde(rename_all = "kebab-case")]
 pub enum OptionalVectorGenerationMethod {
+    DontStoreOptionalVector,
     LocalOnly,
     #[default]
     LocalAndRemote,

@@ -43,9 +43,7 @@ pub enum UniqueSettingKey {
 
 impl DatabaseIdentifiable for UniqueSettingKey {
     fn to_predicate(&self, field_key: &str) -> String {
-        format!("{} = {}",
-                field_key,
-                self.to_string().to_quoted_string().unwrap_or(format!("\"{}\"", self.to_string())))
+        format!("{} = {}", field_key, self.to_string().to_quoted_string_with_fallback())
     }
 }
 

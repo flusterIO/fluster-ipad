@@ -147,6 +147,6 @@ mod tests {
 
     #[tokio::test]
     async fn user_workspace_crud_functionality() {
-        test_crud_functionality!(UserWorkspace, UserWorkspacePartial, "UserWorkspace")
+        test_crud_functionality!(UserWorkspace, <UserWorkspace as DBSchema>::PartialUpdateType, "UserWorkspace");
     }
 }

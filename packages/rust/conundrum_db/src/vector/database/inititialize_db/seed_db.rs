@@ -17,6 +17,6 @@ use crate::vector::{
 pub async fn seed_db(db: DBClient, state: std::sync::Arc<ServerState>) -> DatabaseResult<()> {
     SeedDocumentation::default().try_seed(db.clone(), ParseConundrumOptions::for_chunking(), Arc::clone(&state))
                                 .await?;
-    // SettingsSeeder {}.try_seed(Arc::clone(&db)).await?;
+    SettingsSeeder::default().try_seed(db.clone()).await?;
     Ok(())
 }

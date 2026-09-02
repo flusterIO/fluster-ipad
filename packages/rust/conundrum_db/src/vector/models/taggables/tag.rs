@@ -70,10 +70,10 @@ mod tests {
             test_tags.push(t);
         }
         let db = get_test_database().await;
-        Tag::save_many(test_tags, &db).await
-                                      .inspect_err(|e| {
-                                          println!("Error: {:?}", e);
-                                      })
-                                      .expect("Saves tags");
+        Tag::save_many(test_tags, db.clone()).await
+                                             .inspect_err(|e| {
+                                                 println!("Error: {:?}", e);
+                                             })
+                                             .expect("Saves tags");
     }
 }

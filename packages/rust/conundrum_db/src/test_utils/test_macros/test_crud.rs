@@ -12,8 +12,8 @@ macro_rules! test_crud_functionality {
             let fake_item: $entity = fake::Faker.fake();
             test_data.push(fake_item);
         }
-        <$entity>::save_many(test_data.clone(), &test_db).await.expect(format!("Saves {} values without throwing an error.", $label).as_str());
-        let mut saved_items = <$entity>::get_by_predicate(None, None, None, test_db).await.inspect_err(|e| {
+        <$entity>::save_many(test_data.clone(), test_db.clone()).await.expect(format!("Saves {} values without throwing an error.", $label).as_str());
+        let mut saved_items = <$entity>::get_by_predicate(None, None, None, test_db.clone()).await.inspect_err(|e| {
             log::error!("Error: {:#?}", e);
         }).expect(format!("Saves {} values without throwing an error", $label).as_str());
         let mut mutated_items: Vec<$entity> = Vec::new();
@@ -28,9 +28,9 @@ macro_rules! test_crud_functionality {
             let partial: $partial = x.into_partial();
             partial
         }).collect::<Vec<$partial>>();
-        <$entity>::merge_by_primary_key(partials, &std::sync::Arc::clone(&test_db)).await.expect(format!("Failed attempting to upsert {} values", $label).as_str());
+        <$entity>::merge_by_primary_key(partials, test_db.clone()).await.expect(format!("Failed attempting to upsert {} values", $label).as_str());
         for item in test_data {
-            <$entity>::delete_by_primary_key(item.primary_value(), &test_db).await.expect(format!("Deletes {} data without throwing an error", $label).as_str())
+            <$entity>::delete_by_primary_key(item.primary_value(), test_db.clone()).await.expect(format!("Deletes {} data without throwing an error", $label).as_str())
         }
         log::info!("Successfully ran crud tests for the {} model.", $label);
     };

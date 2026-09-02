@@ -36,7 +36,7 @@ pub trait EntityCRUD<UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Cl
     async fn save_many(items: Vec<Self>, db: DBClient) -> DatabaseResult<()>
         where Self: Sized {
         let schema = Self::schema().map(Arc::new)?;
-        let _db = db.inner_arc().lock_owned().await;
+        let _db = Arc::clone(&db.0).lock_owned().await;
         let table = <Self as DBEntity>::table();
         let tbl = open_table(_db, table.clone()).await.inspect_err(|e| {
                                                            log::error!("Table Error: {:?}", e);
@@ -76,7 +76,7 @@ pub trait EntityCRUD<UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Cl
 
     async fn delete_by_predicate<'b>(predicate: &'b str, db: DBClient) -> DatabaseResult<()> {
         let tbl = <Self as DBEntity>::table();
-        let _db = db.inner_clone().lock_owned().await;
+        let _db = Arc::clone(&db.0).lock_owned().await;
         let db_tbl = open_table(_db, tbl.clone()).await?;
         // let pk = Self::primary_key();
         db_tbl.delete(predicate).await.map_err(|e| {
@@ -93,17 +93,16 @@ pub trait EntityCRUD<UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Cl
 
     async fn merge_by_primary_key(items: Vec<UpdatePartial>, db: DBClient) -> DatabaseResult<()> {
         let tbl = <Self as DBEntity>::table();
-        let _db = db.inner_clone().lock_owned().await;
+        let _db = Arc::clone(&db.0).lock_owned().await;
         let db_tbl = open_table(_db, tbl.clone()).await?;
         let merge_keys = Self::merge_keys();
 
         let partial_fields = UpdatePartial::arrow_fields()?;
-        let record_batch = to_record_batch(&partial_fields, &items.clone()).map_err(|e| {
-                                                                               log::error!("Error: {:?}", e);
-                                                                               DatabaseError::SerializationError
-                                                                           })?;
-
-        let schema = UpdatePartial::schema().map(Arc::new)?;
+        let record_batch = UpdatePartial::get_record_batch(items.clone()).map_err(|e| {
+                                                                             log::error!("Error: {:?}", e);
+                                                                             DatabaseError::SerializationError
+                                                                         })?;
+        let schema = <UpdatePartial as DBSchema>::schema().map(Arc::new)?;
         let stream = Box::new(RecordBatchIterator::new(vec![Ok(record_batch)].into_iter(), schema.clone()));
         db_tbl.merge_insert(merge_keys)
               .when_matched_update_all(None)
