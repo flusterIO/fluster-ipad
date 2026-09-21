@@ -35,7 +35,9 @@ Surprisingly, it has turned out, that it was necessary only to precisely capture
 
 
 <Card title="Event" sidebar right>
-    For the remainder of this derivation, an event is presumed to be a single local measurement as $\Delta t \to 0$. Any other definition of an event is creative math, _not_ physics.
+    For the remainder of this derivation, an event is presumed to be a single local measurement as $\Delta t \to 0$ (later replaced with $\Delta x$ as we remove our temporal dimension). Any other definition of an event is creative math, _not_ physics.
+
+    In a global, non-local sense an instantaneous event is a single iteration of the $dx \mapsto ds$ chain of events described below, where instead of $\Delta t \to 0$, $\Delta x \to 0$.
 </Card>
 
 Let there be two observers, $A$ and $B$. Let $A$ and $B$ agree that $B$ should travel at some agreed upon velocity $v$ between two arbitrary points in space, $p_{1}$ and $p_{2}$. At $p_{2}$ place a time keeping device large enough to be visible from $p_{1}$where $A$ remains at relative rest.
@@ -48,7 +50,7 @@ Nope... $A$ is using the same time keeping device as $B$ who will measure relati
 
 Can't be a simple Doppler shift to explain away this away as an observational effect either... that equation's already accounted for.
 
-As experiments like Ives-Stillwell have demonstrated, the answer _must_ be $ \Delta t = \gamma d/v$ in _both_ frames! Keep in mind here that the Ives-Stillwell experiment uses a single, **shared** event to compare clocks. The elongating of periods between events is not equatable to the duplication of events. This is akin to the 'clock-tower' being aboard the plane while $A$ remains on land, and is in fact not contradicted by the fact that the two clocks do not match. In fact, this co-moving clock will be a key piece of the puzzle moving forward as we give an explicit geometry to time and describe our co-motion along this axis as we describe a Universe _without_ time.
+As experiments like Ives-Stillwell have demonstrated, the answer _must_ be $ \Delta t = \gamma d/v$ in _both_ frames! Keep in mind here that the Ives-Stillwell experiment uses a single, **shared** event to compare clocks. The elongating of periods between events is not equatable to the duplication of events. This is akin to the 'clock-tower' being aboard the plane while $A$ remains on land, and is in fact not contradicted by the fact that the two clocks do not match. In fact, this co-moving clock will be a key piece of the puzzle moving forward as we give an explicit geometry to time and describe our co-motion along this axis.
 
 ### What is time?
 
@@ -68,7 +70,9 @@ If they say to you, "Is it you?" say 'We are it's children'. If they ask of you,
 
 <Card title="On Existing Validations of SR/GR">
 
-Consider the Ives-Stillwell experiment. If both observers come together at the end to compare clocks, ***together***, has the time really dilated for one more than the other? No, they're standing right next to each other. No duplication of events has occurred either... only the elongating of periods between each $\Delta s$ as the observer in relative motion approaches a further dilated coordinate system more rapidly than the observer at relative rest. In fact, we've essentially quantized the number of intermediary events between any two arbitrary primary events by allowing that $d/v$ remain constant in each reference frame. The same number of events, more $\Delta t$ between events because remember... $\Delta t$ is the dilation of space and the observer in relative motion is approaching a further dilated coordinate system faster. This is $100\%$ analogous to the constant nature of 4-vecs in special relativity, only without a temporal dimension.
+Consider the Ives-Stillwell experiment. If both observers come together at the end to compare clocks, ***together***, has the time really dilated for one more than the other? No, they're standing right next to each other. No duplication of events has occurred either... only the elongating of periods between each $\Delta s$ as the observer in relative motion approaches a further dilated coordinate system more rapidly than the observer at relative rest. In fact, we've essentially quantized the number of intermediary events between any two arbitrary primary events by allowing that $d/v$ remain constant in each reference frame. This is $100\%$ analogous to the constant nature of 4-vecs in special relativity, only without a temporal dimension. 
+
+Remember... The same number of events, more $\Delta t$ between events because $\Delta t$ is the dilation of space and the observer in relative motion is approaching a further dilated coordinate system faster. 
 
 Likewise, the Pound-Rebka results should need no explanation. They predict this model perfectly, and would have been one of the primary ways to test such a theory. In fact, it was one of the primary experiments motivating this geometry.
 
@@ -82,7 +86,7 @@ The Eddington Observation, Shapiro Time Delay, and all other validations of GR r
 
 If $ \Delta t = \gamma d/v$ in _both_ coordinate systems, and $B$ is traveling at the _agreed_ upon velocity, then there is only one set of coordinate transformations that satisfy experiment: The lighthouse and the clock-tower are further separated in the coordinate system of $B$, while $v$ dilates proportional to spatial density in the coordinate system of $A$.
 
-No magical events that happen twice, no endless temporal paradoxes you have to pretend make sense under certain selective reference frames, and most intriguingly... _no time dilation_. In fact, $d/v$ is the only constant! This occurs because motion, being a more fundamental property than time is proportional to local coordinate density, giving a velocity that is in some regards equivalent in each reference frame (depending on how $dx$ is defined). "Time" then dilates between events as those events become further separated as a matter of geometry, not due to a change in any other mysterious quantity we've never directly measured. Sounds a whole lot like cosmic inflation, doesn't it? 
+No magical events that happen twice, no endless temporal paradoxes you have to pretend make sense under certain selective reference frames, and most intriguingly... _no time dilation_. In fact, $d/v$ is the only constant! This occurs because motion, being a more fundamental property than time is proportional to local coordinate density, giving a velocity that is in some regards equivalent in each reference frame (depending on how $dx$ is defined). "Time" then dilates between events as those events become further separated as a matter of geometry, not due to a change in any other mysterious quantity we've never directly measured. Sounds a whole lot like cosmic inflation, doesn't it?
 
 ### $\alpha  \omega$ Gravity
 
@@ -95,7 +99,7 @@ $$
 $$
 
 <Card title="Note">
-There's no negative sign because we're taking a derivative, but the opposite thing is moving (space, not the observer in free-fall) giving two negative signs. The $\Delta x$ works out... trust me. It's long past time we take a step back from the higher-level mathematics we've invented to make things doable and go back to the basics: geometry and motion.
+There's no negative sign because we're taking a derivative, but the opposite thing is moving (space, not the observer in free-fall) giving two negative signs. The $\Delta x$ works out... trust me. It's long past time we take a step back from the higher-level algebraic rules we've invented to make things doable and go back to the basics: geometry and motion.
 </Card>
 
 If we consider that the theoretical spatial dilation might be the source of the equivalence principle, we should consider that $\delta$ may be produced from divergence. Since this divergence would be radial in a simplified single body (of uniform mass density) system, we should find:
@@ -129,6 +133,10 @@ $$
 
 But this isn't just a unique, Copernican-like relationship.
 
+<Hint label="Dimensionality" primary>
+    The dimensionality issue is addressed in the closing arguments, but in short, this was just derived from basic geometry. There is _no_ dimensionality issue... _this_ is how these dimensions transform. This is explicit in the time components of the electromagnetic 4 potential, it just needed re-interpreting.
+</Hint>
+
 ### Our Solar Parameters
 
 > **Warning:** This section looks a bit like number fitting, but hang in there. There's a pattern that arises.
@@ -139,7 +147,7 @@ $$
  \omega_{\odot} = 0.00923758696263181
 $$
 
-That's a little disappointing, but let's consider that this $\frac{1}{2 - \alpha}$ term in equation <EqRef id="eq_omega" /> seems to reproduce $\alpha$ using radial gravitational parameters, while Earth is in a rotating frame of reference. If this term reproduces this co-rotating frame of reference, and the Sun being a much larger, more massive body rotates more slowly (about $25.45$ times the rotational period), we might try collapsing this term from $\frac{1}{2 - \alpha} \mapsto \frac{1}{2}$.
+That's a little disappointing if we're expecting $\alpha$[^10], but let's consider that this $\frac{1}{2 - \alpha}$ term in equation <EqRef id="eq_omega" /> seems to reproduce $\alpha$ using radial gravitational parameters, while Earth is in a rotating frame of reference. If this term reproduces this co-rotating frame of reference, and the Sun being a much larger, more massive body rotates more slowly (about $25.45$ times the rotational period), we might try collapsing this term from $\frac{1}{2 - \alpha} \mapsto \frac{1}{2}$.
 
 Likewise, let us consider that in perfectly Machian Universe, this radiating force would be the source of inertial mass following:
 
@@ -206,7 +214,7 @@ q_{\oplus} & = \int R^3 \left(\alpha \left(2 - \alpha \right)\right)^3 ~ dR \\
 \end{aligned}
 $$
 
-Or about $0.000213$ Coulombs[^9] of temporally co-moving charge per kilogram and yes... that's the square root of the Golden Ratio possibly indicating some sort of phase-shift at $R = R_{\oplus}$.
+Or about $0.000213$ units of temporally co-moving charge per kilogram and yes... that's the square root of the Golden Ratio possibly indicating some sort of phase-shift at $R = R_{\oplus}$.
 
 
 If a physical operation exists such that $R$ is swapped over algebraically at $q = \sqrt{ \Phi \times 10^{42}}$, this phase-shift becomes completely reasonable, describing gravitational mass as a completely electromagnetic phenomenon and giving rise to our specific radius. Why $10^{42}$? Some unknown function of $\sum m_{i}$ and $r$. The same function that gives rise to inertia itself.
@@ -214,7 +222,7 @@ If a physical operation exists such that $R$ is swapped over algebraically at $q
 
 **Kinematic Velocity** 
 
-Since we're presuming the equivalence principle is induced by the dilation described these modified Lorentz transformations, let us investigate this quantity as $\gamma$ under the relationship that these additional terms represent the $ds$ portion of $\gamma$, where $\gamma = 1 + ds$. This then gives:
+Since we're presuming the equivalence principle is induced by motion as described by these modified Lorentz transformations, this quantity should produce $\gamma$ under the relationship that these additional terms represent the $ds$ portion of $\gamma$, where $\gamma = 1 + ds$. This then gives:
 
 
 $$ {#eq_gamma_em}
@@ -236,8 +244,6 @@ So far we've derived a set of coordinate transformations that not only satisfy e
 Next, we'll move on to our gravitational parameters, repeating the same steps and discover that they predict not just our kinematic velocity, but our cosmological velocity as well. We'll then find a pair of equations given from simple high-school trig that reproduces our galactic orbital velocity with only _visible_ mass, and again... the same kinematic velocity (still following the same $1 +  \alpha$ relationship with the pre-Plank data).
 
 As the last like "probably right" equation, we'll end with is a somewhat speculative but like holy-shit accurate derivation of Earth's rotational velocity, reproducing Earth's polar radius to an error of just over an inch and a cumulative velocity error of roughly a literal crawling pace. It's not a direct mechanical derivation, but more of a 'well I wonder what this electromagnetic equivalent would be now that we have $\nabla \cdot{E}$ in a temporally co-moving frame?' and _bam_... our rotational velocity. Is that as good as a mechanical derivation? Of course not, but that's not the same as number fitting. This curiosity based, exploratory approach is almost exactly inline with the way AI would attack a problem like this. This is far more scientific than believing in mathematical definitions that don't match reality, even if many of the observations to this point are post-hoc.[^4] Somewhere along the way, right around the time physicists became mathematicians the physics community began to believe that curiosity, if outside the bounds of the hypothesis-first scientific method is invalid. With the way this geometry aligns itself with the work of Wyler, with space-time being a sort of hypersphere in derivative form, I think it's long past time the community develops a sense of humility and reinvestigates these possibilities.
-
-And then after all that, we'll end with some additional numerical alignments, because numerology is interesting when there's new physics that's just been handed to you[^3].
 
 </Admonition>
 
@@ -417,9 +423,9 @@ $$
 v = c \sqrt{1 - \frac{1}{dt^2}} = 371,580 ~ \text{m} ~ \text{s}^{-1}
 $$
 
-That's an error of about $0.44\%$... _again_, derived from math an AP high school student is familiar with.
+That's an error of about $0.44\%$... _again_, derived from math a Canadian high school student can handle.
 
---- 
+--- Galactic Rotation ---
 
 Let's now consider this trigonometric setup described in equation <EqRef id="eq_trig_derivation"/>. If instead of solving for $dt$ to find the time dilation we set $dt = 1$ (aka: The co-moving frame) and solve for $\dot{x}$, we find:
 
@@ -436,7 +442,7 @@ $$
 That's almost precisely our escape velocity, but we're looking for a stable orbit velocity! What the :poop:?! 
 
 
-So what's going on here? We exist in a Machian Universe where inertia is comprised of this radiating force for all other bodies in the system. This Machian flux causes this simplified single body solution to limit at our Newtonian orbital velocity equations, but what if we found a system where the overwhelming majority of the mass was on the interior, radiating _outwards_? You know... like a planet on an arm of a spiral galaxy?
+So what's going on here? We exist in a Machian Universe where inertia is comprised of this radiating force for all other bodies in the system. In our simplified equation that does not take into account the sum of all other bodies providing this resistance, we limit at our escape velocity. Let us test this model by evaluating this equation against a similar system: A planet on an arm of a spiral galaxy.
 
 <Image 
    src="/assets/diagrams/orbital_radius_intersection.png"
@@ -585,7 +591,7 @@ Many times throughout this derivation I apply operations to quantities with unit
 
 This logic is flawed. Everything here, or at least what I'm claiming to be more than a curiosity, was derived from first principles with high-school or at worst under-graduate math and geometry. The higher level properties we attach to mathematics like units are meant to convey just this information in a more convenient way: Geometry and magnitude.
 
-If this model provides the geometry and magnitude in a manner that is consistent with observation, these operations are perfectly valid and are in no way mathematically or physically inconsistent.
+If this model provides the geometry and magnitude in a manner that is consistent with observation, these operations are perfectly valid and are in no way mathematically or physically inconsistent. This is how these dimensions transform, as described by this divergent geometry.
 
 
 Likewise, there may appear to be a dimensionality issue regarding $\ddot{x} \mapsto \dot{x}$. We've invented an additional derivative that was never part of the physical system, and we explicitly removed it in equation <EqRef id="eq_time_removed"/>. It's the $\uparrow \uparrow R$ curvature[^7] that this model describes that allows a somewhat stable velocity to induce an apparent acceleration, in much the same way the GR curvature tensor can induce an acceleration by not necessarily varying with time, but with space.
@@ -612,7 +618,6 @@ If there is one bright spot in this, it's the fact that the scientific method wo
 
 This model _will_ reproduce GR in the reference frame an observer in co-motion along our temporal dimension, reproducing all of the familiar general relativity equations and mathematics that satellites depend on. It is _fundamental_ to the geometry and to the single modification that we've made to existing models, but a more complete model should be able to define the GR field equations in terms of electromagnetic parameters.
 
-Consider the simple "put your hand over one eye and your thumb over the thing in the distance" trigonometric parallax 'experiment'. What we've been doing across our temporal dimension mathematically is completely analogous to running this experiment, and when you swap your hand over from one eye to the other (allow some spatial dilation $ds$) the thing in the distance _actually_ moves (modifies it's own $S$ position in response to some distant, non-local stimuli). This notion is just as nonsensical across our temporal dimension as it is across $\mathbb{R}^{3}$ space. 
 
 ### Further Discussion
 
@@ -641,7 +646,7 @@ To the Lord a thousand years is like one day, and one day like a thousand years.
 
 If that doesn't scream relativity to you, you've allowed the pressures of academia to completely squash your natural sense of curiosity.
 
-It's not just mainstream mythologies either, but faiths and myths from around the world. The Hermetica is practically a physics book, and everyone's familiar with Oppenheimer's love affair with the Hindu texts. I know the geology department will be busy, but maybe we should start to question a bit more of our most ancient archaeological findings?
+It's not just mainstream mythologies either, but faiths and myths from around the world. The Hermetica is practically a physics book, and everyone's familiar with Oppenheimer's love affair with the Hindu texts. I know the geology department will be busy, but maybe we should start to question a bit more of our most ancient archaeological findings too?
 
 
 What has been considered pseudo-science will be the new frontier of exploration. The study of conciousness, the afterlife, time travel... these all become real possibilities at manageable energy scales with these field equations. 
@@ -653,15 +658,16 @@ I think of it like this:
 
 If we're a society 10,000 years ago in the middle of a land-bound nation, a person may have never met anyone that has ever seen a body of water they couldn't see across. We're just now discovering the ocean. I don't know how to build a boat, I can't even successfully describe the dynamics of the fluid in an n-body system, but the evidence for the ocean itself is overwhelming, and I can paint a very accurate description of the surface of that ocean. 
 
+**Final Thought**
+
 The same way we grappled with the fact that we're not at the center of the Universe, or just how vast the Universe is, we're going to have to grapple with the fact that just as there is no limit on how large a unit of length may be, so too is there no limit on how small it may be. Every time humanity is made to feel more insignificant, we struggle with the logical leap, but the logic is there: The Earth is expanding with the rest of the Universe, and gravitational mass is just curvature induced by co-moving electromagnetic divergence.
 
 
 
 [^1]: Cosmological Velocity: The motion through space (kinematic velocity), plus the motion _of_ space. This idea that the SNe/CMB discrepancy indicates an acceleration is ridiculous. They're just measuring different things.
-[^3]: No offense if you're not one of the 'yea, I don't even read their emails lol' academics, and honestly, a sincere but woefully misplaced thank you to the 2-3 researchers that did take the time to respond, but the general response from the physics community has been the furthest thing from intellectual.
 [^4]: There is incredible potential to test this model concretely using work carried out by Professor Enbang Li out of Australia.
 [^5]: Recall that Michelson and Morely used the very same experimental apparatus to detect $\alpha$ as they did the apparent absence of the aether in the very same year. It was only their explicit omission of the radial direction that allowed the aether drag to be missed.
 [^6]: By comparing kinetic energy to the gravitational potential you're doing precisely this.
 [^7]: Not sure if that's official notation or not, but the javascript codeblock basically.
 [^8]: A reminder that there is <Ul>nothing</Ul> more anti-scientific than being dismissive while there are still gaps in our knowledge.
-[^9]: Yes, Coulumb. Think about the nature of $C$, with it being a time _carrying_  unit as $\text{A} \cdot t$ rather than a time dependent unit. We're literally describing the creation of time itself.
+[^10]: Remember, the Sun _approaches_ this limit but does not reach it. Saturn would have been a better choice for this example if we wanted to demonstrate the limit directly.
