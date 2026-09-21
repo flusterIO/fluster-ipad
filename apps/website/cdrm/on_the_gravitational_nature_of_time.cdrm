@@ -163,7 +163,7 @@ $$
 $$
 
 
-This gives the outline of a single function that describes $\left( \frac{d}{dR}g \right)^{1/3}$ as oscillating between $\alpha$ and $ \alpha\left(2 - \alpha\right)$ as a function of mass density and velocity, and just look at the results:
+This gives the outline of a single function that describes $\left( \frac{d}{dR}g \right)^{1/3}$ as oscillating between $\alpha$ and $ \alpha\left(2 - \alpha\right)$ as a function of mass and velocity, and just look at the results:
 
 <Image 
    src="/assets/diagrams/omega_mass_density.png"
@@ -206,9 +206,11 @@ q_{\oplus} & = \int R^3 \left(\alpha \left(2 - \alpha \right)\right)^3 ~ dR \\
 \end{aligned}
 $$
 
-Or about $0.000213$ units of temporally co-moving charge per kilogram and yes... that's the square root of the Golden Ratio possibly indicating some sort of phase-shift at $R = R_{\oplus}$.
+Or about $0.000213$ Coulombs[^9] of temporally co-moving charge per kilogram and yes... that's the square root of the Golden Ratio possibly indicating some sort of phase-shift at $R = R_{\oplus}$.
+
 
 If a physical operation exists such that $R$ is swapped over algebraically at $q = \sqrt{ \Phi \times 10^{42}}$, this phase-shift becomes completely reasonable, describing gravitational mass as a completely electromagnetic phenomenon and giving rise to our specific radius. Why $10^{42}$? Some unknown function of $\sum m_{i}$ and $r$. The same function that gives rise to inertia itself.
+
 
 **Kinematic Velocity** 
 
@@ -656,9 +658,10 @@ The same way we grappled with the fact that we're not at the center of the Unive
 
 
 [^1]: Cosmological Velocity: The motion through space (kinematic velocity), plus the motion _of_ space. This idea that the SNe/CMB discrepancy indicates an acceleration is ridiculous. They're just measuring different things.
-[^3]: No offense if you're not one of the 'yea, I don't even read their emails lol' academics, and honestly, a sincere but woefully misplaced thank you to the 2-3 researchers that did take the time to respond, but how can the rest of you be so fucking arrogant while believing in magical events that happen twice?
+[^3]: No offense if you're not one of the 'yea, I don't even read their emails lol' academics, and honestly, a sincere but woefully misplaced thank you to the 2-3 researchers that did take the time to respond, but the general response from the physics community has been the furthest thing from intellectual.
 [^4]: There is incredible potential to test this model concretely using work carried out by Professor Enbang Li out of Australia.
 [^5]: Recall that Michelson and Morely used the very same experimental apparatus to detect $\alpha$ as they did the apparent absence of the aether in the very same year. It was only their explicit omission of the radial direction that allowed the aether drag to be missed.
 [^6]: By comparing kinetic energy to the gravitational potential you're doing precisely this.
 [^7]: Not sure if that's official notation or not, but the javascript codeblock basically.
 [^8]: A reminder that there is <Ul>nothing</Ul> more anti-scientific than being dismissive while there are still gaps in our knowledge.
+[^9]: Yes, Coulumb. Think about the nature of $C$, with it being a time _carrying_  unit as $\text{A} \cdot t$ rather than a time dependent unit. We're literally describing the creation of time itself.
