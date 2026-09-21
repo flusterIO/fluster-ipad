@@ -1,479 +1,318 @@
 ---
 title: On the gravitational nature of time
 id: on_the_gravitational_nature_of_time
-summary: A sample note & a novel interpretation of relativity yielding multiple directly observed quantities to well within measurement error
-subject: Examples
+summary: A sample note that will change the world.
+subject: Physics
 ---
 
 # On The Gravitational Nature Of Time
-> A sample note & a novel interpretation of relativity yielding multiple directly observed quantities to well within measurement error.
 
+<Admonition title="What is this?">
 
-<Admonition title="Thank you" foldable>
-Thank you for taking the time to read this. My story is posted elsewhere, so to keep things short, this is the entire reason I built Fluster & Conundrum in the first place.
-Almost 5 years ago I realized Einstein made an assumption that made far more sense before the observations that give us the Big Bang, and after playing around with the math I realized I can derive an absolutely staggering amount of physics from a single, mathematically equivalent modification to Einstein's model. I quit my job, became homeless, and over the course of this pursuit built the original version of Fluster for my own personal use.
+This is both a sample note representing what Conundrum is capable of, and my presentation of a modified model of relativity that inspired Conundrum. Let me explain...
 
-I'll do my best to convince the math types among you (this article does assume some basic understanding of physics and relativity) by the end of this sample note that Einstein made a mistake[^1], but regardless of your opinions on the model, I hope you enjoy Fluster and find it as useful as I have. Thanks for checking it out!
+Late one night in the fall of 2021 I was going over some of Einstein's lectures when I had a realization: His assumptions made far more sense before the observations that gave us the Big Bang. I began to play around with new coordinate transformations when I realized everything... absolutely *everything* aligns with observation when you apply the _only_ set of transformations that reproduce experiment without requiring the absurd, anti-scientific and pseudo-religious notion that is relativistic simultaneity.
+
+The problem? The **only** set of coordinate transformations that satisfy experiment that do not require this anti-scientific principle conclude that the Earth is expanding _with_ the rest of the Universe, and that _this_ is the source of the equivalence principle. Avi Loebe couldn't get that past peer review, no matter how many quantities align with observation, so instead I took a different approach. I quit my job, became homeless, and built a few open source academic tools while living on the side of the street in Milwaukee just so I can publish this article along side the documentation.
+
+This isn't another internet fringe theory some lazy, attention starved :donkey: thought up for clicks... this is a model that should be self evident to any free thinking physicist that is willing to say "I don't know, but the math works". That was the approach we should have taken to relativity since 1905. The definition of an event in SR is ***completely*** nonsensical and in disagreement with reality itself, and it should have never been accepted as anything other than a mathematical bandaid.
+
+While the field equations remain elusive, the model naturally reproduces the geometry of general relativity in a specific frame and does so while producing upwards of a dozen numerical alignments with observation and a resolution to at least 2 of the most pressing issues in physics. _This_ many alignments and the simultaneous resolution of _this_ many paradoxes are not a coincidence, no matter what your geologist friend tells you.
+
+<Hint>
+There are two complete video walkthroughs on our [Youtube](https://www.youtube.com/@Fluster_io) channel, as well as an `.ipynb` [notebook](https://github.com/flusterIO/alphaOmegaGravity/blob/main/alpha_omega_gravity.ipynb), a complete python package `alpha_omega_gravity`, and a standalone mac application to explore the model further.
+</Hint>
 
 </Admonition>
 
-#### Included Derivations
-> This table is generated directly from `Astropy` and `Scipy`. All functions reflect names in the `alpha_omega_gravity` python package, because after 5 years of being homeless I think I earned the right to be grandiose. ($\alpha$ comes from the fine-structure constant).
 
-<Hint label="Notebook">
-    There's now an interactive notebook published as a standalone application available for [Mac](https://github.com/flusterIO/aog_explorer/releases) and as a [Jupyter notebook](https://github.com/flusterIO/alphaOmegaGravity/blob/main/alpha_omega_gravity.ipynb).
-</Hint>
+## The Lighthouse & The Clock Tower
+> An opening thought experiment to finally put relativistic simultaneity to rest.
 
-| Derivation                                                | Function                         | % Error             |
-|:----------------------------------------------------------|:---------------------------------|:--------------------|
-| cosmological velocity from local gravitational parameters | `vbarCosmological`               | Difficult to assess |
-| kinematic velocity from local gravitational parameters    | `vbarKinematic`                  | $0.442258391884371\%$   |
-| Earth's rotational velocity via $\alpha$                   | `rotationVelocityFromDivergence` | $0.00677756400547747\%$ |
-| Solar-Galactic Radius from visible mass                   | `galacticRadiusPolynomial`       | $0.0\%$                 |
-| $\alpha$ (solar)                                          | `alphaSolar`                     | $0.00342749503676447\%$ |
-| $\alpha$ (Earth)                                          | `omega`, `alphaFactor`           | $0.0253043303850287\%$  |
-| $\alpha$ (orbital velocity)                               | `solarMetricVelocity`, `vOrbit`  | $0.0544665494810030\%$  |
-| $\alpha$ (from derived velocity)                          | `vbarAlphaEquivalence`           | $0.0761820393770567\%$  |
-| $J \approx \Phi$                                          | `currentEquivalent`              | $0.213633171310522\%$   |
-| $h$ from $\alpha$                                         | `omega`, `alpha`                 | $0.0253887188634106\%$  |
-| $h / (2 - \alpha)$ from $\omega$                          | `omega`, `alpha`                 | $0.00342749503676447\%$ |
-| $\Phi$ mass density approximation                         | `massDensityEquivalence`         | $0.863214423082925\%$   |
-| $G$ as a function of $\alpha$ and $\rho$                  | --                               | $0.07618221222642045\%$ |
-| Cummulative magnetic diverence at $R = \Phi$ | -- | $0.008051401415257025%$ |
+<Quote source="Albert Einstein" centerContent centerSelf>
+Surprisingly, it has turned out, that it was necessary only to precisely capture the notion of simultaneity in order to overcome the just considered difficulty. It required no more than recognizing that what Lorentz has denoted "local time" is in fact generic "time". If one consequently holds to the notion of time as just suggested, then the foundation equations for the Lorentz theory respect the Principle of Relativity if one replaces the transformations presented above with new ones in accord with the new concept of time.
+</Quote>
 
 
+<Card title="Event" sidebar right>
+    For the remainder of this derivation, an event is presumed to be a single local measurement as $\Delta t \to 0$. Any other definition of an event is creative math, _not_ physics.
+</Card>
+
+Let there be two observers, $A$ and $B$. Let $A$ and $B$ agree that $B$ should travel at some agreed upon velocity $v$ between two arbitrary points in space, $p_{1}$ and $p_{2}$. At $p_{2}$ place a time keeping device large enough to be visible from $p_{1}$where $A$ remains at relative rest.
+
+At what time does $A$ observe $B$ reach $p_{2}$, acknowledging the fact that $A$ is experiencing no change in kinetic state? 
+
+$d/v$? 
+
+Nope... $A$ is using the same time keeping device as $B$ who will measure relativistic dilation. This would mean $B$ would need to reach the clock-tower twice. Once at $\Delta t = d/v$, and once more at $\Delta t = \gamma d /v$.
+
+Can't be a simple Doppler shift to explain away this away as an observational effect either... that equation's already accounted for.
+
+As experiments like Ives-Stillwell have demonstrated, the answer _must_ be $ \Delta t = \gamma d/v$ in _both_ frames! Keep in mind here that the Ives-Stillwell experiment uses a single, **shared** event to compare clocks. The elongating of periods between events is not equatable to the duplication of events. This is akin to the 'clock-tower' being aboard the plane while $A$ remains on land, and is in fact not contradicted by the fact that the two clocks do not match. In fact, this co-moving clock will be a key piece of the puzzle moving forward as we give an explicit geometry to time and describe our co-motion along this axis as we describe a Universe _without_ time.
+
+### What is time?
+
+From here most of this derivation is straight-forward for any free thinking physicist, and that's what _should_ hurt the most... this problem was incredibly easy. I knocked out a good portion of it in 4 years while living in my car without internet and most of the time without a power outlet. The model requires no new mathematics (this may change as the field equations come to be), it requires no mysterious curve fitting parameters that nobody ever expects to actually find, and it adds no additional dimensions that don't align with observation. In fact, we're going to remove time as an explicit dimension entirely, reducing space-time to a fluid-like, expanding coordinate system that expands as a function of the modified Lorentz transformations described below.
+
+So what are these transformations? First we'll need to explicitly acknowledge the two primary properties that time occupies:
+
+1. A 4th displacement coordinate.
+2. A fundamental, driving rate of change.
+
+As you'll see, we'll be able to attribute property $1$ to a position along the _concurrent_ density axis that arises from this geometry, and we can satisfy property $2$ by attributing _motion_ to the driving rate of change. This should have been obvious the second $\gamma$ was described as a function of $v$, but don't worry... we'll fix it.
+
+<Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
+If they say to you, "Is it you?" say 'We are it's children'. If they ask of you, 'What is the sign of your father in you?' say to them 'It is motion and rest'.
+</Quote>
 
 
-<Hint label="Error" info>
-    All error percentage calculations were done with the following function. See the [Fluster & Conundrum repository](https://github.com/flusterIO/alphaOmegaGravity/blob/main/alpha_omega_gravity.ipynb) for a complete `.ipynb` notebook and/or install the `alpha_omega_gravity` python package.
-</Hint>
+<Card title="On Existing Validations of SR/GR">
 
-```python -- title="percent_diff.py"
-def percentDiff(observed, derived):
-    return (observed - derived) / observed * 100
-    
-```
+Consider the Ives-Stillwell experiment. If both observers come together at the end to compare clocks, ***together***, has the time really dilated for one more than the other? No, they're standing right next to each other. No duplication of events has occurred either... only the elongating of periods between each $\Delta s$ as the observer in relative motion approaches a further dilated coordinate system more rapidly than the observer at relative rest. In fact, we've essentially quantized the number of intermediary events between any two arbitrary primary events by allowing that $d/v$ remain constant in each reference frame. The same number of events, more $\Delta t$ between events because remember... $\Delta t$ is the dilation of space and the observer in relative motion is approaching a further dilated coordinate system faster. This is $100\%$ analogous to the constant nature of 4-vecs in special relativity, only without a temporal dimension.
 
-Also, keep in mind that if we wanted to be selective we can choose a radius here on Earth's surface that will satisfy many of the above equations perfectly, giving an error of 0. The radii that were used were whichever was most fitting for the job... the mean radius for calculating volume, the polar radius when spin was involved to minimize centripetal influence, and Astropy provided values (equatorial) for everything else.
+Likewise, the Pound-Rebka results should need no explanation. They predict this model perfectly, and would have been one of the primary ways to test such a theory. In fact, it was one of the primary experiments motivating this geometry.
 
+Michelson & Morely ironically used the same apparatus to detect $\alpha$ as they did to allegedly disprove the aether in the very same year, but there intentional omission of the radial direction allowed them to miss the obvious.
 
-
-### The Lighthouse & The Clocktower
-> An opening thought experiment
-
-Consider two observers, $A$ and $B$. Let $A$ and $B$ agree that $B$ should travel between two arbitrary points in space[^2], $p_1$ and $p_2$ at an <Ul>agreed</Ul> upon velocity $v$. 
-
-At $p_2$ place a time keeping device that remains visible from $p_1$. Allow that $A$ remains at rest relative to $p_1$, and very near $p_1$ while $B$ goes in motion (at an inertial pace) between $p_1$ and $p_2$. 
-
-At what time does $A$ observe $B$ reach $p_2$? If the value is not $d/v$, but $\gamma d/v$, then $v \neq v_\prime$, <Ul highlight>unless</Ul> $d \to d\gamma$. The only possible solution that allows for Einstein's additional factor of $\gamma$ while requiring that $v=v_\prime$ in the coordinate system of the observer who's kinetic state remains unchanged, and that both $A$ and $B$ agree upon the time at which $B$ reaches $p_2$ is that $d \to d\gamma$ in the coordinate system of $B$.
-
-To summarize, we have 3 possibilities:
-
-1. Every single experimental validation of special and general relativity was flawed. This is statistically almost impossible.
-2. $B$ returns from $p_2$ with a photo of $B$ at $p_2$ that disagrees with the photo $A$ took of $B$ at $p_2$. There is nothing in physics that prohibits extending the time periods and distances to produce such absurdities as $B$ wearing a completely different shirt.
-3. $d$ elongates by a factor of $\gamma$. We might then presume that this dilation is the source of the equivalence principle, and watch how the physics just lines up.
-
-If you think about it, isn't this inline with what we already believe? Do current models not describe cosmic inflation as a time dependent property? Does more time not pass for the observer in relative motion? _Of course_ $p_{1}$ and $p_{2}$ will be further separated, _if_ **everything** dilates, not just the space in-between galaxies. If we presume that this dilation Einstein applied to time may be applied to space in the coordinate system of the observer in relative motion, then we can describe this spatial dilation as the mechanism to the equivalence principle and combine _cosmic inflation_, _gravitational acceleration_ and _time_ itself into a single process as observed from different reference frames!
-
-> **For the physics professionals:** Yes, this model violates the Lorentz transformations, but it does so while satisfying every single experimental validation of either SR or GR. Don't stop reading yet, it's just about to get good.
-
-
-### Time Gravity Equivalence <Emoji name="alarm_clock" inline smedium/>
-
-
-Let's recognize the two primary properties that time occupies:
-
-- A 4th displacement coordinate
-- A _driving_ rate of change
-
-By attributing the 4th displacement coordinate to the density axis that arises from this geometry and the driving rate of change to **motion**, not time, we can remove our temporal axis entirely! Time becomes nothing more than a mathematical tool... a ratio of other changing properties, all in response to the primary rate of change: _motion_.
-
-Of course we need to change the dimensionality of much of our physics, but as I will demonstrate here... the math remains remarkably consistent. 
-
-
-
-#### Our Cosmological Velocity
-
-Let's consider that this dilation of space might give rise to our gravitational acceleration, where $p_1$ becomes akin to the cosmological rest frame. If we allow that this velocity gives rise to spatial dilation, which then gives rise to the gravitational acceleration that we feel, we should examine the derivative of $g$ with respect to $R$.
-
-
-<Image maxHeight="medium" right contain sidebar src="/assets/diagrams/peculiarVelocity_probabilityCurve.png" caption="Plot taken from **Determining the motion of the Solar system relative to the cosmic microwave background using Type Ia supernovae** by C. Gordon et. al." />
-
-
-$$ {#eq_delta}
-\delta = \frac{d}{dR} g = 2 G \frac{M}{R^3}
-$$
-
-If we take the average of this integral, we find a scalar that can be used in the same manner as $\gamma$:
-
-$$ {#onePlusgR}
-\frac{1}{R} \int_0^{R_0} 2 G \frac{M}{R^3} = 1 + \frac{g}{R}
-$$
-
-If we solve $\gamma$ for $v$, we find:
-
-$$
-v_\gamma = c \sqrt{1 - \frac{1}{\gamma^2}}
-$$
-
-Substituting the value from equation <EqRef id="onePlusgR"/> for $\gamma$ we find:
-
-$$ {#vGamma}
-v_\gamma = c \sqrt{1 - \frac{1}{\left(1 + \frac{g}{R}\right)^2}} = 526.6~ \text{km}~ \text{s}^{-1}
-$$
-
-
-This value coincides closely with direct observation, but due to the wide error margins inherent in these types of observations, we're going to have to do better. Don't worry... we can.
-
-### Our Kinematic Velocity {#Section_kinematicV}
-
-Let's consider the fact that Earth kind of has two velocities, our kinematic velocity (the motion through space), and our cosmological velocity (the motion through space plus the motion _of_ space). Since we just derived our cosmological velocity, we should now remove the temporal axis, giving us a velocity within a contained 3-dimensional 'slice'. This gives a velocity relative to the 'dough' in the common raisin bread analogy of cosmic inflation.
-
-Let's first recognize a time dependent quantity as a dimensionless ratio of distances:
-
-$$
-\frac{dx + ds}{dx} \propto \Delta t
-$$
-
-If we consider that time has no _driving_ properties anymore, we should then turn our attention to motion. Since this model proposes that $ds$ (cosmic inflation and now gravitational acceleration) _is_ time, we can find this time dependent quantity as follows:
-
-$$ {#timeEquiv}
-\Delta \tau = \frac{\int_p \dot{x}}{\int_0^v \dot{x}}
-$$
-
-<Card title="Notation" desc="Introducing the notion of 'proportionally bound' derivatives and integrals" >
-
-This notation is likely confusing, so let me clarify. To satisfy the properties time occupies, this quantity is integrated in a manner that is unique, keeping the denominator fixed at 1 unit of distance (the velocity in units of distance) while the integral $\int_p$ is meant to indicate a 'proportional' integral, or an integral that goes on indefinitely as 'time' progresses.
-
-This gives us a dimensionless quantity that is distance/distance, of a magnitude that is equivalent to $t$ in this form, and a magnitude equivalent to $\frac{1}{2}t^2$ when integrated.
+The Eddington Observation, Shapiro Time Delay, and all other validations of GR remain **entirely** intact as the model naturally reproduces the geometry of GR for an observer in co-motion. We are simply re-interpreting the geometry of the electromagnetic 4-potential, and combing the divergence we've already described with cosmic inflation and the equivalence principle to describe a single process as observed from different reference frames. Basically, we're just deleting a derivative that was never an inherent part of the system: time.
 
 </Card>
 
-Let's then re-examine equation <EqRef id="vGamma"/> and it's derivation. Since $dx$ in equation <EqRef id="vGamma" /> is per unit time, we should then divide by $v_\gamma$ and multiply by our time equivalent quantity from equation <EqRef id="timeEquiv"/>.
+### The Coordinate Transformations
+
+If $ \Delta t = \gamma d/v$ in _both_ coordinate systems, and $B$ is traveling at the _agreed_ upon velocity, then there is only one set of coordinate transformations that satisfy experiment: The lighthouse and the clock-tower are further separated in the coordinate system of $B$, while $v$ dilates proportional to spatial density in the coordinate system of $A$.
+
+No magical events that happen twice, no endless temporal paradoxes you have to pretend make sense under certain selective reference frames, and most intriguingly... _no time dilation_. In fact, $d/v$ is the only constant! This occurs because motion, being a more fundamental property than time is proportional to local coordinate density, giving a velocity that is in some regards equivalent in each reference frame (depending on how $dx$ is defined). "Time" then dilates between events as those events become further separated as a matter of geometry, not due to a change in any other mysterious quantity we've never directly measured. Sounds a whole lot like cosmic inflation, doesn't it? 
+
+### $\alpha  \omega$ Gravity
+
+Well that's grandiose, isn't it? Let's find $\alpha$ so I can justify that label. We'll define $\omega$ in a second, because after 5 years of this... I'm going to be as grandiose as I want to be.
+
+For the physicists that haven't taken out a pen and paper already, let's derive the equivalence principle under these transformations:
+
+$$
+ \delta = \frac{d}{dR} g = 2 G \frac{M}{R^3}
+$$
+
+<Card title="Note">
+There's no negative sign because we're taking a derivative, but the opposite thing is moving (space, not the observer in free-fall) giving two negative signs. The $\Delta x$ works out... trust me. It's long past time we take a step back from the higher-level mathematics we've invented to make things doable and go back to the basics: geometry and motion.
+</Card>
+
+If we consider that the theoretical spatial dilation might be the source of the equivalence principle, we should consider that $\delta$ may be produced from divergence. Since this divergence would be radial in a simplified single body (of uniform mass density) system, we should find:
+
+$$
+\left|\begin{array}{ccc}
+     \omega & 0 & 0 \\
+    0 &  \omega & 0 \\
+    0 & 0 &  \omega
+    \end{array}\right| = \omega^3 = \delta
+$$
+
+This then of course gives:
+
+$$
+ \omega = \sqrt[3]{\frac{d}{dR}g}
+$$
+
+So what does this evaluate to for Earth?
+
+$$
+ \omega_{\oplus} = 0.0145377741566465
+$$
+
+A little curiosity tells you that's _awfullyyyy_ close to $2 \alpha$, but it's not... $\omega$ actually follows the relationship:
+
+
+$$ {#eq_omega}
+\alpha = \frac{1}{2 - \alpha} \sqrt[3]{\frac{d}{dR}g_{\oplus}} \pm 0.024\%
+$$
+
+But this isn't just a unique, Copernican-like relationship.
+
+### Our Solar Parameters
+
+> **Warning:** This section looks a bit like number fitting, but hang in there. There's a pattern that arises.
+
+Let's explore this same relationship for our solar parameters. If we simply plug them in we find:
+
+$$
+ \omega_{\odot} = 0.00923758696263181
+$$
+
+That's a little disappointing, but let's consider that this $\frac{1}{2 - \alpha}$ term in equation <EqRef id="eq_omega" /> seems to reproduce $\alpha$ using radial gravitational parameters, while Earth is in a rotating frame of reference. If this term reproduces this co-rotating frame of reference, and the Sun being a much larger, more massive body rotates more slowly (about $25.45$ times the rotational period), we might try collapsing this term from $\frac{1}{2 - \alpha} \mapsto \frac{1}{2}$.
+
+Likewise, let us consider that in perfectly Machian Universe, this radiating force would be the source of inertial mass following:
+
+$$
+\vec{m}_{\scriptsize \text{inertial}} = \sum_{i \neq j} \zeta G \frac{M_{\scriptsize \text{grav}}}{R_{ij}^2}\widehat{R}_{ij}
+$$
+
+Where $m_{j}$ is the body in question, $m_{i}$ iterates over all bodies in the system, and $\zeta$ is some yet unknown geometric scaling function that will give us the field equations we need to successfully bind electromagnetism with gravity within a decade.
+
+If we then consider that this quantity may act _inside_ of the divergence that yields $\omega$ for masses that are more dominant of their local Machian environment (the Sun, Jupiter, etc.), we find
+
+$$
+\frac{1}{2 - \alpha} \mapsto \sqrt[3]{\frac{1}{2}}
+$$
+
 
 This gives:
 
 $$
-\int_0^R \int_0^x \left[ -2 G \frac{M_\oplus}{R_\oplus^3} \frac{1}{v_\gamma} \tau \right]~ dR ~ d\tau
-$$
-
-And following the rules of integration defined above, we find:
-
-$$ {#eq_timeDependentDelta}
-\int_0^R \int_0^x \left[ \delta \frac{1}{v_\gamma} \tau \right]~ dR ~ d\tau = 1 + \frac{1}{2} \frac{G M_\oplus}{R^3_\oplus}\frac{1}{v_\gamma} \frac{\dot{x}^2}{\hat{x}}
-$$
-
-<Hint label="Notation" primary>
-  Here and throughout the rest of this note, $\dot{x}$ does not indicate a derivative with respect to time, but rather a fundamental, _driving_ rate of change. $\hat{x}$ is a notation used to demonstrate the magnitude equivalent of $1$ for that velocity, making $\hat{x} = v$ in units of distance. I'm hesitant to say $\hat{x} = v~1t$, because while mathematically accurate, I feel that it hides underlying physics, or rather invents a derivative that is not an inherent part of the system only to remove it by multiplying by $t$.
-</Hint>
-
-If we substitute this result back into equation <EqRef id="vGamma" /> and solve for $\Delta t = 1$ we find:
-
-
-$$
-v_\gamma^\prime = c \sqrt{1 - \frac{1}{\left( 1 + \frac{1}{2} G \frac{M}{R^3} \right)^2}} = 371,567 ~ \text{km} ~ \text{s}^{-1}
-$$
-
-Observational ranges for this value that we can observe much more reliably is between $368,145-369,943~ \text{km}~ \text{s}^{-1}$, giving us a margin of error of:
-
-<Hint error label="Error Margin:">
-  $0.43\%-0.92\%$
-</Hint>
-
-
-#### Curvature
-
-Note here, that as we integrate $\tau$, $R$ should be elongated by $dR$, or $R^\prime = R + g \Delta t$. However, this is obviously _not_ what we observe due to our co-motion along our temporal axis. In other words, this integral is applied as a density gradient, inducing a curvature of precisely $\frac{1}{R}$ in the coordinate system of the observer in co-motion.
-
-This means that a linear path in the coordinate system of the 'oven' may be an accelerated trajectory in the coordinate system of the 'dough' due to this intrinsic curvature, should that intrinsic curvature be smooth, continuous, and in our case... radial. This is what allows this steady rate of spatial dilation to produce the appearance of acceleration for a body with no known direct physical interaction; as gravity converts space to time, so too it converts $\dot{x}$ to $\ddot{x}$. This axis acts as a spatial density gradient in the coordinate system of the observer in co-motion who is experiencing these dilatory effects of time, inducing this $\frac{1}{R}$ behavior, but is expressed as Euclidean distance in the coordinate system of the 'oven'.
-
-$$
-d_{\text{oven}} = \int_C \dot{x} \phi_{\left( x,y,z \right)}
-$$
-
-Where $\phi$ represents this spatial density. $\phi = 1$ at $R$ and scales according to $\uparrow \uparrow dr$ where $dr$ is the radial distance from Earth's surface radius.
-
-This in turn maps $\dot{x} \mapsto \ddot{x}$, remedying the asymmetry inherent in this model while resolving the issue of terminating geodesics in GR. Blackholes are now nothing more than a mirage in the distance that dissipates as an observer approaches that body's gravitational field.
-
-Interestingly, if we take Earth's radius super-factorial, we find:
-
-$$
-\alpha \eta \uparrow \uparrow R = \alpha \eta \left( 1 + 3 + 6 + 10 \dots R_{\oplus}\right) = \mathbf{AU}
-$$
-
-Then $\eta \approx 1.014$, approximating Earth's eccentricity.
-
-
-```typescript -- title="super_factorial.js"
-let total = 0;
-let n = 0;
-let R = 6378100;
-const ASTRONOMICAL_UNIT = 149597870700;
-
-do {
-  total += R - n;
-  n += 1;
-} while (n < R);
-
-console.log(`
-Total: ${total}
-AU / Fundamental Radius: ${
-    // Prints 0.007354830889518064
-    ASTRONOMICAL_UNIT / total
-    }
-`);
-```
-
-
-
---- From Orbital Parameters ---
-
-Let's validate this model by testing this relationship one more time. 
-
-
-Consider the diagram below. If this model is correct, we can improve the derivation of our orbital behavior. Instead of the following:
-
-
-$$
-F_{\text{centripital}} = F_{\text{gravity}}
-$$
-
-We can solve this trigonometrically. 
-
-$$
-R_0^2 + \dot{x}^2 dt^2 = \left(\int_0^{R_0} 2 G \frac{M}{R^3}\right)^2 = \left(R_0 + g\right)^2
-$$
-
-Solving this equality for $dt$ gives only one non-zero solution:
-
-$$
-dt = - \frac{2 G M R^{3}}{G^{2} M^{2} - R^{4} \dot{x}^{2}}
-$$
-
-If we substitute in $\dot{x}$ for it's Newtonian value, we find:
-
-
-$$
-dt = R_0^3 \left(\frac{1}{\frac{1}{2} GM - R_0^3}\right) = 1.00000077
-$$
-
-As relativity predicts this value does not give 1, but a magnitude slightly higher as $\gamma \gt 1$.
-
-Plugging this value in to the equation we used to find $\delta$ gives:
-
-$$
-v = c \sqrt{1 - \frac{1}{dt^2}} = 373,453 ~ \text{km} ~ \text{s}^{-1}
-$$
-
-This value again coincides closely with our velocity observed relative to the CMB dipole, once again laying credibility to the model we are proposing... _gravitational acceleration is a velocity dependent property_.
-
-#### In the relativistic frame
-
-<Image src="/assets/diagrams/cmb_velocity_from_gravtational_params.png" sidebar right maxHeight="medium" paddingY="medium" />
-
-
-
-As we used the Newtonian derived orbital parameters in the previous section to derive a relativistic velocity correction in the form of an increase in elapsed 'time', we can now derive a relativistic equation for a body in stable orbit by setting $dt = 1$ and solving for $\dot{x}$. This gives a model in the coordinate system of the observer in motion, as he travels at the 'agreed upon velocity' (any velocity multiplied by a scalar of 1). 
-
-If we extend our lighthouse & clocktower example to an orbital frame of reference, where $B$ orbits $A$ at an agreed upon velocity $v_o$, then this velocity would be decreased by a factor of $dt$ in the coordinate system of $A$ due to the decreased spatial density of $\mathbf{S}_B$, while our relativistically corrected orbital velocity equation becomes as follows:
-
-$$ {#orbitalVelocityMapping}
-\sqrt{\frac{GM}{R}} \quad \to \quad \frac{\sqrt{G M \left(G M + 2 R^{3}\right)}}{R^{2}}
+\alpha = \sqrt[3]{\frac{1}{2}} \sqrt[3]{\frac{d}{dR}g_{\odot}} \pm 0.0034\%
 $$
 
 
-
-When we solve for $R$ and plugin our galactic parameters here on Earth, we find a radius of $8.12~ Kpc$, _perfectly_ on top of observational values, _without_ any additional unseen mass!
+This gives the outline of a single function that describes $\left( \frac{d}{dR}g \right)^{1/3}$ as oscillating between $\alpha$ and $ \alpha\left(2 - \alpha\right)$ as a function of mass density and velocity, and just look at the results:
 
 <Image 
-   src="/assets/diagrams/orbital_radius_intersection.png"
+   src="/assets/diagrams/omega_mass_density.png"
    maxHeight="large"
     paddingY="medium"
    inline={false}
+    caption="All planets within our system, a moon or two, and a couple other bodies showing this relationship."
 />
 
-In the plot above, 'standard' is our standard orbital velocity equation $\left( G M / R \right)^{1/2}$, 'derived' is the equation we derived in equation <EqRef id="orbitalVelocityMapping" />, and 'local' points to our Sun using $\left(R_{\oplus}, v_{\text{observed}}\right)$ where $v_{\text{observed}}$ is the velocity found by A. Eilers and colleagues, $229,000 ~ \text{m} ~ \text{s}^{-1}$ (_The Circular Velocity Curve of the Milky Way from 5 to 25 kpc_). The actual value we obtain is $230,145.52 ~ \text{m} ~ \text{s}^{-1}$, _without_ any unseen mass.
 
-## Electromagnetism
+## The Equivalence Principle
+> Deriving our kinematic and cosmological velocities from the equivalence principle while resolving the crisis in cosmology
 
-Consider the determinant of a 3-dimensional, diagonal matrix, representing the change in volume of the coordinate system.
+Let's explore the relationship this model shares with the equivalence principle. I'm sure it's obvious for experienced physicists, but there are some hidden gems... keep reading.
 
-$$
-s = \left|\begin{matrix}
-  \omega & 0 & 0 \\
-  0 & \omega & 0 \\
-  0 & 0 &\omega\
-\end{matrix}\right| = \omega^3
-$$
+First, it's immediately obvious that we can just rewind this geometry to reproduce $\vec{g}$ at Earth's surface. In _both_ cases (electromagnetic/gravitational parameters) we can derive both our kinematic and cosmological velocities[^1], but let's start with the EM parameters, because there's more to find here.
 
-Not only does this accommodate existing experimental validations of SR & GR[[cite:PoundRebka]], it does so while accommodating the original relativistic experiment: Michelson & Morely[[cite:Michelson_Morely]][^3]. The only direction they didn't evaluate was along the radial vector, precisely the direction described by this determinant.
-
-If we consider that the magnitude of $\delta$ _is_ this determinant, we should then take it's cube root:
-
+First, let's swap $R$ over to the other side while focusing on an Earth like body (being more on the receiving end of local Machian flux):
 
 $$
-\omega = \sqrt[3]{\delta} = \sqrt[3]{\frac{2 G M_\oplus}{R_\oplus^3}} = 0.01453 ~ \frac{1}{\text{s}}
+R \left(\alpha \left( 2 - \alpha \right) \right) = \sqrt[3]{2GM}
 $$
 
-Woah... that number looks familiar that's $\frac{1}{2} \alpha \pm 0.39\%$! As a matter of fact, when you solve for the `2`, the solution is actually:
+If we then cube things as we would to undo the geometry we used to create this mess, we find:
 
 $$
-2 - \alpha \pm 0.025\%
-$$
-
-Giving a final equation of:
-
-$$ {#eq_alphaReciprical}
-\boxed{\alpha = \frac{1}{2 - \alpha} \sqrt[3]{2 \frac{G M_\oplus}{R_\oplus^3}} \pm 0.025\%}
-$$
-
-Solving this equation for $\alpha$ gives:
-
-$$
-\alpha = 1 \pm \sqrt{1 - \left(\frac{2 G M_\oplus}{R_\oplus^3}\right)^{1/3}} = 1.9927 \text{ or } 0.0072953
-$$
-
-That's almost precisely the value we were looking for when we add these values, and almost exactly $\alpha$ again when we subtract them, giving very Fibonacci-like vibes.
-
-<Hint label="Final Error:" error>
-  $0.025\%$
-</Hint>
-
-
-
-
---- <Emoji name="sun" inline smedium/> ---
-
-####  Using our solar parameters, equivalent to $\text{spinor}=\left( \frac{1}{2} \right)^{1/3}$
-
-Let's consider the fact that we have a set of unique properties for two known bodies, us, and the sun. First, we _know_ that all of our observational 'constants' are accurate _here_. Second, we _know_ that the Sun is the dominant gravitational object in the vicinity. Let's take advantage of this fact by presuming that the lower limit of this 'spinor' approximation is found at the Sun.
-
-Let's consider this function where the $\text{spinor}=\left( \frac{1}{2} \right)^{1/3}$, or the same quantity before the torsion applied by $\alpha$ and the dilation applied by $ds$.
-
-Plugging this back into equation <EqRef id="eq_alphaReciprical" /> gives:
-
-$$
-\lim_{\Gamma \to \left(\frac{1}{2}\right)^{1/3}} \sqrt[3]{2 \frac{G M_\oplus}{R_\oplus^3}} = \sqrt[3]{\frac{GM_\odot}{R_\odot^3}} =  \alpha \pm 0.0034\%
-$$
-
-Where
-
-$$
-\Gamma = \frac{1}{2 - \alpha}
-$$
-
-Demonstrating that this function is _more_ than just a coincidence.
-
-<Hint label="Error" error>
-$1 \pm \alpha$ with an error of $0.00347\%$ and $0.003427\%$ respectively.
-</Hint> 
-
-
-### Integrating Magnetic Divergence
-
-Let's now take a second to recognize that to find this quantity
-
-$$
-\alpha \left(2 - \alpha\right) = \sqrt[3]{\frac{d}{dR} g}
-$$
-
-We first took the inverse of divergence. Let's now cube it to bring it back up to scale.
-
-$$
-\left( \alpha \left( 2 - \alpha \right)  \right)^3 = \frac{d}{dR}g = 2 \frac{G M_{\oplus}}{R_{\oplus}^3}
-$$
-
-Or expanded, this gives
-$$
-\frac{d}{dR}g = 2 G \frac{M}{R^3} = \nabla \cdot \vec{B} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{3}}{8 h^{3}}
-$$
-
-If we then slide the $R_{\oplus}$ over to the over side to integrate magnetic divergence according to $R$, we find:
-
-$$
-\int_0^R \nabla \cdot \vec{B} = R^{4} \left(\frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{4 h^{3}} + \frac{3 \mu_{0} e^{10} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{64 \epsilon_{0} h^{5}} - \frac{3 \mu_{0}^{2} e^{8}}{16 \epsilon_{0}^{2} h^{4}} - \frac{\mu_{0}^{3} e^{12}}{256 \epsilon_{0}^{3} h^{6}}\right) = 1.272122073168672 \times 10^{21}
-$$
-
-That's 
-
-$$
-\sqrt{ \Phi \times 10^{42}} \pm 0.00805\%
+R^3 \left(\alpha \left( 2 - \alpha \right) \right)^3 = \frac{R^{3} e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{
+    e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h}\right)^{3}}{8 h^{3}} 
 $$
 
 
-<Image 
-    src="/assets/diagrams/phaseshift_at_r.png"
-    maxHeight="medium"
-    paddingY="medium"
-    centerSelf
-/>
+If we integrate $R$ as we would to finally produce $\vec{g}$, we don't get $\left| g \right| \approx 9.8$, but rather 
 
-Where the above plot illustrates the intersection of this function with 
-
-$$
-\left(R_{\oplus}, \sqrt{ \Phi \times 10^{42}}\right)
+$$ {#eq_em_integral}
+\begin{aligned}
+q_{\oplus} & = \int R^3 \left(\alpha \left(2 - \alpha \right)\right)^3 ~ dR \\ 
+& = R^{4} \left(\frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{4 h^{3}} + \frac{3 \mu_{0} e^{10} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{64 \epsilon_{0} h^{5}} - \frac{3 \mu_{0}^{2} e^{8}}{16 \epsilon_{0}^{2} h^{4}} - \frac{\mu_{0}^{3} e^{12}}{256 \epsilon_{0}^{3} h^{6}}\right) \\
+& = 1.27212207316867 \times 10^{21} \\ 
+& = \sqrt{ \Phi \times 10^{42}} \pm 0.008\% 
+\end{aligned}
 $$
 
---- Significance of $\alpha$ ---
+Or about $0.000213$ units of temporally co-moving charge per kilogram and yes... that's the square root of the Golden Ratio possibly indicating some sort of phase-shift at $R = R_{\oplus}$.
 
-If you're unfamiliar with physics, let's take a second to break down what we're doing here.
+If a physical operation exists such that $R$ is swapped over algebraically at $q = \sqrt{ \Phi \times 10^{42}}$, this phase-shift becomes completely reasonable, describing gravitational mass as a completely electromagnetic phenomenon and giving rise to our specific radius. Why $10^{42}$? Some unknown function of $\sum m_{i}$ and $r$. The same function that gives rise to inertia itself.
 
-This is what $\alpha$ looks like completely written out:
+**Kinematic Velocity** 
 
-$$
-\alpha = \frac{1}{4 \pi}\frac{e^2}{\hbar}\sqrt{\frac{\mu_0}{\epsilon_0}}
-$$
+Since we're presuming the equivalence principle is induced by the dilation described these modified Lorentz transformations, let us investigate this quantity as $\gamma$ under the relationship that these additional terms represent the $ds$ portion of $\gamma$, where $\gamma = 1 + ds$. This then gives:
 
 
-| Component | What it does |
-| -------- | ------------ |
-| $1/4\pi$ | A consequence of the spherical geometry |
-| $\epsilon_0$ | The electric constant |
-| $\mu_0$ | The magnetic constant |
-| $e$ | The fundamental charge | 
-| $\hbar$ | The momentum carrying quantity of a massless photon. | 
-| $\frac{1}{\sqrt{\mu_0 \epsilon_0}}$ | The speed of light, and therefore the speed of causality. |
-
-
-
-That's basically the relationship of all of electromagnetism described in one function, now defined in terms of gravitational parameters. Don't worry though, we can keep going! Now that we've derived a relationship to $ \alpha$, we can take advantage of the electromagnetic equations. Let's take advantage of the fact that the electromagnetic tensor is undefined at $\Delta t = 0$. If electromagnetism can not exist without time, maybe time is masking a subset of electromagnetic properties. 
-
-
-### Electric Field Divergence Equivalent
-
-Let's start by assuming the following identity:
-
-$$
-\nabla \cdot E = c \left(\nabla \cdot B\right)
+$$ {#eq_gamma_em}
+\gamma_{\scriptsize \text{em}} = 1 + \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{4 h^{3}} + \frac{3 \mu_{0} e^{10} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{64 \epsilon_{0} h^{5}} - \frac{3 \mu_{0}^{2} e^{8}}{16 \epsilon_{0}^{2} h^{4}} - \frac{\mu_{0}^{3} e^{12}}{256 \epsilon_{0}^{3} h^{6}}
 $$
 
-
-Since 
-
-$$
-\nabla \cdot \mathbf{S} = \delta
-$$
-
-then
+If we solve $\gamma$ for $v$ and substitute this quantity in for $\gamma$, we find:
 
 $$
-\nabla \cdot \mathbf{B} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{3}}{8 h^{3}} \approx \delta 
+v = c \sqrt{1 - \frac{1}{ \gamma^2_{\scriptsize \text{em}}}} = 371,721.085 ~\text{m} / \text{s}
 $$
 
-and 
+This aligns with our _observed_ velocity relative to the CMB to within $0.52\%$ (almost precisely a ratio of $1 + \alpha$ if you prefer the pre-Plank data). 
 
-$$ {#eq_electricDivergence1}
-\nabla \cdot \mathbf{E} = c \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h}\right)^{3}}{8 h^{3}} = 921.116 ~\text{meters}
+
+<Admonition title="Quick Review" info foldable folded>
+So far we've derived a set of coordinate transformations that not only satisfy experiment, but do so without any dependence upon time as a physically meaningful quantity. We've then applied these coordinate transformations, and discovered the _outlines_ of a function yielding electromagnetic parameters from gravitational inputs. This alone would be something worthy of further <Hl>funded</Hl> study, but we didn't end there. We then discovered that these transformations also produce the golden ratio to an uncanny accuracy, and lastly: That these transformations yield just 1 of the 4 independently derived equations that correctly predict our local velocity we'll have by the end of this ~~article~~ _paper_.
+
+Next, we'll move on to our gravitational parameters, repeating the same steps and discover that they predict not just our kinematic velocity, but our cosmological velocity as well. We'll then find a pair of equations given from simple high-school trig that reproduces our galactic orbital velocity with only _visible_ mass, and again... the same kinematic velocity (still following the same $1 +  \alpha$ relationship with the pre-Plank data).
+
+As the last like "probably right" equation, we'll end with is a somewhat speculative but like holy-shit accurate derivation of Earth's rotational velocity, reproducing Earth's polar radius to an error of just over an inch and a cumulative velocity error of roughly a literal crawling pace. It's not a direct mechanical derivation, but more of a 'well I wonder what this electromagnetic equivalent would be now that we have $\nabla \cdot{E}$ in a temporally co-moving frame?' and _bam_... our rotational velocity. Is that as good as a mechanical derivation? Of course not, but that's not the same as number fitting. This curiosity based, exploratory approach is almost exactly inline with the way AI would attack a problem like this. This is far more scientific than believing in mathematical definitions that don't match reality, even if many of the observations to this point are post-hoc.[^4] Somewhere along the way, right around the time physicists became mathematicians the physics community began to believe that curiosity, if outside the bounds of the hypothesis-first scientific method is invalid. With the way this geometry aligns itself with the work of Wyler, with space-time being a sort of hypersphere in derivative form, I think it's long past time the community develops a sense of humility and reinvestigates these possibilities.
+
+And then after all that, we'll end with some additional numerical alignments, because numerology is interesting when there's new physics that's just been handed to you[^3].
+
+</Admonition>
+
+## Gravitational Parameters
+
+So, by the nature of the equality defined above it's pretty obvious we can do exactly the same operation to reproduce our kinematic velocity here on Earth, but there's an interesting surprise: We actually find our cosmological velocity first! It's not until we explicitly remove time as a physical quantity by defining a set of simple 'time-equivalent' quantities and integrate this temporal dimension that we find our kinematic velocity (still following that $1 + \alpha$ relationship with the pre-Plank data interestingly)!
+
+It is this very relationship, the fact that time _is_ this divergence of space that gives rise to the electromagnetic 4-potential where:
+
+$$
+\nabla \cdot \vec{E} = \rho = j^{0}
 $$
 
-If we then multiply equation <EqRef id="eq_electricDivergence1" /> by our _spinor_ approximation, converting this linear spatial dilation to rotation, we find:
+Where $j^{0}$ is uniquely the time component of the 4-vec of current.
+
+Or
 
 $$
-\nabla \cdot \mathbf{E} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{2}}{ \left( \mu_0  \epsilon_0\right)^{\frac{1}{2}} 8 h^{3}} = 462.244~ \text{meters} = \frac{d \theta}{dt} R_\oplus T_{\text{day}} ~ \pm 0.006778\%
+m \vec{a} =
+e \left(\frac{\partial A_{m}}{\partial x^{0}}-\underbrace{\frac{\partial A_{0}}{\partial x^{m}}}_{\text{Time Gradient}}\right)+ \
+e\left(\frac{\partial A_{m}}{\partial x^{n}}-\frac{\partial A_{n}}{\partial x^{m}}\right)
 $$
 
-That's our rotational velocity on Earth's equator $\pm -0.006778\%$! Off by a total of 0.03 meters (1.18 inches) for a quantity that takes into account a radius the size of Earth's and a period as long as our day!
+Giving
 
+$$
+\vec{E} = \frac{\partial }{\partial t} \overbrace{\vec{A}}^{\text{space}} -  \nabla \underbrace{A_{0}}_{\text{Time}}
+$$
+
+
+This geometry is already implicit in our equations. It's time to make it explicit and just admit the obvious: The Earth is expanding _with_ the rest of the Universe, and this is the source of the equivalence principle. We're just in a reference frame that's in co-motion along this concurrent density axis.
+
+
+
+### Cosmological Velocity From Gravitational Parameters
+
+First, take the derivative of $g$ with respect to $R$ again...
+
+$$
+\delta = \frac{d}{dR}g
+$$
+
+Then to find a scalar so that we can simply find the product with some length quantity we should take the average of the integral of $\delta$:
+
+$$
+\phi_{\left( R \right)} = \frac{1}{R}\int_0^{R} 2G \frac{M}{R^{3}} = 1 + \frac{g}{R}
+$$
+
+If we then again solve $\gamma$ for $v$ and substitute in $\phi_{\left( R \right)}$ for $\gamma$, we find:
+
+$$ {#vCosmo}
+v_{\scriptsize \text{cosmo}} = c \sqrt{1 - \frac{1}{\phi_{\left( R_{\oplus} \right)}^{2}}} \approx 525,493 ~ \text{m} / \text{s}
+$$
+
+<Image maxHeight="medium" right contain sidebar src="/assets/diagrams/peculiarVelocity_probabilityCurve.png" caption="Plot taken from **Determining the motion of the Solar system relative to the cosmic microwave background using Type Ia supernovae** by C. Gordon et. al." />
+
+The image on the right was taken from an analysis carried out by Christopher Gordon and his colleagues correlating distant SNe to the CMB. 
+
+Here's the thing: This idea that the discrepancy between the CMB and SNe observations indicates some sort of acceleration is ridiculous. As light travels from some distant star it travels across a fluid like space-time, experiencing the dilation of each $\Delta s$ according to environment local to that small $ds$ portion. As we travel _through_ space (our kinematic velocity) the aether represents the coordinate system as it appears in co-motion[^5], therefore not yielding this same dilation of time between events which is itself secondary to the dilation of space. This aligns itself _perfectly_ with inertia as you would expect it to appear in a Machian Universe, where inertial resistance is induced by the same phenomenon inducing the kinematic dipole.
+
+It is the dilation of this aether that allows the concurrent nature of space-time to occur in much the same way two analog radio channels can communicate simultaneously. If this concurrent nature isn't self evident, think about it: $A$ and $B$ share time coordinates at the time at which $B$ goes in motion. Then they don't, yet $B$ didn't disappear into a cloud of pixie dust. If $A$ and $B$ still exist, yet they don't share temporal coordinates, but they once have... this axis is concurrent. The hot, ultra-dense state of the early Universe still exists concurrently to our own existence, separated only by this density axis. 
+
+What can we take a away from this model of synchronicity and chronology? If you really want to kill your own grandfather... he needs to still be alive. If you go back in time some $- \Delta t$, your grandfather won't be there. Nobody that was there at that density state, where $ds$ between coordinates is equal to that specific unit length will be there any more, as they've all progressed to the next unit length the second that instant was over. That's what time is!
+
+Imagine two people in Chicago on their way to Milwaukee (pretend for the sake of argument Milwaukee and Chicago are oriented perfectly along the y-axis). If person $A$ wants to effect person $B$ in some manner, they need to both be at the same position along our y-axis. If $B$ was in Chicago, but now they're in Milwaukee, it doesn't matter how quickly you travel back to Chicago... they won't be there. Our temporal dimension behaves in precisely the same way. This borders on being a fundamental property of any independent axis of travel, and in hindsight, our current model of chronology should seem pretty ridiculous.
+
+So what's at some shifted temporal position now? I don't know... I'm not religious in any fundamentalist sense, but if this doesn't bring to mind images of Heaven and Hell as they're typically described... "up" and "down" from a spherical source? Let alone all of the temporal paradoxes this model of synchronicity resolves? I think it's the dimension we describe as life and death. Ghosts, out of body experiences, the sorts of alien technology we appear to be seeing? It may not _all_ be fact, but many such phenomenon become ***significantly*** more probable under this temporal geometry.[^8] 
+
+### Time Equivalent Quantities
+
+Ok, I'm assuming most people that hung in here this long have a baseline understanding of relativity, and I've written this article about 30 times, so I'm going to keep this part super straight-forward.
+
+Time doesn't exist. It's a mathematical tool we've built to help us understand physics in a co-moving frame of reference, but we're ready to move beyond that... to the physics of the "oven's" frame in the common raisin bread analogy. To do this, we need to define time completely as a function of motion.
+
+Imagine some photon, $c_{1}$ and massive bodies $m_{1}\dots m_{i}$ in the immediate vicinity of $c_{1}$. As $c_{1}$ moves some distance $dx_{c_{1}}$, all other bodies move an equivalent $\beta_{i}~ dx_{c_{1}}/ c$ where $\beta_i$ indicates the proportional velocity of body $m_{i}$. Space in turn responds to this motion, dilating as a function of local masses and velocities, which we perceive as both cosmic inflation and gravitational acceleration.
+
+What role does time play here? None. We can define some arbitrary point in time where $ds = 1$, with $ds$ indicating the distance between two neighboring coordinates and calculate dilation from this point to define a 4th displacement coordinate, and _motion_ now occupies the most fundamental, driving rate of change.
 
 <Admonition title="Dimensionality" info foldable sidebar right>
 As in traditional models, 
@@ -494,95 +333,235 @@ $$
 In the same manner that $vt = \text{distance}$
 </Admonition>
 
-
-### Velocity as a function of $\alpha$
-
-Let's consider equation <EqRef id="eq_alphaReciprical"/> once again. If we re-arrange this equation such that $ds$ is isolated on one side, we find:
+Let us then recognize a time equivalent quantity as a dimensionless ratio of distances:
 
 $$
- \alpha \left( 2 - \alpha \right)= ds = \delta^{1/3}
+\frac{dx + ds}{dx} \propto \Delta t
 $$
 
-Cubing $\delta$ to bring the units of time back to a power of 1 gives:
+If we consider that time has no _driving_ properties anymore, we should then turn our attention to motion. Since this model proposes that $ds$ (cosmic inflation and now gravitational acceleration) _is_ time, we can find this time dependent quantity as follows:
 
-$$
-\left(\alpha \left( 2 - \alpha \right) \right)^3 = ds^3 = \delta
-$$
-
-If we consider that all velocities are proportional in magnitude to $c$, we should not look for $v$, but for $\beta^2$. This then gives:
-
-$$
-\left(\alpha \left( 2 - \alpha \right) \right)^3 = \beta_0^2 \pm 0.08\%
+$$ {#timeEquiv}
+\Delta \tau = \frac{\int_p \dot{x}}{\int_0^v \dot{x}}
 $$
 
-One can very logically make an argument for the small-angle approximations being a cause for coincidence here, but as a function of $\alpha$? 
+<Card title="Notation" desc="Introducing the notion of 'proportionally bound' derivatives and integrals" >
 
-Expanding this using our earlier derivation of our cosmological velocity gives
+This notation is likely confusing, so let me clarify. To satisfy the properties time occupies, this quantity is integrated in a manner that is unique, keeping the denominator fixed at 1 unit of distance (the velocity in units of distance) while the integral $\int_p$ is meant to indicate a 'proportional' integral, or an integral that goes on indefinitely as 'time' progresses.
+
+This gives us a dimensionless quantity that is distance/distance, of a magnitude that is equivalent to $t$ in this form, and a magnitude equivalent to $\frac{1}{2}t^2$ when integrated.
+
+</Card>
+
+Let's then re-examine equation <EqRef id="vCosmo"/> and it's derivation. Since $dx$ in equation <EqRef id="vCosmo" /> is per unit time, we should then divide by $v_{\scriptsize \text{cosmo}}$ and multiply by our time equivalent quantity from equation <EqRef id="timeEquiv"/>.
+
+This gives a quantity that is _motion_ dependent, **not** time dependent.
+
+$$ {#eq_time_removed}
+\int_0^R \int_0^x \left[ -2 G \frac{M_\oplus}{R_\oplus^3} \frac{1}{v_{\scriptsize \text{cosmo}}} \tau \right]~ dR ~ d\tau
+$$
+
+And following the rules of integration defined above, we find:
+
+$$ {#eq_timeDependentDelta}
+\int_0^R \int_0^x \left[ \delta \frac{1}{v_\gamma} \tau \right]~ dR ~ d\tau = 1 + \frac{1}{2} \frac{G M_\oplus}{R^3_\oplus}\frac{1}{v_\gamma} \frac{\dot{x}^2}{\hat{x}}
+$$
+
+<Hint label="Notation" primary>
+  Here and throughout the rest of this note, $\dot{x}$ does not indicate a derivative with respect to time, but rather a fundamental, _driving_ rate of change. $\hat{x}$ is a notation used to demonstrate the magnitude equivalent of $1$ for that velocity, making $\hat{x} = v$ in units of distance. I'm hesitant to say $\hat{x} = v~1t$, because while mathematically accurate, I feel that it hides underlying physics, or rather invents a derivative that is not an inherent part of the system only to remove it by multiplying by $t$.
+</Hint>
+
+
+If we substitute this result back into equation <EqRef id="vCosmo" /> and solve for $\Delta t = 1$ we find:
+
 
 $$
-\left(\alpha \left( 2 - \alpha \right) \right)^3 = 1 - \frac{1}{\left(1 - G \frac{M_\oplus}{R_\oplus^3}\right)^2}
+v_{\scriptsize \text{kinematic}} = c \sqrt{1 - \frac{1}{\left( 1 + \frac{1}{2} G \frac{M}{R^3} \right)^2}} = 371,567 ~ \text{m} ~ \text{s}^{-1}
 $$
 
-And with some simple algebra, we find:
+Using observational ranges of $368,145-369,943~ \text{m}~ \text{s}^{-1}$ (forgot what paper it's from and I literally can't afford internet. My blunder.), this gives us a margin of error of:
+
+
+<Hint error label="Error Margin:">
+  $0.43\%-0.92\%$
+</Hint>
+
+## Galactic Rotation & Kinematic Velocity
+
+<Image src="/assets/diagrams/cmb_velocity_from_gravtational_params.png" sidebar right maxHeight="medium" paddingY="medium" />
+
+Consider the diagram shown here. A little high school trig gives us:
+
+$$ {#eq_trig_derivation}
+R_0^2 + \dot{x}^2 dt^2 = \left(\int_0^{R_0} 2 G \frac{M}{R^3}\right)^2 = \left(R_0 + g~ dt\right)^2
+$$
+
+Solving this equation for $dt$ gives only one non-zero solution:
+
 
 $$
-\boxed{
+dt = \frac{2 R g}{\left(\dot{x} - g\right) \left(\dot{x} + g\right)}
+$$
+
+Then recall that our escape velocity is derived by integrating kinetic energy radially[^6]... let's use that for $\dot{x}$. This then gives us:
+
+$$
+dt = - \frac{2 R^{3}}{G M - 2 R^{3}} = 1.000000768
+$$
+
+And you guessed it... solve $\gamma$ for $v$, and wait for that mysterious $1 + \alpha$ relationship with the pre-Plank data to pop up.
+
+$$
+v = c \sqrt{1 - \frac{1}{dt^2}} = 371,580 ~ \text{m} ~ \text{s}^{-1}
+$$
+
+That's an error of about $0.44\%$... _again_, derived from math an AP high school student is familiar with.
+
+--- 
+
+Let's now consider this trigonometric setup described in equation <EqRef id="eq_trig_derivation"/>. If instead of solving for $dt$ to find the time dilation we set $dt = 1$ (aka: The co-moving frame) and solve for $\dot{x}$, we find:
+
+$$ {#eq_orbital_vel}
+\dot{x} = \frac{\sqrt{G M \left(G M + 2 R^{3}\right)}}{R^{2}}
+$$
+
+Plugging in some values for Earth gives us:
+
+$$
+\dot{x}_\oplus \approx 11,179 ~ \text{m} / \text{s}
+$$
+
+That's almost precisely our escape velocity, but we're looking for a stable orbit velocity! What the :poop:?! 
+
+
+So what's going on here? We exist in a Machian Universe where inertia is comprised of this radiating force for all other bodies in the system. This Machian flux causes this simplified single body solution to limit at our Newtonian orbital velocity equations, but what if we found a system where the overwhelming majority of the mass was on the interior, radiating _outwards_? You know... like a planet on an arm of a spiral galaxy?
+
+<Image 
+   src="/assets/diagrams/orbital_radius_intersection.png"
+   maxHeight="large"
+    paddingY="medium"
+   inline={false}
+    centerSelf
+/>
+
+If we solve equation numerically <EqRef id="orbital_vel" /> by simply plugging in our galactic parameters, we find:
+
+$$
+\dot{x} = \sqrt{\frac{G M \left(\frac{G M}{R^{2}} + 2 R\right)}{R^{2}}} = 230,571 ~ \text{m} / \text{s}
+$$
+
+If we plug in our galactic parameters, the value we find falls almost perfectly on top of the work carried out by Anna Eilers and her colleagues (plot above), with only visible mass $\left((5 \times 10^{10}) M_{\odot}\right)$. Also, keep in mind that I didn't even attempt to integrate mass radially to fit the curve, as I don't believe our models are accurate enough to provide a realistic mass distribution. Integrating mass in this manner would fit the curve of the observational data better, providing more than just a single intersection.
+
+
+## Electric Field Divergence Equivalent
+
+There's still a lot of speculative work I'd like to mention, but this one is kind of the bridge between the "yup, this is kinda obvious in hindsight" stuff above, and the "well, this kinda makes sense" stuff below. The derivation makes a couple assumptions, but the accuracy with which our rotational velocity pops out should at least be reason to investigate further.
+
+To be clear, this derivation doesn't claim to _derive_ our rotational velocity. It simply asks the question: "What physical quantity induces the macroscopic equivalent of electric divergence, now that we know the divergence of the magnetic field in a co-moving frame of reference?" and our rotational velocity is just sitting there.
+
+Let's start by assuming the following identity:
+
+$$
+\nabla \cdot E = c \left( \nabla \cdot B \right)
+$$
+
+While the lines between electricity and magnetism become even more blurred than in standard relativistic electromagnetism, this identity should hold true if the only difference between $\vec{E}$ and $\vec{B}$ is orientation with respect to an equi-temporal "slice".
+
+Then, since
+
+$$
+\nabla \cdot S = \delta
+$$
+
+$\nabla \cdot B \neq 0$, but rather is equivalent to the divergence of the coordinate system itself. It only _appears_ to be zero due to our co-motion along this axis.
+
+$$
+\nabla \cdot \mathbf{B} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{3}}{8 h^{3}} \approx \delta 
+$$
+
+and 
+
+$$ {#eq_electricDivergence1}
+\nabla \cdot \mathbf{E} = c \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h}\right)^{3}}{8 h^{3}} = 921.116 ~\text{meters}
+$$
+
+
+Well, remember that $\frac{1}{2 - \alpha}$ term that seems to reproduce a rotating frame of reference? Let's multiply equation <EqRef id="eq_electricDivergence1" /> by that thing.
+
+$$
+\nabla \cdot \mathbf{E} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{2}}{ \left( \mu_0  \epsilon_0\right)^{\frac{1}{2}} 8 h^{3}} = 462.244~ \text{meters} = \frac{d \theta}{dt} R_\oplus T_{\text{day}} ~ \pm 0.006778\%
+$$
+
+That's our rotational velocity on Earth's equator $\pm -0.006778\%$. Off by a total of 0.03 meters (1.18 inches) for a quantity that takes into account a radius the size of Earth's and a period as long as our day. Granted, I don't know _why_ it pops up here, but it should be expected that we find _a_ velocity, as this entire process is now _motion_ dependent, and I mean on a radius the size of Earth's, we're off by an inch :usa:? Number fitting? Kinda... but if this degree of accuracy doesn't cause you to at least wonder, you're just not scientifically minded.
+
+## Speculative
+> Quickly clarifying my stance on certain claims I've made
+
+Ok, so I'm _very_ confident gravity is velocity dependent. It honestly borders on obvious at this point. _This_ many alignments aren't a coincidence, and they don't require a single event to happen twice. No matter how you define an event mathematically, it's irrelevant if that definition does not match reality. A single, instantaneous event is and always has been a single measurement as the elapsed period approaches zero. 
+
+I'm not as confident about some of the other claims I make above, and I want to be as clear as possible about what I'm claiming is an almost certain eventual replacement for GR, and what I'm claiming is simply intriguing.
+
+The $1 + \alpha$ relationship with the pre-Plank data? It's interesting that it pops up so reliably, but it's just that... interesting at best.
+
+The fact that $c$ dilates proportional to $ds$, as do all velocities? This one should be common sense. If time dilates between reference frames, and velocity is time dependent, how can $c$ be constant _in_ each frame ***and*** _between_ each frame? The two properties become mutually exclusive. $c$ _must_ dilate between frames to _appear_ constant in each frame. It's even inherent in the components of $c$, $\mu_0$ and $\epsilon_0$ with both being space dependent.
+
+The $\alpha$ relationship defined in equation <EqRef id="omega"/>? This is also incredibly probable, 
+
+
+### I Promised You Number Fitting
+> This _definitely_ belongs under the **Speculative** section.
+
+From small angle approximations we can say that this is close to true:
+
+$$
 G = \frac{R^3_\oplus}{M_\oplus} \left(\sqrt{\frac{1}{1 - \left(\alpha \left(2 - \alpha\right)\right)^3}} - 1\right) \pm 0.076\%
+$$
+
+And with a little creative algebra and some small angle approximations:
+
+$$
+\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\Phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{kg}}{m^3}
+$$
+
+Which aligns with observation to within $0.85\%$. Not great, but not bad for a geometric approximation at best.
+
+And then there's the fact that the exact minimum curvature required by this model to be geometrically sound reproduces the distance to the Sun and $\alpha$...
+
+
+```typescript -- title="thinker.js"
+let total = 0;
+let n = 0;
+let R = 6378100;
+const ASTRONOMICAL_UNIT = 149597870700;
+
+do {
+  total += R - n;
+  n += 1;
+} while (n < R);
+
+console.log(`
+Total: ${
+// (n * (n + 1)) / 2
+total
 }
-$$
+AU / Fundamental Radius: ${
+    // Prints 0.007354830889518064
+    ASTRONOMICAL_UNIT / total
+    }
+`);
+```
 
 
-
-### Displacement Current Equivalent
-
-
-Let's now consider the electromagnetic displacement current $\mathbf{{J}}$ where
-
-$$
-\mathbf{{J}} = \rho_e v_0
-$$
-
-Since, in classical electromagnetism:
+And then there's this:
 
 $$
-\nabla \cdot E = \frac{{\rho_e}}{{\epsilon_0}}
+\frac{v_{g}}{v_{\text{orbit}}} = \alpha \frac{\mathbf{AU}}{R_\oplus}
 $$
 
-Then
-
-$$
-\mathbf{{J}} \propto \delta \cdot v_0
-$$
-
-Or
-
-$$
-\mathbf{{J}} \propto 2 \frac{GM_\oplus}{R_{\oplus}^3} c \sqrt{1 - \frac{1}{\left(1 + G\frac{M_\oplus}{R_\oplus^3}\right)^2}} = 1.6145 ~\frac{\text{m}^2}{\text{s}}
-$$
-
-> **Note:** There is a radius here on Earth's surface where this value is precisely $\Phi$, the **Golden Ratio**.
-
-
-### Earth's Orbital Velocity From $\alpha$
-
-Consider the radius-independent magnitude of our metric for the dominant body in our system, the Sun:
+Where 
 
 $$
 v_{g} = \sqrt[3]{GM_\odot}
-$$
-
-Considering that _nothing_ in this model is proportional to time, we should consider this model as proportional to $dx$, or orbital velocity.
-
-$$
-\frac{v_{g}}{v_{\text{orbit}}} = 171.25209
-$$
-
-As this relates the dilation of space to the velocity relative to the underlying coordinate system, we should then consider the relationship of _static_ space, and guess what...
-
-$$
-\boxed{
-\frac{v_{g}}{v_{\text{orbit}}} = \alpha \frac{\mathbf{AU}}{R_\oplus}
-}
 $$
 
 Or if approximating as a perfectly circular orbit:
@@ -592,90 +571,94 @@ $$
 $$
 
 
+Which if we're _really_ number fitting gives an error approaching our orbital eccentricity, but that one's a reach even for me.
 
 
-## Mass Density Approximation
-
-Finally, let's wrap this all up with one last approximation. Consider the following, that we've derived above:
-
-$$
-\beta_0^2 \approx 1 - \frac{1}{ \left(1 + \frac{g}{R}\right)^2 } \approx \left( \alpha \left( 2 - \alpha \right) \right)^3
-$$
-
-Then considering that
-
-$$
-\rho = \frac{M}{V} = \frac{M}{\frac{4}{3} \pi R^3} = \frac{3M}{4\pi R^3}
-$$
-
-and the fact that we defined
-
-$$
-\delta = 2 \frac{G M_\oplus}{R_{\oplus}^3}
-$$
-
-Then
-
-$$
-\frac{M}{R^3} = \frac{\delta}{2G}
-$$
-
-and
-
-$$
-\rho = \frac{3}{4\pi} \left(\frac{\delta}{2G}\right) = \frac{3 \delta}{8 \pi G}
-$$
-And given the relationship that
-
-$$
-\delta \approx \frac{\Phi}{v_0}
-$$
-
-and
-
-$$
-\beta^2 \approx \left(\alpha \left(2 - \alpha\right)\right)^3
-$$
-
-then finally
-
-$$
-\rho = \frac{3 \left( \frac{\delta R^{3}}{2G} \right)}{4 \pi R^{3}} = \frac{3 \delta}{8 \pi G} = \frac{\Phi}{G c \alpha \left(2 - \alpha\right)} = 5561.006 \frac{\text{kg}}{m^3}
-$$
-
-This is our observed mass density, $m_{0}$...
-
-$$
-\rho = \frac{M_{\oplus}}{\frac{4}{3} \pi R^3} \pm 0.85\%
-$$
-
-That's an error of under 1% for an approximation, that's using approximations and transcendental quantities, demonstrating the wide application of this model.
+## Closing Arguments
 
 
-### Results
+<Card title="On the issue of dimensionality">
 
-If we omit this last derivation of $\rho$, admitting that it is merely an approximation and the derivation of our cosmological velocity, as an accurate estimate is so difficult to obtain, we achieve an average error of $0.0842\%$, across more than a dozen functions. We've defined $G$ as a function of mass density and electromagnetic parameters, we've derived both our kinematic and cosmological velocities, and most importantly... we found $\alpha$ as a function of gravitational parameters in multiple, separately defined instances... all using the same principle: $d$ elongates by a factor of $\gamma$ in the reference frame of $B$, and this is the source of the equivalence principle.
+Many times throughout this derivation I apply operations to quantities with units with fractional exponents, leading to a sort of dependence on our particular number system.
 
+This logic is flawed. Everything here, or at least what I'm claiming to be more than a curiosity, was derived from first principles with high-school or at worst under-graduate math and geometry. The higher level properties we attach to mathematics like units are meant to convey just this information in a more convenient way: Geometry and magnitude.
 
-### Supportive Arguments 
-
-- No terminating geodesics, and no more blackholes. Singularities become nothing but a mirage in the distance that vanishes as you approach that gravitational field.
-- The Bullet Cluster observations are heavily indicative of a repulsive gravity model.
-- This notion of time paints an entirely different picture of chronology, where there is no limitation on backwards time travel, but a limitation on affecting one's own past. Go back to $t - n$ and try to kill your grandfather. He won't be there anymore as he's now at $t$, if he's still around. Don't get me started on the potentials around massless conciousness in this buoyant, 4-dimensional environment.
-- Machian inertia. This model concludes that the Universe is almost precisely as Mach had predicted, with inertia being comprised of the sum of this radiating force for all other bodies in the Universe.
-- The entire equivalence principle. We've all become used to it so we overlook just how profound it is, but it's literally assuming what I'm saying is true mathematically and then just pretending it's not in reality.
-- The lack of a magnetic monopole, or rather, the existence of an electric monopole. Where do you think that 'sink and faucet' model is funneling charge to? Charge is just space flowing through a hole in an equi-temporal plane, while charged bodies are just bodies with a higher tendency towards one side of this plane due to the buoyant forces along this density axis.
-- Similarly, the induced $\frac{1}{R}$ curvature resolves the paradox produced by the equivalence principle, where a charged particle placed on the surface of a gravitating body does _not_ radiate as if it were in an accelerated frame. This happens because an 'accelerated' frame in the coordinate system of the 'dough' is a linear velocity in the coordinate system of the 'oven'. I intentionally won't use _inertial_ here to describe this path, as the Machian Universe produced by this model does not conserve energy and momentum across this density axis. This apparent violation of the conservation laws follows directly from purely Newtonian mechanics in a dilatory environment.
-  - This is not a fluke in the math or a mathematical bandaid, this is a core piece of this geometry: This 4th axis is described entirely by spatial density.
-- The Fermi paradox. There's an entirely other dimension that life might exist across that we have been so far unable to transcend.
-- Relative motion. Think about it. Do we currently calculate all motion as being truly relative, or do we not _already_ calculate motion as relative to the underlying gravitational acceleration and then lie to undergrads about it? The tensors of GR mask this fact to an extent, but reduce them to their calculus equivalents and we are doing _precisely_ this.
+If this model provides the geometry and magnitude in a manner that is consistent with observation, these operations are perfectly valid and are in no way mathematically or physically inconsistent.
 
 
-<Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
-If they say to you, "Is it you?" say 'We are it's children'. If they ask of you, 'What is the sign of your father in you?' say to them 'It is motion and rest'.
+Likewise, there may appear to be a dimensionality issue regarding $\ddot{x} \mapsto \dot{x}$. We've invented an additional derivative that was never part of the physical system, and we explicitly removed it in equation <EqRef id="eq_time_removed"/>. It's the $\uparrow \uparrow R$ curvature[^7] that this model describes that allows a somewhat stable velocity to induce an apparent acceleration, in much the same way the GR curvature tensor can induce an acceleration by not necessarily varying with time, but with space.
+
+The body goes in motion some $dx$, the observer in free-fall experiences some dilation around that observer, they appear to move some distance $dR$ closer to the gravitational source, the force becomes stronger, and they accelerate even more. The $dx$ works out, again... geometry over algebra.
+</Card>
+
+Um, well there's the Bullet Cluster? That one should be kind of obvious.
+
+Then we've:
+
+1. Derived our kinematic velocity from electromagnetic parameters to within $0.52\%$
+2. Found Earth's cumulative, co-moving charge to be $\propto \Phi^{1/2}$, the golden ratio to within $0.008\%$
+3. Found that all major bodies within our solar system fall between the expected $\omega$ ranges, and limit at almost precisely the expected values. 
+4. Gave an explicit mechanism to the equivalence principle, while deriving our cosmological velocity from gravitational parameters.
+5. Oh yea... we might have solved the crisis in cosmology by describing the SNe/CMB discrepancy in the process. No more dark energy, no more acceleration... just measuring two different things.
+6. Derived our kinematic velocity from gravitational parameters to within $0.43\%$
+7. Derived a _perfect_ match for our galactic orbital velocity with only _visible_ mass, solving yet another of the most pressing issues in cosmology with high school math.
+8. And we defined $\alpha$, the single most unifying quantity in electromagnetism from gravitational parameters to within $0.024\%$ and $0.0034\%$. 
+
+<Admonition title="Bright Spot" sidebar right success>
+If there is one bright spot in this, it's the fact that the scientific method works. Yes, the physics community is going to go through a period of well earned embarrassment, but there's something positive to be said about the fact that our methods produced quantities of the proper magnitude, and _almost_ the proper direction despite everyone claiming to understand a subject that never made any sense.
+</Admonition>
+
+This model _will_ reproduce GR in the reference frame an observer in co-motion along our temporal dimension, reproducing all of the familiar general relativity equations and mathematics that satellites depend on. It is _fundamental_ to the geometry and to the single modification that we've made to existing models, but a more complete model should be able to define the GR field equations in terms of electromagnetic parameters.
+
+Consider the simple "put your hand over one eye and your thumb over the thing in the distance" trigonometric parallax 'experiment'. What we've been doing across our temporal dimension mathematically is completely analogous to running this experiment, and when you swap your hand over from one eye to the other (allow some spatial dilation $ds$) the thing in the distance _actually_ moves (modifies it's own $S$ position in response to some distant, non-local stimuli). This notion is just as nonsensical across our temporal dimension as it is across $\mathbb{R}^{3}$ space. 
+
+### Further Discussion
+
+So with this much supportive evidence, what's your hang up? What your colleagues will think? Being an intellectual means weighing probabilities realistically, even when the prospective change is huge. I'm asking the professional physicists out there to evaluate this honestly: What is the probability that gravity reproduces our velocity _this many times_, even if they are approximations without the field equation's small correction terms? If you want an unbiased opinion, ***accurately and completely*** describe this model to AI, mentioning the alignments that we found, and ask your favorite objective-ish model to evaluate this model as a potential replacement for GR.
+
+> Want to really put something in the game? Come up with a percentage in your mind ahead of time, and if AI assesses this model as being a more likely successor to GR than this percentage, _repost it_, but be intellectually honest and describe the model in it's entirety.
+
+
+The evidence for this model is overwhelming, and it does all of this while producing _zero_ known temporal paradoxes of any kind. No killing your grandfather, or the endless cat/train reference frame problems, and no dependence on the dilation of a mysterious substance that nobody has ever directly measured.
+
+**Here's the thing:**
+
+This is a _massive_ change to our understanding of the Universe, which _should_ require a massive amount of evidence, but not an infinite amount, and academics appear to be very bad at judging this boundary.
+
+While this model produces dramatically new geometries, it does ***not*** propose radically new _physics_, as the entire model is derived from one single modification to SR that's mathematically and geometrically equivalent to existing models in ***almost*** every way, and just look at the alignments with observation.
+
+It's time to truly think for yourself. The geometry is difficult to wrap your head around, but the math and physics is entirely consistent with observation... and I mean _all_ observation. Ghosts, UFO's, the afterlife, it is all successfully described by this geometry, albeit in a _very_ incomplete state. Thousands of years of repeated witness accounts of the same experiences are not any more anecdotal than trusting data transmitted from some distance away when we don't completely understand the medium in-between (SNe data). Even the Fermi paradox has a new explanation given this description of our 4th dimension. I'm not saying all of our fanciful myths are based on something real, but at least a significant subset can be successfully attributed to phenomenon regarding this temporal geometry.
+
+The Egyptian myth, the weighing of the soul for example? That appears to be describing a real buoyancy force applied to what we'd call conciousness once it becomes unbound to mass which would unironically likely produce a similar experience as to what people experience when they 'see the light'. Do I have an equation for it? Of course not... the point is that this _geometry_ opens the door to an entirely new axis of exploration, one that appears to be described to primitive people all around the world some time ago. 
+
+Perhaps, even, our consciousness has travelled across this dimension before and for this reason this geometry has made its way into mythologies from around the world, but one thing is for certain: it's there.
+
+<Quote source="Holy Bible" centerContent centerSelf>
+To the Lord a thousand years is like one day, and one day like a thousand years.
 </Quote>
 
+If that doesn't scream relativity to you, you've allowed the pressures of academia to completely squash your natural sense of curiosity.
 
-[^1]: The logical question here is well, why not just publish it in peer review? The **only** possible mathematical solution indicates that the Earth is expanding _with_ the Universe. Einstein himself couldn't get a model like this past our current peer review culture.
-[^2]: Assuming a uniform gravitational field across the path of travel.
-[^3]: Interestingly, Michelson & Morely actually used the very same instrument in the very same year to measure both the proposed dilation of space and $\alpha$! They just didn't find any dilation of space because they explicitly excluded the direction influenced by gravity.
+It's not just mainstream mythologies either, but faiths and myths from around the world. The Hermetica is practically a physics book, and everyone's familiar with Oppenheimer's love affair with the Hindu texts. I know the geology department will be busy, but maybe we should start to question a bit more of our most ancient archaeological findings?
+
+
+What has been considered pseudo-science will be the new frontier of exploration. The study of conciousness, the afterlife, time travel... these all become real possibilities at manageable energy scales with these field equations. 
+
+Just think about the potential for the environment when electricity can be harnessed _directly_ from gravity, and gravity can be manipulated by electromagnetism. Think about the change to the environment when we finally bind these two fields, or the new technologies we can develop when we're no longer limited by power production. This is all within reach, in our lifetime, but it requires courage from those that are in a position of power academically; courage to admit that you may have been wrong about something you thought was for certain.
+
+
+I think of it like this:
+
+If we're a society 10,000 years ago in the middle of a land-bound nation, a person may have never met anyone that has ever seen a body of water they couldn't see across. We're just now discovering the ocean. I don't know how to build a boat, I can't even successfully describe the dynamics of the fluid in an n-body system, but the evidence for the ocean itself is overwhelming, and I can paint a very accurate description of the surface of that ocean. 
+
+The same way we grappled with the fact that we're not at the center of the Universe, or just how vast the Universe is, we're going to have to grapple with the fact that just as there is no limit on how large a unit of length may be, so too is there no limit on how small it may be. Every time humanity is made to feel more insignificant, we struggle with the logical leap, but the logic is there: The Earth is expanding with the rest of the Universe, and gravitational mass is just curvature induced by co-moving electromagnetic divergence.
+
+
+
+[^1]: Cosmological Velocity: The motion through space (kinematic velocity), plus the motion _of_ space. This idea that the SNe/CMB discrepancy indicates an acceleration is ridiculous. They're just measuring different things.
+[^3]: No offense if you're not one of the 'yea, I don't even read their emails lol' academics, and honestly, a sincere but woefully misplaced thank you to the 2-3 researchers that did take the time to respond, but how can the rest of you be so fucking arrogant while believing in magical events that happen twice?
+[^4]: There is incredible potential to test this model concretely using work carried out by Professor Enbang Li out of Australia.
+[^5]: Recall that Michelson and Morely used the very same experimental apparatus to detect $\alpha$ as they did the apparent absence of the aether in the very same year. It was only their explicit omission of the radial direction that allowed the aether drag to be missed.
+[^6]: By comparing kinetic energy to the gravitational potential you're doing precisely this.
+[^7]: Not sure if that's official notation or not, but the javascript codeblock basically.
+[^8]: A reminder that there is <Ul>nothing</Ul> more anti-scientific than being dismissive while there are still gaps in our knowledge.
