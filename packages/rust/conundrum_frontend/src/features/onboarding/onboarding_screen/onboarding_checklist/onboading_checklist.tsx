@@ -8,43 +8,51 @@ import { AppPaths } from "#/navigation/app_paths";
 
 interface OnboardingChecklistProps {
     steps: OnboardingStepProps[];
-    lastPage?: boolean
+    lastPage?: boolean;
 }
 
 export const OnboardingChecklist = ({
     steps,
-    lastPage
+    lastPage,
 }: OnboardingChecklistProps): ReactNode => {
     return (
         <motion.div
             className="w-[min(300px,25vw)] px-3 py-4 h-screen flex flex-col justify-center items-center border-r bg-fd-card space-y-4"
             initial={{
                 x: "-100%",
-                opacity: 0
+                opacity: 0,
             }}
             animate={{
                 x: 0,
-                opacity: 1
+                opacity: 1,
             }}
             exit={{
                 x: "-100%",
-                opacity: 0
+                opacity: 0,
             }}
         >
             {steps.map((s) => {
                 return <OnboardingStep {...s} key={s.id} />;
             })}
-            {lastPage ? (<motion.div
-                className="overflow-hidden"
-                initial={{
-                    height: 0
-                }}
-                animate={{
-                    height: "auto"
-                }}
-            >
-                <Link to={AppPaths.dashboard} className={buttonVariants()}>Take Me Home</Link>
-            </motion.div>) : null}
+            {lastPage ? (
+                <motion.div
+                    className="overflow-hidden"
+                    initial={{
+                        height: 0,
+                    }}
+                    animate={{
+                        height: "auto",
+                    }}
+                >
+                    <Link
+                        reloadDocument
+                        to={AppPaths.dashboard}
+                        className={buttonVariants()}
+                    >
+                        Take Me Home
+                    </Link>
+                </motion.div>
+            ) : null}
         </motion.div>
     );
 };

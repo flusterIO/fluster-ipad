@@ -1,7 +1,7 @@
 ---
 title: On the gravitational nature of time
 id: on_the_gravitational_nature_of_time
-summary: A sample note that will change the world.
+summary: A sample note and a modified model of relativity that partially unifies electromagnetism and gravity.
 subject: Physics
 ---
 
@@ -63,7 +63,7 @@ So what are these transformations? First we'll need to explicitly acknowledge th
 
 As you'll see, we'll be able to attribute property $1$ to a position along the _concurrent_ density axis that arises from this geometry, and we can satisfy property $2$ by attributing _motion_ to the driving rate of change. This should have been obvious the second $\gamma$ was described as a function of $v$, but don't worry... we'll fix it.
 
-<Quote source="Nag Hamadi Codex" centerContent centerSelf width="medium">
+<Quote source="Nag Hamadi Codex" centerContent centerSelf maxWidth="medium">
 If they say to you, "Is it you?" say 'We are it's children'. If they ask of you, 'What is the sign of your father in you?' say to them 'It is motion and rest'.
 </Quote>
 
@@ -181,6 +181,7 @@ This gives the outline of a single function that describes $\left( \frac{d}{dR}g
     caption="All planets within our system, a moon or two, and a couple other bodies showing this relationship."
 />
 
+Plugging in the values for Saturn gives $\omega = 0.007269$ or  $\pm 0.38\%$, off by $2.7 \times 10^{-5}$ and $\omega_{\oplus} = 0.014537 = \left( \alpha \left( 2 - \alpha \right) \right) \pm 0.025\%$ for Earth... and we've made several apparently successful assumptions about the geometry of the function, reproducing $\alpha$ to within $0.0034\%$ for the Sun using those modifications.
 
 ## The Equivalence Principle
 > Deriving our kinematic and cosmological velocities from the equivalence principle while resolving the crisis in cosmology
@@ -387,7 +388,7 @@ $$
 v_{\scriptsize \text{kinematic}} = c \sqrt{1 - \frac{1}{\left( 1 + \frac{1}{2} G \frac{M}{R^3} \right)^2}} = 371,567 ~ \text{m} ~ \text{s}^{-1}
 $$
 
-Using observational ranges of $368,145-369,943~ \text{m}~ \text{s}^{-1}$ (forgot what paper it's from and I literally can't afford internet. My blunder.), this gives us a margin of error of:
+Using observational ranges of $368,145-369,943~ \text{m}~ \text{s}^{-1}$ (forgot what paper it's from and I literally can't afford internet. My blunder), this gives us a margin of error of:
 
 
 <Hint error label="Error Margin:">
@@ -517,13 +518,42 @@ The $\alpha$ relationship defined in equation <EqRef id="omega"/>? This is also 
 
 
 ### I Promised You Number Fitting
-> This _definitely_ belongs under the **Speculative** section.
+> Because numerology is fun when there's new physics right in front of you...
 
-From small angle approximations we can say that this is close to true:
+Well this is an obvious one, but it definitly belongs under number fitting. This would not be universally true, as the $\frac{1}{2 - \alpha}$ term seems to be some spin related component of the function we outlined, but it's apparently pretty accurate for the upper-limit of mass density[^9].
+
+$$
+\vec{g} = \frac{\left( \alpha \left( 2 - \alpha \right) \right)^{3}}{2} = \vec{R} \left( \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(- \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} + 2\right)^{3}}{16 h^{3}} \right) = G \frac{M_{\oplus}}{R_{\oplus}^{2}} \pm 0.00825\%
+$$
+
+
+
+And less accurrately for our Sun, where the $\frac{1}{2 - \alpha}$ term completely vanishes:
+
+$$
+\vec{g}_{\odot} = \vec{R_{\odot}} ~ \alpha^{3}
+$$
+
+We're off by just over $1.4\%$.
+
+
+And for Saturn, with the lowest mass-density in the system:
+
+$$
+\vec{g} = \vec{R} ~ \frac{\alpha^{3}}{2}
+$$
+
+We're off by $1.14\%$. But these are just the bodies with the properties that really make them stand somewhat unique in our system, allowing us to validate specific properties of the function itself.
+
+Not exactly **GR**, _operate a satellite_ accuracy, but more than enough to demonstrate a pattern.
+
+Or we can approximate $G$ in terms of mass density, $\alpha$, and that same $\frac{1}{2 - \alpha}$ term.
 
 $$
 G = \frac{R^3_\oplus}{M_\oplus} \left(\sqrt{\frac{1}{1 - \left(\alpha \left(2 - \alpha\right)\right)^3}} - 1\right) \pm 0.076\%
 $$
+
+Which of course gives similar solutions, off by the variations in the previous few equations for the other bodies in our system, according to this function we're still trying to piece together. This one's really just moving the previous few equation around to define $G$ in terms of $\alpha$ and $\rho$.
 
 And with a little creative algebra and some small angle approximations:
 
@@ -579,7 +609,7 @@ $$
 $$
 
 
-Which if we're _really_ number fitting gives an error approaching our orbital eccentricity, but that one's a reach even for me.
+Which if we're _really_ number fitting gives an error approaching our orbital eccentricity, which actually kind of makes sense in this context, but that one's a reach even for me.
 
 
 ## Closing Arguments
@@ -636,7 +666,7 @@ While this model produces dramatically new geometries, it does ***not*** propose
 
 It's time to truly think for yourself. The geometry is difficult to wrap your head around, but the math and physics is entirely consistent with observation... and I mean _all_ observation. Ghosts, UFO's, the afterlife, it is all successfully described by this geometry, albeit in a _very_ incomplete state. Thousands of years of repeated witness accounts of the same experiences are not any more anecdotal than trusting data transmitted from some distance away when we don't completely understand the medium in-between (SNe data). Even the Fermi paradox has a new explanation given this description of our 4th dimension. I'm not saying all of our fanciful myths are based on something real, but at least a significant subset can be successfully attributed to phenomenon regarding this temporal geometry.
 
-The Egyptian myth, the weighing of the soul for example? That appears to be describing a real buoyancy force applied to what we'd call conciousness once it becomes unbound to mass which would unironically likely produce a similar experience as to what people experience when they 'see the light'. Do I have an equation for it? Of course not... the point is that this _geometry_ opens the door to an entirely new axis of exploration, one that appears to be described to primitive people all around the world some time ago. 
+The Egyptian myth, the weighing of the soul for example? That appears to be describing a real buoyancy force applied to what we'd call conciousness once it becomes unbound to mass which would likely produce a similar experience as to what people experience when they 'see the light'. Do I have an equation for it? Of course not... the point is that this _geometry_ opens the door to an entirely new axis of exploration, one that appears to be described to primitive people all around the world some time ago. 
 
 Perhaps, even, our consciousness has travelled across this dimension before and for this reason this geometry has made its way into mythologies from around the world, but one thing is for certain: it's there.
 
@@ -670,4 +700,5 @@ The same way we grappled with the fact that we're not at the center of the Unive
 [^6]: By comparing kinetic energy to the gravitational potential you're doing precisely this.
 [^7]: Not sure if that's official notation or not, but the javascript codeblock basically.
 [^8]: A reminder that there is <Ul>nothing</Ul> more anti-scientific than being dismissive while there are still gaps in our knowledge.
+[^9]: This of course does not imply a complete upper-limit on mass density, but it does imply some sort of mechanical shift at $\omega = \alpha \left( 2 - \alpha \right)$, if the outline of our function is valid.
 [^10]: Remember, the Sun _approaches_ this limit but does not reach it. Saturn would have been a better choice for this example if we wanted to demonstrate the limit directly.
