@@ -27,7 +27,7 @@ There are two complete video walkthroughs on our [Youtube](https://www.youtube.c
 
 
 ## The Lighthouse & The Clock Tower
-> An opening thought experiment to finally put relativistic simultaneity to rest.
+> An opening thought experiment to justify a case for classical synchronicity
 
 <Quote source="Albert Einstein" centerContent centerSelf>
 Surprisingly, it has turned out, that it was necessary only to precisely capture the notion of simultaneity in order to overcome the just considered difficulty. It required no more than recognizing that what Lorentz has denoted "local time" is in fact generic "time". If one consequently holds to the notion of time as just suggested, then the foundation equations for the Lorentz theory respect the Principle of Relativity if one replaces the transformations presented above with new ones in accord with the new concept of time.
@@ -424,7 +424,7 @@ $$
 v = c \sqrt{1 - \frac{1}{dt^2}} = 371,580 ~ \text{m} ~ \text{s}^{-1}
 $$
 
-That's an error of about $0.44\%$... _again_, derived from math a Canadian high school student can handle.
+That's an error of about $0.44\%$... _again_, derived from math an AP high school student can handle.
 
 --- Galactic Rotation ---
 
@@ -543,9 +543,11 @@ $$
 \vec{g} = \vec{R} ~ \frac{\alpha^{3}}{2}
 $$
 
-We're off by $1.14\%$. But these are just the bodies with the properties that really make them stand somewhat unique in our system, allowing us to validate specific properties of the function itself.
+We're off by $1.14\%$. Not exactly **GR**, _operate a satellite_ accuracy, but more than enough to demonstrate a pattern.
 
-Not exactly **GR**, _operate a satellite_ accuracy, but more than enough to demonstrate a pattern.
+And these are just the bodies with the properties that really make them somewhat unique in our system, allowing us to validate specific properties of the function itself. This model _will_ give **GR** accuracy with proper time dedicated to finding these field equations.
+
+---
 
 Or we can approximate $G$ in terms of mass density, $\alpha$, and that same $\frac{1}{2 - \alpha}$ term.
 
