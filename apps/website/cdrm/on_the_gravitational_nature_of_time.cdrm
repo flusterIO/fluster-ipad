@@ -15,7 +15,7 @@ Late one night in the fall of 2021 I was going over some of Einstein's lectures 
 
 The problem? The **only** set of coordinate transformations that satisfy experiment that do not require this anti-scientific principle conclude that the Earth is expanding _with_ the rest of the Universe, and that _this_ is the source of the equivalence principle. Avi Loebe couldn't get that past peer review, no matter how many quantities align with observation, so instead I took a different approach. I quit my job, became homeless, and built a few open source academic tools while living on the side of the street in Milwaukee just so I can publish this article along side the documentation.
 
-This isn't another internet fringe theory some lazy, attention starved :donkey: thought up for clicks... this is a model that should be self evident to any free thinking physicist that is willing to say "I don't know, but the math works". That was the approach we should have taken to relativity since 1905. The definition of an event in SR is ***completely*** nonsensical and in disagreement with reality itself, and it should have never been accepted as anything other than a mathematical bandaid.
+This isn't another internet fringe theory some lazy, attention starved :donkey: thought up for clicks... this is a model that should appear like a Rorschach test to any free thinking physicist that is willing to say "I don't know, but the math works". That was the approach we should have had with relativity since 1905. The definition of an event in SR is ***completely*** nonsensical and in disagreement with reality itself, and it should have never been accepted as anything other than a mathematical bandaid intended to apply precisely the properties satisfied by this model: $d/v$ is constant in each coordinate system.
 
 While the field equations remain elusive, the model naturally reproduces the geometry of general relativity in a specific frame and does so while producing upwards of a dozen numerical alignments with observation and a resolution to at least 2 of the most pressing issues in physics. _This_ many alignments and the simultaneous resolution of _this_ many paradoxes are not a coincidence, no matter what your geologist friend tells you.
 
@@ -24,6 +24,12 @@ There are two complete video walkthroughs on our [Youtube](https://www.youtube.c
 </Hint>
 
 </Admonition>
+
+
+<Card title="Hypothesis & Testability">
+This model predicts that the dimensionless radial gradient of the gravitational field is related to the electromagnetic coupling parameter through a specific velocity dependent geometric transformation. This can be tested independently by measuring the radial gravitational field at multiple radii rather than deriving the gradient from $\left(GM/R^2\right)$. 
+
+</Card>
 
 
 ## The Lighthouse & The Clock Tower
@@ -621,7 +627,7 @@ Which if we're _really_ number fitting gives an error approaching our orbital ec
 
 Many times throughout this derivation I apply operations to quantities with units with fractional exponents, leading to a sort of dependence on our particular number system.
 
-This logic is flawed. Everything here, or at least what I'm claiming to be more than a curiosity, was derived from first principles with high-school or at worst under-graduate math and geometry. The higher level properties we attach to mathematics like units are meant to convey just this information in a more convenient way: Geometry and magnitude.
+This logic is flawed. Everything here, or at least what I'm claiming to be more than a curiosity, was derived from first principles with high-school or at worst under-graduate math and geometry. The higher level properties we attach to mathematics like units are meant to convey just this information in a more convenient way: geometry and magnitude.
 
 If this model provides the geometry and magnitude in a manner that is consistent with observation, these operations are perfectly valid and are in no way mathematically or physically inconsistent. This is how these dimensions transform, as described by this divergent geometry.
 
