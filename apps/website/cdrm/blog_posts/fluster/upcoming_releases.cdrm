@@ -1,0 +1,182 @@
+---
+title: Upcoming Releases
+id: upcomingReleases
+summary: Get a sneak peak at what's coming next.
+topic: Initial Launch
+subject: Blog Posts
+---
+
+# Upcoming Releases
+> An MCP server, a complete local-first data layer, and all of the pieces you need to vibe code your perfect academic environment.
+
+<Admonition title="More Information">
+There's quite a bit more information available in the `README.md` files available [here (Fluster)](https://github.com/flusterIO), [here (monorepo)](https://github.com/flusterIO/fluster-ipad) and [here (Conundrum)](https://github.com/flusterIO/fluster-ipad/tree/main/packages/rust/conundrum).
+</Admonition>
+
+In the interest of keeping everyone informed of the progress being made around Fluster and Conundrum, I thought I'd post an update about what's coming next.
+
+There has been quite a bit of work happening behind the scenes, and the project has changed considerably from where it started. What began as an application for taking academic notes has evolved into something closer to a general-purpose toolkit for building academic software.
+
+The next releases are where a lot of that work starts coming together.
+
+## Fluster
+
+The next major version of Fluster is being built around a new React and Tauri frontend.
+
+The reason for this change is fairly simple: the application needs a frontend that is flexible enough to keep up with what we're doing on the Conundrum side, while still giving us a proper native application where appropriate.
+
+Tauri gives us the native shell and Rust integration, while React gives us a much more flexible environment for building the interface itself. More importantly, this keeps the frontend relatively independent from the Conundrum implementation.
+
+The intention isn't to make Fluster a giant monolithic application.
+
+Fluster is the application.
+
+Conundrum is the toolkit underneath it.
+
+That distinction is becoming increasingly important as development continues.
+
+## Conundrum
+
+Conundrum is being developed as a standalone Rust toolkit for structured academic data.
+
+The basic idea is that Markdown is a very good format for writing, but it isn't necessarily a very good representation of everything that an academic application needs to know.
+
+A document might contain equations, references, concepts, datasets, links, citations, relationships to other documents, and a whole collection of metadata that is useful to software but doesn't necessarily belong in the prose itself.
+
+Conundrum provides the infrastructure for representing that information.
+
+The system is being built around a local data layer, a structured document format, APIs, SDKs, command-line tooling, and interfaces for AI systems.
+
+Fluster is one application built using those pieces.
+
+It won't necessarily be the last one.
+
+## The MCP Server
+
+One of the larger pieces of the upcoming release is the Conundrum MCP server.
+
+This is particularly interesting because it changes how AI can interact with the application.
+
+Rather than treating an AI model as something that receives a prompt and a large chunk of context, Conundrum can expose its own operations to the model.
+
+The model can search the knowledge base, retrieve relevant material, inspect structured data, work with notes, and eventually perform more complicated operations through the same underlying interfaces used by the application.
+
+The server is being implemented in Rust and sits alongside the existing Conundrum backend.
+
+This also gives us a useful boundary between the AI layer and the actual data layer. The model doesn't need to know how Conundrum stores everything internally. It just needs to know which operations are available.
+
+That distinction becomes increasingly useful as we start experimenting with different models.
+
+Local models can be used when appropriate. Remote models can be used when appropriate. The data and the tools remain the same.
+
+## Vibe-Codable
+
+This brings us to one of the more important ideas behind Conundrum: **vibe-codability**.
+
+I'm deliberately using that term.
+
+Conundrum is being built at a point where writing software with an AI assistant is becoming a normal part of development. Rather than fighting that, I want the architecture to make it useful.
+
+The goal is for Conundrum to be something that an AI-assisted developer can actually build on.
+
+That means having predictable APIs, a well-defined data model, MCP interfaces, language SDKs, a relatively small number of fundamental abstractions, and documentation that describes how the pieces fit together.
+
+It also means that the Conundrum language itself should be relatively approachable.
+
+The current direction is an MDX-based syntax which adds the structure Conundrum needs without throwing away the things that make Markdown useful.
+
+An existing MDX document should still look like an MDX document.
+
+The additional syntax provides the information that Conundrum needs to turn that document into something more useful than a blob of text.
+
+And, importantly, the compiler is written entirely in Rust.
+
+No JavaScript runtime is required for the Conundrum language itself.
+
+## Build on It
+
+The larger idea is that Conundrum shouldn't require you to use Fluster.
+
+If someone wants to build a different academic application on top of the same data model, they should be able to.
+
+If someone wants to write a specialized research tool, they should be able to.
+
+If someone wants to build an AI agent that interacts with their academic library, they should be able to.
+
+If someone wants to build an entirely different frontend, they should be able to.
+
+This is why so much of the project is being separated into libraries and interfaces rather than being implemented directly inside Fluster.
+
+The application is useful.
+
+The toolkit is more interesting.
+
+## Local-First
+
+Another important part of the architecture is that the data layer is local.
+
+Conundrum uses LanceDB for its local database and vector-search capabilities. This gives us a reasonably powerful foundation for semantic retrieval without requiring every piece of a user's knowledge base to live on somebody else's server.
+
+This is especially important for academic work.
+
+Your notes, papers, datasets, equations, and research material are your data.
+
+AI should be able to work with that data without the entire architecture having to become a cloud service.
+
+At the same time, local-first doesn't mean that everything has to be offline forever.
+
+The system is being designed so that local inference, remote inference, and different model providers can coexist without changing the underlying data model.
+
+## The Developer Side
+
+There is also a substantial amount of infrastructure being built specifically for developers.
+
+Conundrum currently has, or is being developed with, interfaces for Rust, TypeScript, Python, Go, Lua, and Swift.
+
+There is a command-line interface, the Rust backend, WebAssembly support, the MCP server, and the various pieces necessary to expose the same underlying functionality to different environments.
+
+Some of these interfaces are considerably further along than others.
+
+That's intentional.
+
+The project is still being built.
+
+The goal right now isn't to pretend that every component is finished. It's to get the architecture right so that the pieces can mature independently without having to rewrite the entire system every time another part of the project changes.
+
+## The License
+
+The other major piece of this release is the license.
+
+Conundrum is not going to use a conventional permissive open-source license.
+
+The intent is to make the source available so that people can run it, inspect it, clone it, fork it, modify it, and build their own software with it, while explicitly restricting commercial hosted services based on the project.
+
+There is a fairly important distinction here.
+
+I want people to be able to own their copy of the software and do interesting things with it.
+
+I don't want the result of that work to simply be a hosted commercial platform built from Conundrum without any obligation to contribute back to the project.
+
+The contribution model is being designed around the same philosophy.
+
+Contributions should have tangible value, and the project should have a mechanism for returning some of that value to the people actually contributing to it.
+
+There will be more documentation about the exact terms as the license is finalized.
+
+## What's Next
+
+The immediate goal isn't one particular feature.
+
+It's getting the pieces of the system into a state where they can start being used together.
+
+That means getting the 98% complete Fluster iPad application, the Conundrum backend, the MCP server, the local data layer, the document language, the SDKs, and the developer tooling all moving toward the same release.
+
+Once those pieces are in place, Fluster becomes a demonstration of what Conundrum can do rather than the boundary of what it can do.
+
+That's really the direction the project has been heading toward for a while now.
+
+**Fluster is _my_ application.**
+
+**Conundrum is the toolkit.**
+
+And the goal of the upcoming releases is to make that distinction real.
