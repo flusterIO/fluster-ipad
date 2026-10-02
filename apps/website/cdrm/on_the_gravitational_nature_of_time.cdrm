@@ -1,4 +1,4 @@
----
+--
 title: On the gravitational nature of time
 id: on_the_gravitational_nature_of_time
 summary: A sample note and a modified model of relativity that partially unifies electromagnetism and gravity.
@@ -656,16 +656,15 @@ This model _will_ reproduce GR in the reference frame an observer in co-motion a
 
 ### Further Discussion
 
-So with this much supportive evidence, what's your hang up? What your colleagues will think? Being an intellectual means weighing probabilities realistically, even when the prospective change is huge. I'm asking the professional physicists out there to evaluate this honestly: What is the probability that gravity reproduces our velocity _this many times_, even if they are approximations without the field equation's small correction terms? If you want an unbiased opinion, ***accurately and completely*** describe this model to AI, mentioning the alignments that we found, and ask your favorite objective-ish model to evaluate this model as a potential replacement for GR.
+Ok, I understand that this is a big leap, but with this many numerical alignments, what's more likely: That our 'constants' aren't constant, or that all of these alignments just coincidentally produce a combined average error approximating $\sim 0.01\%$? Being an intellectual means weighing probabilities realistically, even when the prospective change is huge. I'm asking the professional physicists out there to evaluate this honestly.
 
-> Want to really put something in the game? Come up with a percentage in your mind ahead of time, and if AI assesses this model as being a more likely successor to GR than this percentage, _repost it_, but be intellectually honest and describe the model in it's entirety.
-
+Take the theoretical function giving us our first plot for example. When I wrote this, I was homeless and offline. I had access to only what `scipy` and `astropy` export (mass and radius of the Sun and the Earth basically), but I didn't have access to any other data. I was still able to derive the other limit, _without_ knowing ahead of time that Saturn approximates it almost precisely. That is not number fitting, that is completely analogous to the blinding parameters often used in observation physics.
 
 The evidence for this model is overwhelming, and it does all of this while producing _zero_ known temporal paradoxes of any kind. No killing your grandfather, or the endless cat/train reference frame problems, and no dependence on the dilation of a mysterious substance that nobody has ever directly measured.
 
 **Here's the thing:**
 
-This is a _massive_ change to our understanding of the Universe, which _should_ require a massive amount of evidence, but not an infinite amount, and academics appear to be very bad at judging this boundary.
+This is a _massive_ change to our understanding of the Universe, which _should_ require a massive amount of evidence, but not an infinite amount, and people in general appear to be very bad at judging this boundary.
 
 While this model produces dramatically new geometries, it does ***not*** propose radically new _physics_, as the entire model is derived from one single modification to SR that's mathematically and geometrically equivalent to existing models in ***almost*** every way, and just look at the alignments with observation.
 
