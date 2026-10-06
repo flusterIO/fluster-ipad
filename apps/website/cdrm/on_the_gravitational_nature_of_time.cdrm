@@ -1,4 +1,4 @@
---
+---
 title: On the gravitational nature of time
 id: on_the_gravitational_nature_of_time
 summary: A sample note and a modified model of relativity that partially unifies electromagnetism and gravity.
@@ -27,7 +27,7 @@ There are two complete video walkthroughs on our [Youtube](https://www.youtube.c
 
 
 <Card title="Hypothesis & Testability">
-This model predicts that the dimensionless radial gradient of the gravitational field is related to the electromagnetic coupling parameter through a specific velocity dependent geometric transformation. This can be tested independently by measuring the radial gravitational field at multiple radii rather than deriving the gradient from $\left(GM/R^2\right)$. 
+This model predicts that the dimensionless radial gradient of the gravitational field is related to the electromagnetic coupling parameter through a specific velocity dependent geometric transformation. This can be tested independently by measuring the radial gravitational field at multiple radii rather than deriving the gradient from $\left(GM/R^2\right)$.
 </Card>
 
 
@@ -47,9 +47,9 @@ Surprisingly, it has turned out, that it was necessary only to precisely capture
 
 Let there be two observers, $A$ and $B$. Let $A$ and $B$ agree that $B$ should travel at some agreed upon velocity $v$ between two arbitrary points in space, $p_{1}$ and $p_{2}$. At $p_{2}$ place a time keeping device large enough to be visible from $p_{1}$where $A$ remains at relative rest.
 
-At what time does $A$ observe $B$ reach $p_{2}$, acknowledging the fact that $A$ is experiencing no change in kinetic state? 
+At what time does $A$ observe $B$ reach $p_{2}$, acknowledging the fact that $A$ is experiencing no change in kinetic state?
 
-$d/v$? 
+$d/v$?
 
 Nope... $A$ is using the same time keeping device as $B$ who will measure relativistic dilation. This would mean $B$ would need to reach the clock-tower twice. Once at $\Delta t = d/v$, and once more at $\Delta t = \gamma d /v$.
 
@@ -75,9 +75,9 @@ If they say to you, "Is it you?" say 'We are it's children'. If they ask of you,
 
 <Card title="On Existing Validations of SR/GR">
 
-Consider the Ives-Stillwell experiment. If both observers come together at the end to compare clocks, ***together***, has the time really dilated for one more than the other? No, they're standing right next to each other. No duplication of events has occurred either... only the elongating of periods between each $\Delta s$ as the observer in relative motion approaches a further dilated coordinate system more rapidly than the observer at relative rest. In fact, we've essentially quantized the number of intermediary events between any two arbitrary primary events by allowing that $d/v$ remain constant in each reference frame. This is $100\%$ analogous to the constant nature of 4-vecs in special relativity, only without a temporal dimension. 
+Consider the Ives-Stillwell experiment. If both observers come together at the end to compare clocks, ***together***, has the time really dilated for one more than the other? No, they're standing right next to each other. No duplication of events has occurred either... only the elongating of periods between each $\Delta s$ as the observer in relative motion approaches a further dilated coordinate system more rapidly than the observer at relative rest. In fact, we've essentially quantized the number of intermediary events between any two arbitrary primary events by allowing that $d/v$ remain constant in each reference frame. This is $100\%$ analogous to the constant nature of 4-vecs in special relativity, only without a temporal dimension.
 
-Remember... The same number of events, more $\Delta t$ between events because $\Delta t$ is the dilation of space and the observer in relative motion is approaching a further dilated coordinate system faster. 
+Remember... The same number of events, more $\Delta t$ between events because $\Delta t$ is the dilation of space and the observer in relative motion is approaching a further dilated coordinate system faster.
 
 Likewise, the Pound-Rebka results should need no explanation. They predict this model perfectly, and would have been one of the primary ways to test such a theory. In fact, it was one of the primary experiments motivating this geometry.
 
@@ -178,7 +178,7 @@ $$
 
 This gives the outline of a single function that describes $\left( \frac{d}{dR}g \right)^{1/3}$ as oscillating between $\alpha$ and $ \alpha\left(2 - \alpha\right)$ as a function of mass and velocity, and just look at the results:
 
-<Image 
+<Image
    src="/assets/diagrams/omega_mass_density.png"
    maxHeight="large"
     paddingY="medium"
@@ -205,18 +205,18 @@ If we then cube things as we would to undo the geometry we used to create this m
 
 $$
 R^3 \left(\alpha \left( 2 - \alpha \right) \right)^3 = \frac{R^{3} e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{
-    e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h}\right)^{3}}{8 h^{3}} 
+    e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h}\right)^{3}}{8 h^{3}}
 $$
 
 
-If we integrate $R$ as we would to finally produce $\vec{g}$, we don't get $\left| g \right| \approx 9.8$, but rather 
+If we integrate $R$ as we would to finally produce $\vec{g}$, we don't get $\left| g \right| \approx 9.8$, but rather
 
 $$ {#eq_em_integral}
 \begin{aligned}
-q_{\oplus} & = \int R^3 \left(\alpha \left(2 - \alpha \right)\right)^3 ~ dR \\ 
+q_{\oplus} & = \int R^3 \left(\alpha \left(2 - \alpha \right)\right)^3 ~ dR \\
 & = R^{4} \left(\frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{4 h^{3}} + \frac{3 \mu_{0} e^{10} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}}}{64 \epsilon_{0} h^{5}} - \frac{3 \mu_{0}^{2} e^{8}}{16 \epsilon_{0}^{2} h^{4}} - \frac{\mu_{0}^{3} e^{12}}{256 \epsilon_{0}^{3} h^{6}}\right) \\
-& = 1.27212207316867 \times 10^{21} \\ 
-& = \sqrt{ \Phi \times 10^{42}} \pm 0.008\% 
+& = 1.27212207316867 \times 10^{21} \\
+& = \sqrt{ \Phi \times 10^{42}} \pm 0.008\%
 \end{aligned}
 $$
 
@@ -226,7 +226,7 @@ Or about $0.000213$ units of temporally co-moving charge per kilogram ($1.17$ un
 If a physical operation exists such that $R$ is swapped over algebraically at $q = \sqrt{ \Phi \times 10^{42}}$, this phase-shift becomes completely reasonable, describing gravitational mass as a completely electromagnetic phenomenon and giving rise to our specific radius. Why $10^{42}$? Some unknown function of $\sum m_{i}$ and $r$. The same function that gives rise to inertia itself.
 
 
-**Kinematic Velocity** 
+**Kinematic Velocity**
 
 Since we're presuming the equivalence principle is induced by motion as described by these modified Lorentz transformations, this quantity should produce $\gamma$ under the relationship that these additional terms represent the $ds$ portion of $\gamma$, where $\gamma = 1 + ds$. This then gives:
 
@@ -241,7 +241,7 @@ $$
 v = c \sqrt{1 - \frac{1}{ \gamma^2_{\scriptsize \text{em}}}} = 371,721.085 ~\text{m} / \text{s}
 $$
 
-This aligns with our _observed_ velocity relative to the CMB to within $0.52\%$ (almost precisely a ratio of $1 + \alpha$ if you prefer the pre-Plank data). 
+This aligns with our _observed_ velocity relative to the CMB to within $0.52\%$ (almost precisely a ratio of $1 + \alpha$ if you prefer the pre-Plank data).
 
 
 <Admonition title="Quick Review" info foldable folded>
@@ -306,19 +306,19 @@ $$
 
 <Image maxHeight="medium" right contain sidebar src="/assets/diagrams/peculiarVelocity_probabilityCurve.png" caption="Plot taken from **Determining the motion of the Solar system relative to the cosmic microwave background using Type Ia supernovae** by C. Gordon et. al." />
 
-The image on the right was taken from an analysis carried out by Christopher Gordon and his colleagues correlating distant SNe to the CMB. 
+The image on the right was taken from an analysis carried out by Christopher Gordon and his colleagues correlating distant SNe to the CMB.
 
-Here's the thing: This idea that the discrepancy between the CMB and SNe observations indicates some sort of acceleration is only one interpretation of observation, and in my opinion, a flawed one. 
+Here's the thing: This idea that the discrepancy between the CMB and SNe observations indicates some sort of acceleration is only one interpretation of observation, and in my opinion, a flawed one.
 
 Alternatively, if we interpret time as a purely geometric consequence, we can infer that $c$ dilates inversely proportional to local coordinate density. As light then travels from some distant star it travels across a fluid like space-time, experiencing the dilation of each $\Delta s$ according to environment local to that small $ds$ portion. As we travel _through_ space (our kinematic velocity) the aether represents the coordinate system as it appears in co-motion[^5], therefore not yielding this same dilation of time between events which is itself secondary to the dilation of space. This aligns itself _perfectly_ with inertia as you would expect it to appear in a Machian Universe, where inertial resistance is induced by the same phenomenon inducing the kinematic dipole.
 
-It is the dilation of this aether that allows the concurrent nature of space-time to occur in much the same way two analog radio channels can communicate simultaneously. If this concurrent nature isn't self evident, think about it: $A$ and $B$ share time coordinates at the time at which $B$ goes in motion. Then they don't, yet $B$ didn't disappear into a cloud of pixie dust. If $A$ and $B$ still exist, yet they don't share temporal coordinates, but they once have... this axis is concurrent. The hot, ultra-dense state of the early Universe still exists concurrently to our own existence, separated only by this density axis. 
+It is the dilation of this aether that allows the concurrent nature of space-time to occur in much the same way two analog radio channels can communicate simultaneously. If this concurrent nature isn't self evident, think about it: $A$ and $B$ share time coordinates at the time at which $B$ goes in motion. Then they don't, yet $B$ didn't disappear into a cloud of pixie dust. If $A$ and $B$ still exist, yet they don't share temporal coordinates, but they once have... this axis is concurrent. The hot, ultra-dense state of the early Universe still exists concurrently to our own existence, separated only by this density axis.
 
 What can we take a away from this model of synchronicity and chronology? If you really want to kill your own grandfather... he needs to still be alive. If you go back in time some $- \Delta t$, your grandfather won't be there. Nobody that was there at that density state, where $ds$ between coordinates is equal to that specific unit length will be there any more, as they've all progressed to the next unit length the second that instant was over. That's what time is!
 
 Imagine two people in Chicago on their way to Milwaukee (pretend for the sake of argument Milwaukee and Chicago are oriented perfectly along the y-axis). If person $A$ wants to effect person $B$ in some manner, they need to both be at the same position along our y-axis. If $B$ was in Chicago, but now they're in Milwaukee, it doesn't matter how quickly you travel back to Chicago... they won't be there. Our temporal dimension behaves in precisely the same way. This borders on being a fundamental property of any independent axis of travel, and in hindsight, our current model of chronology should seem pretty ridiculous.
 
-So what's at some shifted temporal position now? I don't know... I'm not religious in any fundamentalist sense, but if this doesn't bring to mind images of Heaven and Hell as they're typically described... "up" and "down" from a spherical source? Let alone all of the temporal paradoxes this model of synchronicity resolves? I think it's the dimension we describe as life and death. Ghosts, out of body experiences, the sorts of alien technology we appear to be seeing? It may not _all_ be fact, but many such phenomenon become ***significantly*** more probable under this temporal geometry.[^8] 
+So what's at some shifted temporal position now? I don't know... I'm not religious in any fundamentalist sense, but if this doesn't bring to mind images of Heaven and Hell as they're typically described... "up" and "down" from a spherical source? Let alone all of the temporal paradoxes this model of synchronicity resolves? I think it's the dimension we describe as life and death. Ghosts, out of body experiences, the sorts of alien technology we appear to be seeing? It may not _all_ be fact, but many such phenomenon become ***significantly*** more probable under this temporal geometry.[^8]
 
 ### Time Equivalent Quantities
 
@@ -331,18 +331,18 @@ Imagine some photon, $c_{1}$ and massive bodies $m_{1}\dots m_{i}$ in the immedi
 What role does time play here? None. We can define some arbitrary point in time where $ds = 1$, with $ds$ indicating the distance between two neighboring coordinates and calculate dilation from this point to define a 4th displacement coordinate, and _motion_ now occupies the most fundamental, driving rate of change.
 
 <Admonition title="Dimensionality" info foldable sidebar right>
-As in traditional models, 
-$$ 
-\dot{x} = v = \left[\frac{dx}{dt}\right] 
+As in traditional models,
 $$
-This model uses a velocity that is 
+\dot{x} = v = \left[\frac{dx}{dt}\right]
 $$
-\dot{x} = v = \left[\frac{dx}{ds}\right] 
+This model uses a velocity that is
+$$
+\dot{x} = v = \left[\frac{dx}{ds}\right]
 $$
 
 When multiplied by our 'time' equivalent $ds = \delta$, this gives
 
-$$ 
+$$
 \dot{x}~ ds = \text{distance}
 $$
 
@@ -447,12 +447,12 @@ $$
 \dot{x}_\oplus \approx 11,179 ~ \text{m} / \text{s}
 $$
 
-That's almost precisely our escape velocity, but we're looking for a stable orbit velocity! What the :poop:?! 
+That's almost precisely our escape velocity, but we're looking for a stable orbit velocity! What the :poop:?!
 
 
 So what's going on here? We exist in a Machian Universe where inertia is comprised of this radiating force for all other bodies in the system. In our simplified equation that does not take into account the sum of all other bodies providing this resistance, we limit at our escape velocity. Let us test this model by evaluating this equation against a similar system: A planet on an arm of a spiral galaxy.
 
-<Image 
+<Image
    src="/assets/diagrams/orbital_radius_intersection.png"
    maxHeight="large"
     paddingY="medium"
@@ -492,10 +492,10 @@ $$
 $\nabla \cdot B \neq 0$, but rather is equivalent to the divergence of the coordinate system itself. It only _appears_ to be zero due to our co-motion along this axis.
 
 $$
-\nabla \cdot \mathbf{B} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{3}}{8 h^{3}} \approx \delta 
+\nabla \cdot \mathbf{B} = \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h} \right)^{3}}{8 h^{3}} \approx \delta
 $$
 
-and 
+and
 
 $$ {#eq_electricDivergence1}
 \nabla \cdot \mathbf{E} = c \frac{e^{6} \left(\frac{\mu_{0}}{\epsilon_{0}}\right)^{\frac{3}{2}} \left(2 - \frac{e^{2} \sqrt{\frac{\mu_{0}}{\epsilon_{0}}}}{2 h}\right)^{3}}{8 h^{3}} = 921.116 ~\text{meters}
@@ -513,7 +513,7 @@ That's our rotational velocity on Earth's equator $\pm -0.006778\%$. Off by a to
 ## Speculative
 > Quickly clarifying my stance on certain claims I've made
 
-Ok, so I'm _very_ confident gravity is velocity dependent. It honestly borders on obvious at this point. _This_ many alignments aren't a coincidence, and they don't require a single event to happen twice. No matter how you define an event mathematically, it's irrelevant if that definition does not match reality. A single, instantaneous event is and always has been a single measurement as the elapsed period approaches zero. 
+Ok, so I'm _very_ confident gravity is velocity dependent. It honestly borders on obvious at this point. _This_ many alignments aren't a coincidence, and they don't require a single event to happen twice. No matter how you define an event mathematically, it's irrelevant if that definition does not match reality. A single, instantaneous event is and always has been a single measurement as the elapsed period approaches zero.
 
 I'm not as confident about some of the other claims I make above, and I want to be as clear as possible about what I'm claiming is an almost certain eventual replacement for GR, and what I'm claiming is simply intriguing.
 
@@ -521,7 +521,7 @@ The $1 + \alpha$ relationship with the pre-Plank data? It's interesting that it 
 
 The fact that $c$ dilates proportional to $ds$, as do all velocities? This one should be common sense. If time dilates between reference frames, and velocity is time dependent, how can $c$ be constant _in_ each frame ***and*** _between_ each frame? The two properties become mutually exclusive. $c$ _must_ dilate between frames to _appear_ constant in each frame. It's even inherent in the components of $c$, $\mu_0$ and $\epsilon_0$ with both being space dependent.
 
-The $\alpha$ relationship defined in equation <EqRef id="omega"/>? This is also incredibly probable, 
+The $\alpha$ relationship defined in equation <EqRef id="omega"/>? This is also incredibly probable,
 
 
 ### I Promised You Number Fitting
@@ -605,7 +605,7 @@ $$
 \frac{v_{g}}{v_{\text{orbit}}} = \alpha \frac{\mathbf{AU}}{R_\oplus}
 $$
 
-Where 
+Where
 
 $$
 v_{g} = \sqrt[3]{GM_\odot}
@@ -644,12 +644,12 @@ Then we've:
 
 1. Derived our kinematic velocity from electromagnetic parameters to within $0.52\%$
 2. Found Earth's cumulative, co-moving charge to be $\propto \Phi^{1/2}$, the golden ratio to within $0.008\%$
-3. Found that all major bodies within our solar system fall between the expected $\omega$ ranges, and limit at almost precisely the expected values. 
+3. Found that all major bodies within our solar system fall between the expected $\omega$ ranges, and limit at almost precisely the expected values.
 4. Gave an explicit mechanism to the equivalence principle, while deriving our cosmological velocity from gravitational parameters.
 5. Oh yea... we might have solved the crisis in cosmology by describing the SNe/CMB discrepancy in the process. No more dark energy, no more acceleration... just measuring two different things.
 6. Derived our kinematic velocity from gravitational parameters to within $0.43\%$
 7. Derived a _perfect_ match for our galactic orbital velocity with only _visible_ mass, solving yet another of the most pressing issues in cosmology with high school math.
-8. And we defined $\alpha$, the single most unifying quantity in electromagnetism from gravitational parameters to within $0.024\%$ and $0.0034\%$. 
+8. And we defined $\alpha$, the single most unifying quantity in electromagnetism from gravitational parameters to within $0.024\%$ and $0.0034\%$.
 
 This model _will_ reproduce GR in the reference frame an observer in co-motion along our temporal dimension, reproducing all of the familiar general relativity equations and mathematics that satellites depend on. It is _fundamental_ to the geometry and to the single modification that we've made to existing models, but a more complete model should be able to define the GR field equations in terms of electromagnetic parameters.
 
@@ -670,7 +670,7 @@ While this model produces dramatically new geometries, it does ***not*** propose
 
 It's time to truly think for yourself. The geometry is difficult to wrap your head around, but the math and physics is entirely consistent with observation... and I mean _all_ observation. Ghosts, UFO's, the afterlife, it is all successfully described by this geometry, albeit in a _very_ incomplete state. Thousands of years of repeated witness accounts of the same experiences are not any more anecdotal than trusting data transmitted from some distance away when we don't completely understand the medium in-between (SNe data). Even the Fermi paradox has a new explanation given this description of our 4th dimension. I'm not saying all of our fanciful myths are based on something real, but at least a significant subset can be successfully attributed to phenomenon regarding this temporal geometry.
 
-The Egyptian myth, the weighing of the soul for example? That appears to be describing a real buoyancy force applied to what we'd call conciousness once it becomes unbound to mass which would likely produce a similar experience as to what people experience when they 'see the light'. Do I have an equation for it? Of course not... the point is that this _geometry_ opens the door to an entirely new axis of exploration, one that appears to be described to primitive people all around the world some time ago. 
+The Egyptian myth, the weighing of the soul for example? That appears to be describing a real buoyancy force applied to what we'd call conciousness once it becomes unbound to mass which would likely produce a similar experience as to what people experience when they 'see the light'. Do I have an equation for it? Of course not... the point is that this _geometry_ opens the door to an entirely new axis of exploration, one that appears to be described to primitive people all around the world some time ago.
 
 Perhaps, even, our consciousness has travelled across this dimension before and for this reason this geometry has made its way into mythologies from around the world, but one thing is for certain: it's there.
 
@@ -683,18 +683,19 @@ If that doesn't scream relativity to you, you've allowed the pressures of academ
 It's not just mainstream mythologies either, but faiths and myths from around the world. The Hermetica is practically a physics book, and everyone's familiar with Oppenheimer's love affair with the Hindu texts. I know the geology department will be busy, but maybe we should start to question a bit more of our most ancient archaeological findings too?
 
 
-What has been considered pseudo-science will be the new frontier of exploration. The study of conciousness, the afterlife, time travel... these all become real possibilities at manageable energy scales with these field equations. 
+What has been considered pseudo-science will be the new frontier of exploration. The study of conciousness, the afterlife, time travel... these all become real possibilities at manageable energy scales with these field equations.
 
 Just think about the potential for the environment when electricity can be harnessed _directly_ from gravity, and gravity can be manipulated by electromagnetism. Think about the change to the environment when we finally bind these two fields, or the new technologies we can develop when we're no longer limited by power production. This is all within reach, in our lifetime, but it requires courage from those that are in a position of power academically; courage to admit that you may have been wrong about something you thought was for certain.
 
 
 I think of it like this:
 
-If we're a society 10,000 years ago in the middle of a land-bound nation, a person may have never met anyone that has ever seen a body of water they couldn't see across. We're just now discovering the ocean. I don't know how to build a boat, I can't even successfully describe the dynamics of the fluid in an n-body system, but the evidence for the ocean itself is overwhelming, and I can paint a very accurate description of the surface of that ocean. 
+If we're a society 10,000 years ago in the middle of a land-bound nation, a person may have never met anyone that has ever seen a body of water they couldn't see across. We're just now discovering the ocean. I don't know how to build a boat, I can't even successfully describe the dynamics of the fluid in an n-body system, but the evidence for the ocean itself is overwhelming, and I can paint a very accurate description of the surface of that ocean.
 
 **Final Thought**
 
 The same way we grappled with the fact that we're not at the center of the Universe, or just how vast the Universe is, we're going to have to grapple with the fact that just as there is no limit on how large a unit of length may be, so too is there no limit on how small it may be. Every time humanity is made to feel more insignificant, we struggle with the logical leap, but the logic is there: The Earth is expanding with the rest of the Universe, and gravitational mass is just curvature induced by co-moving electromagnetic divergence.
+
 
 
 
