@@ -11,13 +11,13 @@ subject: Physics
 
 This is both a sample note representing what Conundrum is capable of, and my presentation of a modified model of relativity that inspired Conundrum. Let me explain...
 
-Late one night in the fall of 2021 I was going over some of Einstein's lectures when I had a realization: His assumptions made far more sense before the observations that gave us the Big Bang. I began to play around with new coordinate transformations when I realized everything... absolutely *everything* aligns with observation when you apply the _only_ set of transformations that reproduce experiment without requiring the absurd, anti-scientific and pseudo-religious notion that is relativistic simultaneity.
+Late one night in the fall of 2021 I was going over some of Einstein's lectures when I had a realization: His assumptions made far more sense before the observations that gave us the Big Bang. I began to play around with new coordinate transformations when I realized everything... absolutely *everything* aligns with observation when you apply the _only_ set of transformations that reproduce experiment without requiring the absurd notion that is relativistic simultaneity.
 
 The problem? The **only** set of coordinate transformations that satisfy experiment that do not require this anti-scientific principle conclude that the Earth is expanding _with_ the rest of the Universe, and that _this_ is the source of the equivalence principle. Avi Loebe couldn't get that past peer review, no matter how many quantities align with observation, so instead I took a different approach. I quit my job, became homeless, and built a few open source academic tools while living on the side of the street in Milwaukee just so I can publish this article along side the documentation.
 
-This isn't another internet fringe theory some lazy, attention starved :donkey: thought up for clicks... this is a model that should appear like a Rorschach test to any free thinking physicist that is willing to say "I don't know, but the math works". That was the approach we should have had with relativity since 1905. The definition of an event in SR is ***completely*** nonsensical and in disagreement with reality itself, and it should have never been accepted as anything other than a mathematical bandaid intended to apply precisely the properties satisfied by this model: $d/v$ is constant in each coordinate system.
+This isn't another internet fringe theory thought up for clicks... this is a model that should appear like a Rorschach test to any free thinking physicist that is willing to say "I don't know, but the math works". That was the approach we should have had with relativity since 1905. The definition of an event in SR is ***completely*** nonsensical and in disagreement with reality itself, and it should have never been accepted as anything other than a mathematical bandaid intended to apply precisely the properties satisfied by this model: $d/v$ is constant in each coordinate system.
 
-While the field equations remain elusive, the model naturally reproduces the geometry of general relativity in a specific frame and does so while producing upwards of a dozen numerical alignments with observation and a resolution to at least 2 of the most pressing issues in physics. _This_ many alignments and the simultaneous resolution of _this_ many paradoxes are not a coincidence, no matter what your geologist friend tells you.
+While the field equations are a work in progress, the model naturally reproduces the geometry of general relativity in a specific frame and does so while producing upwards of a dozen numerical alignments with observation and a resolution to at least 2 of the most pressing issues in physics. _This_ many alignments and the simultaneous resolution of _this_ many paradoxes are not a coincidence, no matter what your geologist friend tells you.
 
 <Hint>
 There are two complete video walkthroughs on our [Youtube](https://www.youtube.com/@Fluster_io) channel, as well as an `.ipynb` [notebook](https://github.com/flusterIO/alphaOmegaGravity/blob/main/alpha_omega_gravity.ipynb), a complete python package `alpha_omega_gravity`, and a standalone mac application to explore the model further.
@@ -104,7 +104,7 @@ $$
 $$
 
 <Card title="Note">
-There's no negative sign because we're taking a derivative, but the opposite thing is moving (space, not the observer in free-fall) giving two negative signs. The $\Delta x$ works out... trust me. It's long past time we take a step back from the higher-level algebraic rules we've invented to make things doable and go back to the basics: geometry and motion.
+There's no negative sign because we're taking a derivative, but the opposite thing is moving (space, not the observer in free-fall) giving two negative signs. The $\Delta x$ works out...I promise.
 </Card>
 
 If we consider that the theoretical spatial dilation might be the source of the equivalence principle, we should consider that $\delta$ may be produced from divergence. Since this divergence would be radial in a simplified single body (of uniform mass density) system, we should find:
@@ -176,7 +176,7 @@ $$
 $$
 
 
-This gives the outline of a single function that describes $\left( \frac{d}{dR}g \right)^{1/3}$ as oscillating between $\alpha$ and $ \alpha\left(2 - \alpha\right)$ as a function of mass and velocity, and just look at the results:
+This gives the outline of a single function that describes $\left( \frac{d}{dR}g \right)^{1/3}$ as ranging between $\alpha$ and $ \alpha\left(2 - \alpha\right)$ as a function of mass and velocity, and just look at the results:
 
 <Image
    src="/assets/diagrams/omega_mass_density.png"
@@ -245,17 +245,17 @@ This aligns with our _observed_ velocity relative to the CMB to within $0.52\%$ 
 
 
 <Admonition title="Quick Review" info foldable folded>
-So far we've derived a set of coordinate transformations that not only satisfy experiment, but do so without any dependence upon time as a physically meaningful quantity. We've then applied these coordinate transformations, and discovered the _outlines_ of a function yielding electromagnetic parameters from gravitational inputs. This alone would be something worthy of further <Hl>funded</Hl> study, but we didn't end there. We then discovered that these transformations also produce the golden ratio to an uncanny accuracy, and lastly: That these transformations yield just 1 of the 4 independently derived equations that correctly predict our local velocity we'll have by the end of this ~~article~~ _paper_.
+So far we've derived a set of coordinate transformations that not only satisfy experiment, but do so without any dependence upon time as a physically meaningful quantity. We've then applied these coordinate transformations, and discovered the _outlines_ of a function yielding electromagnetic parameters from gravitational inputs. This alone would be something worthy of further study, but we didn't end there. We then discovered that these transformations also produce the golden ratio to an uncanny accuracy, and lastly: That these transformations yield just 1 of the 4 independently derived equations that correctly predict our local velocity we'll have by the end of this article.
 
 Next, we'll move on to our gravitational parameters, repeating the same steps and discover that they predict not just our kinematic velocity, but our cosmological velocity as well. We'll then find a pair of equations given from simple high-school trig that reproduces our galactic orbital velocity with only _visible_ mass, and again... the same kinematic velocity (still following the same $1 +  \alpha$ relationship with the pre-Plank data).
 
-As the last like "probably right" equation, we'll end with is a somewhat speculative but like holy-shit accurate derivation of Earth's rotational velocity, reproducing Earth's polar radius to an error of just over an inch and a cumulative velocity error of roughly a literal crawling pace. It's not a direct mechanical derivation, but more of a 'well I wonder what this electromagnetic equivalent would be now that we have $\nabla \cdot{E}$ in a temporally co-moving frame?' and _bam_... our rotational velocity. Is that as good as a mechanical derivation? Of course not, but that's not the same as number fitting. This curiosity based, exploratory approach is almost exactly inline with the way AI would attack a problem like this. This is far more scientific than believing in mathematical definitions that don't match reality, even if many of the observations to this point are post-hoc.[^4] Somewhere along the way, right around the time physicists became mathematicians the physics community began to believe that curiosity, if outside the bounds of the hypothesis-first scientific method is invalid. With the way this geometry aligns itself with the work of Wyler, with space-time being a sort of hypersphere in derivative form, I think it's long past time the community develops a sense of humility and reinvestigates these possibilities.
+As the last like "probably right" equation, we'll end with is a somewhat speculative but intriguingly accurate derivation of Earth's rotational velocity, reproducing Earth's polar radius to an error of just over an inch and a cumulative velocity error of roughly a literal crawling pace. It's not a direct mechanical derivation, but more of a 'well I wonder what this electromagnetic equivalent would be now that we have $\nabla \cdot{E}$ in a temporally co-moving frame?' and _bam_... our rotational velocity. Is that as good as a mechanical derivation? Of course not, but that's not the same as number fitting. This curiosity based, exploratory approach is almost exactly inline with the way AI would attack a problem like this.
 
 </Admonition>
 
 ## Gravitational Parameters
 
-So, by the nature of the equality defined above it's pretty obvious we can do exactly the same operation to reproduce our kinematic velocity here on Earth, but there's an interesting surprise: We actually find our cosmological velocity first! It's not until we explicitly remove time as a physical quantity by defining a set of simple 'time-equivalent' quantities and integrate this temporal dimension that we find our kinematic velocity (still following that $1 + \alpha$ relationship with the pre-Plank data interestingly)!
+So, by the nature of the equality defined above it's pretty obvious we can do exactly the same operation to reproduce our kinematic velocity here on Earth with our gravitational parameters, but there's an interesting surprise: We actually find our cosmological velocity first! It's not until we explicitly remove time as a physical quantity by defining a set of simple 'time-equivalent' quantities and integrate this temporal dimension that we find our kinematic velocity (still following that $1 + \alpha$ relationship with the pre-Plank data interestingly)!
 
 It is this very relationship, the fact that time _is_ this divergence of space that gives rise to the electromagnetic 4-potential where:
 
@@ -700,7 +700,6 @@ The same way we grappled with the fact that we're not at the center of the Unive
 
 
 [^1]: Cosmological Velocity: The motion through space (kinematic velocity), plus the motion _of_ space. This idea that the SNe/CMB discrepancy indicates an acceleration is ridiculous. They're just measuring different things.
-[^4]: There is incredible potential to test this model concretely using work carried out by Professor Enbang Li out of Australia.
 [^5]: Recall that Michelson and Morely used the very same experimental apparatus to detect $\alpha$ as they did the apparent absence of the aether in the very same year. It was only their explicit omission of the radial direction that allowed the aether drag to be missed.
 [^6]: By comparing kinetic energy to the gravitational potential you're doing precisely this.
 [^7]: Not sure if that's official notation or not, but the javascript codeblock basically.
