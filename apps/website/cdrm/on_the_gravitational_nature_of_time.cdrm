@@ -556,7 +556,7 @@ And these are just the bodies with the properties that really make them somewhat
 
 ---
 
-Or we can approximate $G$ in terms of mass density, $\alpha$, and that same $\frac{1}{2 - \alpha}$ term.
+We can also approximate $G$ in terms of mass density, $\alpha$, and that same $\frac{1}{2 - \alpha}$ term.
 
 $$
 G = \frac{R^3_\oplus}{M_\oplus} \left(\sqrt{\frac{1}{1 - \left(\alpha \left(2 - \alpha\right)\right)^3}} - 1\right) \pm 0.076\%
@@ -656,7 +656,7 @@ This model _will_ reproduce GR in the reference frame an observer in co-motion a
 
 ### Further Discussion
 
-Ok, I understand that this is a big leap, but with this many numerical alignments, what's more likely: That our 'constants' aren't constant, or that all of these alignments just coincidentally produce a combined average error approximating $\sim 0.01\%$? Being an intellectual means weighing probabilities realistically, even when the prospective change is huge. I'm asking the professional physicists out there to evaluate this honestly.
+Ok, I understand that this is a big leap, but with this many numerical alignments, what's more likely: That our 'constants' aren't constant, or that all of these alignments just coincidentally produce a combined average error approximating $\sim 0.01\%$?
 
 Take the theoretical function giving us our first plot for example. When I wrote this, I was homeless and offline. I had access to only what `scipy` and `astropy` export (mass and radius of the Sun and the Earth basically), but I didn't have access to any other data. I was still able to derive the other limit, _without_ knowing ahead of time that Saturn approximates it almost precisely. That is not number fitting, that is completely analogous to the blinding parameters often used in observation physics.
 
