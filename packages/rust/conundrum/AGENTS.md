@@ -8,12 +8,15 @@
 
 - `src/lang/`, `src/parsers/`, and `src/output/` contain the language pipeline.
 - `src/lifted_models/` contains primitives and models moved out of `conundrum_db` so they can be shared without making the core depend on the full data layer.
+- `conundrum_macros` provides procedural derives used by the Rust crates; keep generated APIs aligned with their consumers and supporting traits.
+- `conundrum_tools` is the dedicated library for MCP tool definitions and integrations. Keep MCP-specific code there rather than in the language core.
 - `src/ecosystem/` and `src/embedded/` contain ecosystem settings and embedded documentation/assets.
 - `roadmap.md` describes language direction; `soul.md` records project values. The crate README gives the broader product context.
 
 ## Change guidance
 
 - Keep core language and portable shared types independent of database implementation details. Put database-owned models and persistence in `conundrum_db`.
+- Preserve crate boundaries: macros belong in `conundrum_macros`, their shared support contracts belong in `conundrum_macro_traits`, MCP tool implementations belong in `conundrum_tools`, and server transport/registration belongs in `conundrum_server_rs`.
 - Preserve native/WASM compatibility. Check target-specific dependencies and feature gates when adding dependencies or APIs.
 - Prefer existing parser, serialization, and error-handling conventions in the surrounding module. Inspect call sites before changing public types because this crate is consumed by the database and server crates as well as other targets.
 - Embedded documentation and generated/runtime-consumed assets may have consumers beyond Rust. Follow the generation/update path already used in the relevant module rather than editing generated output in isolation.

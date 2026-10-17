@@ -6,6 +6,8 @@
 
 The server has three API surfaces: REST (`src/rest/` and `src/routes/`), RPC (`src/rpc/`), and MCP (`src/mcp/`). The `src/rig/` tree holds AI integration/features, and `src/run_server.rs` coordinates startup. Public library exports are intentionally limited in `src/lib.rs`.
 
+The workspace includes `conundrum_macros` for procedural derives and `conundrum_tools` as the dedicated library for MCP tool implementations. Keep MCP transport, server setup, tool discovery/registration, and dispatch in this crate; put reusable MCP tool definitions and integrations in `conundrum_tools`. Database persistence remains in `conundrum_db`.
+
 ## Adding a tool or operation
 
 First determine which clients need the capability and inspect the closest existing implementation in each relevant surface. MCP, RPC, and REST have different request/response and registration patterns; do not assume adding a function in one surface exposes it in the others. For MCP, trace tool registration and dispatch through `src/mcp/` and the tool index. For RPC, follow the router composition under `src/rpc/routers/`. Reuse database models and parameter types where appropriate instead of defining transport-specific copies.

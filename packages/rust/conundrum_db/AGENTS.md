@@ -6,6 +6,8 @@
 
 The dependency direction is intentional: `conundrum_db` depends on `conundrum` (with its `db` feature), while the core must not depend on this crate. Some shared primitives and AI-related types live in `conundrum::lifted_models` or other core modules; check there before adding a duplicate model.
 
+The workspace also has a dedicated `conundrum_macros` crate for procedural derives and a `conundrum_tools` crate reserved for MCP tool implementations. Keep persistence and data models here, put reusable derive generation in the macros crate, and put MCP tool behavior in the tools crate. The server owns MCP transport, registration, and orchestration.
+
 ## Where to look
 
 - `src/vector/models/`: serializable domain models and their module exports.
