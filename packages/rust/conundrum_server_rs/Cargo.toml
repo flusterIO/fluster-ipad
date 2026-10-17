@@ -48,6 +48,7 @@ langchain-rust = { version = "4.6.0", features = ["uuid", "ollama", "ollama-rs",
 ignore = "0.4.31"
 conundrum = {path = "../conundrum/"}
 conundrum_db = {path = "../conundrum_db/"}
+conundrum_tools = {path = "../conundrum_tools/" }
 gix = {version = "0.87.1", features = ["serde", "merge"]}
 # pyo3 = { version = "0.29.0", features = ["anyhow", "auto-initialize", "bigdecimal", "chrono", "either", "uuid"] }
 

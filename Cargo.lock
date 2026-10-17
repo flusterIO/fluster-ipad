@@ -3716,6 +3716,19 @@ dependencies = [
 ]
 
 [[package]]
+name = "conundrum_tools"
+version = "0.0.1"
+dependencies = [
+ "lancedb",
+ "pretty_env_logger",
+ "rig",
+ "rig-lancedb",
+ "rig-memory",
+ "rmcp 3.1.4",
+ "schemars 1.2.2",
+]
+
+[[package]]
 name = "conundrum_wasm"
 version = "0.0.1"
 dependencies = [

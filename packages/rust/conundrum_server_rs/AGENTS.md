@@ -2,7 +2,7 @@
 
 ## Crate role
 
-`conundrum_server_rs` exposes Conundrum capabilities to applications and AI clients. It depends on both `conundrum` and `conundrum_db`; keep domain models and persistence in those crates and put transport/orchestration concerns here. The package builds the `cdrm_server` binary and the `cdrm_server_lib` library.
+`conundrum_server_rs` exposes Conundrum capabilities to applications and AI clients, including the `conundrum_frontend` web client. It depends on both `conundrum` and `conundrum_db`; keep domain models and persistence in those crates and put transport/orchestration concerns here. The package builds the `cdrm_server` binary and the `cdrm_server_lib` library.
 
 The server has three API surfaces: REST (`src/rest/` and `src/routes/`), RPC (`src/rpc/`), and MCP (`src/mcp/`). The `src/rig/` tree holds AI integration/features, and `src/run_server.rs` coordinates startup. Public library exports are intentionally limited in `src/lib.rs`.
 
@@ -11,6 +11,8 @@ The workspace includes `conundrum_macros` for procedural derives and `conundrum_
 ## Adding a tool or operation
 
 First determine which clients need the capability and inspect the closest existing implementation in each relevant surface. MCP, RPC, and REST have different request/response and registration patterns; do not assume adding a function in one surface exposes it in the others. For MCP, trace tool registration and dispatch through `src/mcp/` and the tool index. For RPC, follow the router composition under `src/rpc/routers/`. Reuse database models and parameter types where appropriate instead of defining transport-specific copies.
+
+All tools, whenever possible (if not creating circular imports) should be placed in the `conundrum_tools` package.
 
 ## Change guidance
 
