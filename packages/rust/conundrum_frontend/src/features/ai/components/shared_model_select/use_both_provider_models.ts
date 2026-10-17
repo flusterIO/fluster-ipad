@@ -9,15 +9,16 @@ export const useBothProviderModels = (): {
         "ollama.list_models",
         null,
     ]);
-    // const {data: remoteModels, isLoading: remoteLoading} = rspc.useQuery(["ollama.list_models", null])
+    const { data: remoteModels, isLoading: remoteLoading } = rspc.useQuery([
+        "remote_ai.list_models",
+        null,
+    ]);
 
     return {
-        data: (localModels ?? []).map((m) => {
-            return {
-                ...m,
-                source: "local",
-            };
-        }),
-        loading: localLoading,
+        data: [
+            ...(localModels ?? []).map((m) => ({ ...m, source: "local" as const })),
+            ...(remoteModels ?? []).map((m) => ({ ...m, source: "remote" as const })),
+        ],
+        loading: localLoading || remoteLoading,
     };
 };

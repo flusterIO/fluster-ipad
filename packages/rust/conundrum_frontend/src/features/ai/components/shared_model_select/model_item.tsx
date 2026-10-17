@@ -1,4 +1,3 @@
-import { PROVIDERS } from "#/database/ai_constants";
 import { type ModelDescription } from "#/database/db_utility_types/agent";
 import {
     ModelSelectorItem,
@@ -23,14 +22,12 @@ export const ModelItem = ({ m, isSelected, setSelected }: ModelItemProps) => {
             onSelect={() => {
                 setSelected(m);
             }}
-            value={m.id}
+            value={`${m.source}:${m.id}`}
         >
-            <ModelSelectorLogo provider={"ollama"} />
-            <ModelSelectorName>{m.name}</ModelSelectorName>
+            <ModelSelectorLogo provider={m.source === "local" ? "ollama" : "openai"} />
+            <ModelSelectorName>{m.name ?? m.id}</ModelSelectorName>
             <ModelSelectorLogoGroup>
-                {PROVIDERS.map((provider) => (
-                    <ModelSelectorLogo key={provider.key} provider={provider.key} />
-                ))}
+                <ModelSelectorLogo provider={m.source === "local" ? "ollama" : "openai"} />
             </ModelSelectorLogoGroup>
             {isSelected ? (
                 <CheckIcon className="ml-auto size-4 text-foreground" />

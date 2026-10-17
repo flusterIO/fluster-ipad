@@ -4,7 +4,7 @@ import { type UserMessageInput } from "@conundrum/ts/codegen-typeshare";
 import { getEmptyChatData } from "../use_chat";
 
 export const useMessageSender = () => {
-    const { socket, convo, agent, ws_connected } = useChatPageContext();
+    const { socket, convo, agent, ws_connected, selectedModel } = useChatPageContext();
     const dispatch = useChatPageDispatch();
     function sendMessage(input: string) {
         if (!ws_connected || !socket?.OPEN) {
@@ -21,6 +21,7 @@ export const useMessageSender = () => {
         const data: UserMessageInput = {
             convo_id: convo ?? undefined,
             agent_id: agent ?? undefined,
+            model: selectedModel ?? undefined,
             body: input,
         };
 

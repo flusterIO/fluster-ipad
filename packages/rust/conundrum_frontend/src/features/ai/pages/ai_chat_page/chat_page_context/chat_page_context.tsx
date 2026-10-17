@@ -15,7 +15,7 @@ import {
     type ChatData,
     getEmptyChatData,
 } from "../use_chat";
-import { type ChatEvent } from "@conundrum/ts/codegen-typeshare";
+import { type ChatEvent, type ModelSelection } from "@conundrum/ts/codegen-typeshare";
 import { useLogger } from "#/logging/state/hooks/use_logger";
 import { getServerPort } from "@/app/rspc_client";
 import { type AppState } from "@/state/initial_state";
@@ -52,6 +52,7 @@ export interface ChatPageState {
     ws_connected: boolean;
     convo: string | null;
     agent: string | null;
+    selectedModel: ModelSelection | null;
     socket: WebSocket | null;
     page: number;
 }
@@ -67,6 +68,7 @@ const defaultInitialValues: ChatPageState = {
     initialized: false,
     convo: null,
     agent: null,
+    selectedModel: null,
     socket: null,
     page: 1,
 };
@@ -94,6 +96,10 @@ type ChatPageContextActions =
     | {
         type: "set-agent";
         payload: string | null;
+    }
+    | {
+        type: "set-selected-model";
+        payload: ModelSelection | null;
     }
     | {
         type: "set-initialized";
@@ -194,6 +200,12 @@ export const ChatPageContextReducer = (
             return {
                 ...state,
                 agent: action.payload,
+            };
+        }
+        case "set-selected-model": {
+            return {
+                ...state,
+                selectedModel: action.payload,
             };
         }
         case "set-initialized": {

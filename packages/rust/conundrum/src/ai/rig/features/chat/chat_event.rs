@@ -18,7 +18,6 @@ use crate::{
         },
         rig::{
             ai_traits::from_with_convo_information::TryFromWithConvoContext,
-            ai_types::ai_types::LocalMultiTurnStreamItem,
             features::chat::{convo_context::ArcMutexConversationContext, log_usage::log_usage},
         },
     },
@@ -218,8 +217,8 @@ impl<R> TryFromWithConvoContext<StreamedAssistantContent<R>> for ChatEvent where
     }
 }
 
-impl TryFromWithConvoContext<LocalMultiTurnStreamItem> for ChatEvent {
-    async fn try_from_with_convo_info(value: LocalMultiTurnStreamItem,
+impl<R> TryFromWithConvoContext<rig::agent::MultiTurnStreamItem<R>> for ChatEvent where R: Clone + Unpin {
+    async fn try_from_with_convo_info(value: rig::agent::MultiTurnStreamItem<R>,
                                       ctx: &ArcMutexConversationContext)
                                       -> crate::ecosystem::error_handling::db_error::DatabaseResult<Self>
         where Self: Sized {

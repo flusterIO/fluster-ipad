@@ -3651,6 +3651,7 @@ dependencies = [
  "color-eyre",
  "conundrum",
  "conundrum_db",
+ "conundrum_tools",
  "crossbeam",
  "dashmap 6.2.1",
  "fake",

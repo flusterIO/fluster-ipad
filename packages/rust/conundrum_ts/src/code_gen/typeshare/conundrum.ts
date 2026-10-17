@@ -1673,6 +1673,11 @@ export interface UnorderedTaskListModel {
 	items: UnorderedTaskListItem[];
 }
 
+export interface ModelSelection {
+	provider: string;
+	model_id: string;
+}
+
 export interface UserMessageInput {
 	convo_id?: DatabaseId;
 	/**
@@ -1680,6 +1685,7 @@ export interface UserMessageInput {
 	 * AI, this is the AI sending the response.
 	 */
 	agent_id?: DatabaseId;
+	model?: ModelSelection;
 	body: string;
 }
 
