@@ -14,8 +14,18 @@ use tokio::{sync::Semaphore, task::JoinSet};
 
 use crate::vector::models::{
     ecosystem_data::ecosystem_setting_key::settings_client::SettingsClient,
-    workspace::sync::{sync_context::SyncContext, sync_file_types::cdrm::sync_conundrum_path::sync_conundrum_path},
+    workspace::{
+        sync::{sync_context::SyncContext, sync_file_types::cdrm::sync_conundrum_path::sync_conundrum_path},
+        user_workspace::UserWorkspace,
+    },
 };
+
+pub async fn sync_registered_workspace(db: DBClient, workspace: UserWorkspace) -> DatabaseResult<SyncContext> {
+    let walk_config = FileWalkConfig { root: workspace.root,
+                                       respect_git_ignore: workspace.respect_gitignore,
+                                       ignore_hidden: workspace.ignore_hidden };
+    sync_workspace(db, walk_config).await
+}
 
 pub async fn sync_workspace(db: DBClient, walk_config: FileWalkConfig) -> DatabaseResult<SyncContext> {
     let max_threads = SettingsClient::max_sync_threads(db.clone()).await?;
@@ -36,63 +46,42 @@ pub async fn sync_workspace(db: DBClient, walk_config: FileWalkConfig) -> Databa
                 DatabaseError::FileSystemError(e)
             })?;
 
-    let file_paths_group = file_paths_arc.clone().lock_arc();
+    let file_paths_group = {
+        let file_paths = file_paths_arc.clone().lock_arc();
+        file_paths.clone()
+    };
 
     let mut set = JoinSet::<DatabaseResult<ParsableFileType>>::new();
 
-    for (pf, file_paths) in file_paths_group.clone() {
+    for (pf, file_paths) in file_paths_group {
+        if !matches!(pf, ParsableFileType::Markdown | ParsableFileType::Cdrm | ParsableFileType::Mdx) {
+            continue;
+        }
         for fp in file_paths {
             let db = db.clone();
             let ctx = Arc::clone(&ctx);
             let pf = pf.clone();
             let root_path = walk_config.root.clone();
             let permits = Arc::clone(&concurrency);
-            // let _permit = permits.acquire_owned().await.inspect_err(|e| {
-            //                                                log::error!("Thread aquisition
-            // error: {:?}", e);                                            });
             set.spawn(async move {
-                   match pf {
-                       ParsableFileType::Markdown | ParsableFileType::Cdrm | ParsableFileType::Mdx => {
-                           log::debug!(
-                                       "Parsing
-    conundrum file at {}",
-                                       fp.clone()
-                    );
-                           let ws_path =
-    WorkspaceRelativePath::<PathBuf>::from_path_and_root(fp, root_path)
-                               .map_err(|e| {
-                                   DatabaseError::FileSystemError(e)
-                               })?;
-                           sync_conundrum_path(ws_path, db.clone(), Arc::clone(&ctx)).await
-                                                                                     .inspect_err(|e| {
-                                                                                         log::error!("Error: {:#?}", e);
-                                                                                     });
-                           Ok(ParsableFileType::Cdrm)
-                       }
-                       _ => {
-                           todo!()
-                       }
-                   }
+                   let _permit = permits.acquire_owned().await.map_err(|_| DatabaseError::ThreadError)?;
+                   log::debug!("Parsing Conundrum file at {}", fp);
+                   let ws_path = WorkspaceRelativePath::<PathBuf>::from_path_and_root(fp, root_path)
+                       .map_err(DatabaseError::FileSystemError)?;
+                   sync_conundrum_path(ws_path, db, Arc::clone(&ctx)).await?;
+                   Ok(pf)
                });
         }
     }
 
     while let Some(res) = set.join_next().await {
-        if let Ok(parsed_file_type) = res {
-            match parsed_file_type {
-                Ok(unwrapped_file_type) => {
-                    let mut context = ctx.clone().lock_owned().await;
-                    context.count.increment_parsable_file_count(unwrapped_file_type);
-                    drop(context);
-                }
-                Err(err) => {
-                    log::error!("Error: {:#?}", err);
-                }
+        match res {
+            Ok(Ok(file_type)) => {
+                let mut context = ctx.clone().lock_owned().await;
+                context.count.increment_parsable_file_count(file_type);
             }
-        } else {
-            res.inspect_err(|e| {
-                   log::error!("Threading Error: {:?}", e);
-               });
+            Ok(Err(err)) => log::error!("Failed to synchronize a Conundrum file: {err:#?}"),
+            Err(err) => log::error!("Conundrum synchronization task failed: {err:?}"),
         }
     }
 

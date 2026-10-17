@@ -19,7 +19,7 @@ use crate::rpc::{
         fs::fs_router::get_fs_router, initialization::initialization_router::get_initialization_router,
         log::logger_router::get_logger_router, ollama::ollama_router::get_ollama_router,
         remote_ai::remote_ai_router::get_remote_ai_router, settings::settings_router::get_settings_router,
-        table::table_router::get_table_router,
+        sync::sync_router::get_sync_router, table::table_router::get_table_router,
         workspace_management::workspace_management_router::get_workspace_management_router,
     },
     server_health::server_health::ServerHealthReport,
@@ -40,6 +40,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<Arc<ServerState
     let agent_router = get_agent_router();
     let crud_router = get_nested_crud_router();
     let settings_router = get_settings_router();
+    let sync_router = get_sync_router();
     let r = rspc::Router::<Arc<ServerState>>::new().nest("fs", fs_router)
                                                .nest("workspace_management", workspace_router)
                                                .nest("code", code_router)
@@ -53,6 +54,7 @@ pub async fn get_rspc_router() -> ServerResult<(rspc::Procedures<Arc<ServerState
                                                .nest("crud", crud_router)
                                                .nest("initialize", initialization_router)
                                                .nest("settings", settings_router)
+                                               .nest("sync", sync_router)
                                                .procedure("backend_status", Procedure::builder::<ServerError>().query(|ctx: Arc<ServerState>, _: ()| async move {
                                                               let status = BackendStatus::from_async(ctx.clone()).await;
                                                               Ok(status)
