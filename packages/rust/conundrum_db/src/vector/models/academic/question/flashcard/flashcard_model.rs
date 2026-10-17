@@ -1,13 +1,16 @@
 use conundrum::{
-    ecosystem::{db::tables::DatabaseTable, error_handling::db_error::DatabaseResult},
+    ecosystem::{
+        db::{db_traits::db_entity::DBSchema, tables::DatabaseTable},
+        error_handling::db_error::DatabaseResult,
+    },
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };
 use conundrum_macros::DatabaseEntity;
 use serde::{Deserialize, Serialize};
 
-use crate::vector::models::{
-    academic::question::flashcard::{flashcard_entity::FlashCardEntity, flashcard_value::FlashcardValue},
-    taggables::{subject::Subject, tag::Tag, tag_list::TagList, taggables::Taggables, topic::Topic},
+use crate::vector::models::academic::question::flashcard::{
+    flashcard_entity::{FlashCardEntity, FlashCardEntityPartial},
+    flashcard_value::FlashcardValue,
 };
 
 #[derive(Clone, Deserialize, Debug)]
@@ -37,5 +40,20 @@ impl Into<FlashCardEntity> for FlashCardModelStringAnswerInputData {
                           ctime: DateTime::new_now(),
                           utime: DateTime::new_now(),
                           last_access: DateTime::new_now() }
+    }
+}
+
+impl Into<<FlashCardEntity as DBSchema>::PartialUpdateType> for FlashCardModelStringAnswerInputData {
+    fn into(self) -> FlashCardEntityPartial {
+        FlashCardEntityPartial { id: DatabaseId::new(),
+                                 question: Some(self.question.clone()),
+                                 answer: Some(FlashcardValue::Text(self.answer.clone())),
+                                 explanation: Some(self.explanation.clone()),
+                                 correct_responses: Some(0),
+                                 incorrect_responses: Some(0),
+                                 difficulty: Some(self.difficulty.clone()),
+                                 ctime: Some(DateTime::new_now()),
+                                 utime: Some(DateTime::new_now()),
+                                 last_access: Some(DateTime::new_now()) }
     }
 }
