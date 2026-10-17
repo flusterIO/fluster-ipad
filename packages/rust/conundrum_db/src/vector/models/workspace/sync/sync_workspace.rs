@@ -95,3 +95,7 @@ pub async fn sync_workspace(db: DBClient, walk_config: FileWalkConfig) -> Databa
         }
     }
 }
+
+#[cfg(test)]
+#[path = "sync_workspace_tests.rs"]
+mod tests;

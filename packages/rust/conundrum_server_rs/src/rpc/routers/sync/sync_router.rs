@@ -10,7 +10,7 @@ use conundrum::{
 use conundrum_db::vector::models::{
     ecosystem_data::server_state::server_state::ServerState,
     workspace::{
-        sync::{sync_context::SyncContext, sync_workspace::sync_registered_workspace},
+        sync::sync_workspace::sync_registered_workspace,
         user_workspace::UserWorkspace,
     },
 };
@@ -19,7 +19,7 @@ use rspc::{Procedure, Router};
 pub fn get_sync_router() -> Router<Arc<ServerState>> {
     Router::<Arc<ServerState>>::new().procedure(
         "workspace",
-        Procedure::<Arc<ServerState>, String, SyncContext>::builder::<ServerError>()
+        Procedure::<Arc<ServerState>, String, ()>::builder::<ServerError>()
             .mutation(|state: Arc<ServerState>, root: String| async move {
                 let predicate = format!("root = {}", root.to_quoted_string()?);
                 let workspace =
@@ -33,6 +33,7 @@ pub fn get_sync_router() -> Router<Arc<ServerState>> {
 
                 sync_registered_workspace(state.db.clone(), workspace)
                     .await
+                    .map(|_| ())
                     .map_err(ServerError::DatabaseError)
             }),
     )

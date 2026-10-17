@@ -44,14 +44,14 @@ impl SyncContext {
     pub fn append_topic(&mut self, value: GenericTagInput) {
         let exists = self.topics.iter().any(|x| x.value == value.value.clone());
         if !exists {
-            self.tags.push(value);
+            self.topics.push(value);
         }
     }
 
     pub fn append_subject(&mut self, value: GenericTagInput) {
         let exists = self.subjects.iter().any(|x| x.value == value.value.clone());
         if !exists {
-            self.tags.push(value);
+            self.subjects.push(value);
         }
     }
 

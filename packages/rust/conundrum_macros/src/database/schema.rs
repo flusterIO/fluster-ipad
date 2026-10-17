@@ -28,18 +28,14 @@ pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
 
         let field_type = field.field_arrow_type();
 
-        let f = match options.large {
-            true => quote! {
-                DatabaseFieldLarge
-            },
-            false => quote! {
-                DatabaseField
-            },
+        let (field_trait, field_method) = match options.large {
+            true => (quote! { DatabaseFieldLarge }, quote! { field_definition_large }),
+            false => (quote! { DatabaseField }, quote! { field_definition }),
         };
 
         generated_fields.push(quote! {
                   std::sync::Arc::new(
-                      <#field_type as #crate_id::ecosystem::db::db_traits::db_field::#f>::field_definition(
+                      <#field_type as #crate_id::ecosystem::db::db_traits::db_field::#field_trait>::#field_method(
                           #name,
                           #nullable,
                       )

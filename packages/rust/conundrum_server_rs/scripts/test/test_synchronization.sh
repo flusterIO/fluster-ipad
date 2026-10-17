@@ -1,0 +1,1 @@
+CONUNDRUM_SYNC_TEST_DIR=/Users/bigsexy/Desktop/notes/content cargo test -p conundrum_db sync_workspace::tests::synchronizes_configured_notes_directory_and_reports_successful_counts -- --ignored --nocapture

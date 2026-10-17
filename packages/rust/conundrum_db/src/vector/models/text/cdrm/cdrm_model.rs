@@ -43,12 +43,14 @@ pub struct CdrmModel(pub TextBasedContent<CdrmContent, TextBasedChunk, ParseConu
 
 impl IntoPartial<<CdrmModel as DBSchema>::PartialUpdateType> for CdrmModel {
     fn into_partial(&self) -> <CdrmModel as DBSchema>::PartialUpdateType {
-        CdrmModelPartial(TextBasedContent::<CdrmContent, TextBasedChunk, ParseConundrumOptions>::new_partial(Some(self.0
-                                                                                                     .content
-                                                                                                     .clone()),
-                                                                                            self.0.title.clone(),
-                                                                                            self.0.ws_root.clone(),
-                                                                                            self.0.relative_path.clone()))
+        let mut partial = TextBasedContent::<CdrmContent, TextBasedChunk, ParseConundrumOptions>::new_partial(
+            Some(self.0.content.clone()),
+            self.0.title.clone(),
+            self.0.ws_root.clone(),
+            self.0.relative_path.clone(),
+        );
+        partial.id = self.0.id.clone();
+        CdrmModelPartial(partial)
     }
 }
 

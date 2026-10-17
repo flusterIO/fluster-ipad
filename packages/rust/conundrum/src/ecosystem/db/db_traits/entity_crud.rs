@@ -106,6 +106,7 @@ pub trait EntityCRUD<UpdatePartial: DBSchema + Clone + Serialize>: DBEntity + Cl
         let stream = Box::new(RecordBatchIterator::new(vec![Ok(record_batch)].into_iter(), schema.clone()));
         db_tbl.merge_insert(merge_keys)
               .when_matched_update_all(None)
+              .when_not_matched_insert_all()
               .clone()
               .execute(stream)
               .await

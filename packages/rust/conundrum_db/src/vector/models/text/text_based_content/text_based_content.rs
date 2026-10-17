@@ -26,7 +26,7 @@ pub struct TextBasedContent<ContentType, ChunkType, ParseParameters>
     where ContentType: Serialize + Debug + Dummy<Faker> + DatabaseField + DatabaseFieldLarge,
           ChunkType: Serialize + Debug {
     pub id: DatabaseId,
-    #[db(arrow = String)]
+    #[db(arrow = String, large)]
     pub content: ContentType,
     pub title: Option<String>,
     pub ai_generated: AIGeneratedStatus,
