@@ -21,20 +21,22 @@ export const MicSelector = (): ReactNode => {
         if (!value && devices.length > 0) {
             setValue(
                 devices.find((device) => device.deviceId === "default")?.deviceId ??
-                    devices[0]?.deviceId,
+                devices[0]?.deviceId,
             );
         }
     }, [devices, value]);
 
     const addTranscription = (transcript: string) => {
         const existingText = textInput.value.trimEnd();
-        textInput.setInput(existingText ? `${existingText} ${transcript}` : transcript);
+        textInput.setInput(
+            existingText ? `${existingText} ${transcript}` : transcript,
+        );
     };
 
     return (
         <>
             <MS value={value} onValueChange={setValue}>
-                <MicSelectorTrigger aria-label="Choose microphone" className="size-8">
+                <MicSelectorTrigger aria-label="Choose microphone" className="w-auto!">
                     <MicIcon size={16} />
                 </MicSelectorTrigger>
                 <MicSelectorContent
