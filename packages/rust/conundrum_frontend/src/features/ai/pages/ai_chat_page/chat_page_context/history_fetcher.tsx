@@ -28,6 +28,16 @@ const HistoryFetcherInner = ({
             refetchOnMount: true,
         },
     );
+    const { data: conversations } = rspc.useQuery([
+        "crud.chat_conversation.get_by_predicate",
+        {
+            predicate: `id = "${convo_id}"`,
+            pagination: {
+                page: 1,
+                per_page: 1,
+            },
+        },
+    ]);
     const dispatch = useChatPageDispatch();
     const data = useFormattedChatHistory(chatHistory ?? null);
     useEffect(() => {
@@ -36,6 +46,12 @@ const HistoryFetcherInner = ({
             payload: data,
         });
     }, [data]);
+    useEffect(() => {
+        dispatch({
+            type: "set-selected-model",
+            payload: conversations?.[0]?.selected_model ?? null,
+        });
+    }, [conversations, convo_id]);
     return null;
 };
 

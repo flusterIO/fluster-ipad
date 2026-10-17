@@ -2,6 +2,7 @@ use std::ops::IndexMut;
 use std::sync::Arc;
 
 use crate::ai::models::chat::chat_conversation::vector_mode::VectorMode;
+use crate::ai::models::chat::chat_message::user::user_message_input::ModelSelection;
 use crate::ecosystem::db::db_client::db_client::DBClient;
 use crate::ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema};
 use crate::ecosystem::db::db_traits::db_field::DatabaseField;
@@ -24,6 +25,8 @@ pub struct ChatConversation {
     pub label: String,
     pub desc: Option<String>,
     pub requires_label_update: bool,
+    #[serde(default)]
+    pub selected_model: Option<ModelSelection>,
     pub ctime: DateTime,
     #[serde(default = "DateTime::new_now")]
     pub utime: DateTime,
@@ -35,6 +38,7 @@ impl From<ChatConversation> for <ChatConversation as DBSchema>::PartialUpdateTyp
                label: Some(value.label.clone()),
                desc: Some(value.desc.clone()),
                requires_label_update: Some(value.requires_label_update),
+               selected_model: Some(value.selected_model.clone()),
                ctime: Some(value.ctime),
                utime: Some(value.utime) }
     }
@@ -46,6 +50,7 @@ impl ChatConversation {
                label: label.unwrap_or(String::from("New Chat")),
                desc: None,
                requires_label_update: true,
+               selected_model: None,
                ctime: DateTime::new_now(),
                utime: DateTime::new_now() }
     }
@@ -65,6 +70,9 @@ impl ChatConversation {
             1 => {
                 let item = _self.index_mut(0);
                 item.requires_label_update = true;
+                if self.selected_model.is_some() {
+                    item.selected_model = self.selected_model.clone();
+                }
                 item.utime = DateTime::new_now();
                 let partial = <ChatConversation as DBSchema>::PartialUpdateType::from(item.clone());
                 <ChatConversation as EntityCRUD<<ChatConversation as DBSchema>::PartialUpdateType>>::merge_by_primary_key(vec![partial], db.clone()).await?;

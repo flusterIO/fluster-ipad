@@ -15,7 +15,11 @@ use conundrum::{
         tool::tool_execution::ToolExecution,
     },
     ecosystem::{
-        db::{db::get_database, db_traits::db_entity::DBSchema, tables::DatabaseTable},
+        db::{
+            db::get_database,
+            db_traits::db_entity::{ArrowFields, DBSchema},
+            tables::DatabaseTable,
+        },
         error_handling::db_error::{DatabaseError, DatabaseResult},
     },
 };
@@ -225,11 +229,45 @@ pub async fn initialize_local_database(state: &Arc<ServerState>) -> DatabaseResu
             log::info!("Ignoring initialization of temporary vector table {:?}", td.table.to_string());
         }
     }
+    migrate_chat_conversation_schema(&db).await?;
     drop(db);
     log::info!("Conundrum successfully initialized {} tables.", table_data.len());
     let _ = seed_db(db_arc.clone(), Arc::clone(state)).await.inspect_err(|e| {
                                                                 log::error!("Error: {:#?}", e);
                                                             });
     log::info!("Conundrum successfully seeded your database with documentation and some initial settings. Add a workspace to start adding actually meaningful content to your database.");
+    Ok(())
+}
+
+async fn migrate_chat_conversation_schema(db: &lancedb::Connection) -> DatabaseResult<()> {
+    let table_name = DatabaseTable::ChatConversation.to_string();
+    let table = db.open_table(&table_name).execute().await.map_err(|e| {
+        log::error!("Failed to open chat conversation table for schema migration: {e}");
+        DatabaseError::FailToCreateTable(DatabaseTable::ChatConversation)
+    })?;
+    let existing_schema = table.schema().await.map_err(|e| {
+                                                   log::error!("Failed to read chat conversation table schema: {e}");
+                                                   DatabaseError::FailToCreateTable(DatabaseTable::ChatConversation)
+                                               })?;
+
+    if existing_schema.field_with_name("selected_model").is_ok() {
+        return Ok(());
+    }
+
+    let selected_model_field =
+        <ChatConversation as ArrowFields>::arrow_fields()?.into_iter()
+                                                          .find(|field| field.name() == "selected_model")
+                                                          .ok_or(DatabaseError::SerializationError)?;
+    table.add_columns(
+                      lancedb::table::NewColumnTransform::AllNulls(Arc::new(Schema::new(vec![
+        selected_model_field.as_ref().clone(),
+    ]))),
+                      None,
+    )
+         .await
+         .map_err(|e| {
+             log::error!("Failed to add selected model to chat conversation table: {e}");
+             DatabaseError::FailToCreateTable(DatabaseTable::ChatConversation)
+         })?;
     Ok(())
 }

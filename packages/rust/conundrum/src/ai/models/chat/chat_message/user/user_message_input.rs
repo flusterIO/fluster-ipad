@@ -1,6 +1,8 @@
+use crate::ecosystem::db::db_traits::db_field::DatabaseField;
 use crate::lifted_models::primitives::db_id::DatabaseId;
 use axum::extract::ws::Message;
 use fake::Dummy;
+use lancedb::arrow::arrow_schema::{DataType, Field};
 use serde::{Deserialize, Serialize};
 
 #[typeshare::typeshare]
@@ -21,6 +23,14 @@ pub struct ModelSelection {
     pub provider: String,
     /// Provider-specific model identifier.
     pub model_id: String,
+}
+
+impl DatabaseField for ModelSelection {
+    fn field_definition(field_key: &'static str, nullable: bool) -> lancedb::arrow::arrow_schema::Field {
+        let fields = vec![std::sync::Arc::new(Field::new("provider", DataType::Utf8, false)),
+                          std::sync::Arc::new(Field::new("model_id", DataType::Utf8, false)),];
+        Field::new(field_key, DataType::Struct(fields.into()), nullable)
+    }
 }
 
 impl Into<Message> for UserMessageInput {

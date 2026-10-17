@@ -59,7 +59,8 @@ pub async fn handle_socket(socket: WebSocket, state: Arc<ServerState>) {
             }
         }
         if let Some(cid) = &msg.convo_id {
-            let conversation = ChatConversation::new(cid.clone(), None);
+            let mut conversation = ChatConversation::new(cid.clone(), None);
+            conversation.selected_model = model.clone();
             let _ =
                 conversation.make_require_update(state.db.clone()).await.inspect_err(|e| {
                                                                             log::error!("Conversation Error: {:#?}", e);
