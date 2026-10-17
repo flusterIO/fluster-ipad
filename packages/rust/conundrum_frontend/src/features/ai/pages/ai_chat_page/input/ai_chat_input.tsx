@@ -5,6 +5,7 @@ import {
     PromptInputTools,
     PromptInputSubmit,
     PromptInput,
+    PromptInputProvider,
 } from "@/components/ai_elements/prompt_input";
 import React, { useMemo, type ReactNode } from "react";
 import { motion } from "framer-motion";
@@ -32,40 +33,33 @@ export const ChatInput = (): ReactNode => {
         ]);
     }, []);
     return (
-        <MotionInput
-            onSubmit={(val) => {
-                if (val.text.trim().length) {
-                    sendMessage(val.text);
-                }
-            }}
-            className="mb-4 mx-4 w-full"
-            initial={{
-                y: "100%",
-                opacity: 0,
-            }}
-            animate={{
-                y: 0,
-                opacity: 1,
-            }}
-            exit={{
-                y: "100%",
-                opacity: 0,
-            }}
-        >
-            <PromptInputBody>
-                <PromptInputTextarea placeholder={placeholder} />
-            </PromptInputBody>
-            <PromptInputFooter>
-                <PromptInputTools className="flex flex-row gap-x-4 px-3">
-                    <AgentSelectInputButton />
-                    <MicSelector />
-                    {thinking ? (
-                        <div className="ml-4 w-2 h-2 rounded-full bg-primary animate-ping" />
-                    ) : null}
-                </PromptInputTools>
-                <PromptInputSubmit />
-            </PromptInputFooter>
-        </MotionInput>
+        <PromptInputProvider>
+            <MotionInput
+                onSubmit={(val) => {
+                    if (val.text.trim().length) {
+                        sendMessage(val.text);
+                    }
+                }}
+                className="mb-4 mx-4 w-full"
+                initial={{ y: "100%", opacity: 0 }}
+                animate={{ y: 0, opacity: 1 }}
+                exit={{ y: "100%", opacity: 0 }}
+            >
+                <PromptInputBody>
+                    <PromptInputTextarea placeholder={placeholder} />
+                </PromptInputBody>
+                <PromptInputFooter>
+                    <PromptInputTools className="flex flex-row gap-x-4 px-3">
+                        <AgentSelectInputButton />
+                        <MicSelector />
+                        {thinking ? (
+                            <div className="ml-4 w-2 h-2 rounded-full bg-primary animate-ping" />
+                        ) : null}
+                    </PromptInputTools>
+                    <PromptInputSubmit />
+                </PromptInputFooter>
+            </MotionInput>
+        </PromptInputProvider>
     );
 };
 
