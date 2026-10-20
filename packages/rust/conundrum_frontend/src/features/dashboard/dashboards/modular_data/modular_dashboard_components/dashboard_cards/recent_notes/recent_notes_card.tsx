@@ -29,12 +29,14 @@ export const RecentNotesCard = (): ReactNode => {
                 }),
             }}
             footer={
-                <div>
+                <div className="w-full h-fit flex flex-row justify-end items-center">
                     <Button
                         onClick={() => {
                             setPage(page - 1);
                         }}
                         disabled={page <= 1}
+                        size={"icon-sm"}
+                        variant={"ghost"}
                     >
                         <ChevronLeftIcon />
                     </Button>
@@ -42,6 +44,8 @@ export const RecentNotesCard = (): ReactNode => {
                         onClick={() => {
                             setPage(page + 1);
                         }}
+                        size={"icon-sm"}
+                        variant={"ghost"}
                     >
                         <ChevronRightIcon />
                     </Button>
