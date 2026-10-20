@@ -18,6 +18,7 @@ use conundrum::{
     },
     ecosystem::db::{db_traits::entity_crud::EntityCRUD, tables::DatabaseTable},
 };
+use conundrum_db::vector::models::text::cdrm::cdrm_model::CdrmModel;
 use conundrum_db::vector::models::{
     academic::{
         assignment::academic_assignment_entity::AssignmentEntity,
@@ -44,13 +45,16 @@ pub fn get_nested_crud_router() -> Router<Arc<ServerState>> {
     let keyboard_shortcut_crud = crud_router!(KeyboardShortcut, <KeyboardShortcut as DBSchema>::PartialUpdateType);
     let user_message_crud = crud_router!(UserMessage, <UserMessage as DBSchema>::PartialUpdateType);
     let ai_message_crud = crud_router!(AIMessage, <AIMessage as DBSchema>::PartialUpdateType);
+    let cdrm_crud = crud_router!(CdrmModel, <CdrmModel as DBSchema>::PartialUpdateType);
     let system_prompt_message_crud =
         crud_router!(SystemPromptMessage, <SystemPromptMessage as DBSchema>::PartialUpdateType);
     let chat_conversation_crud = get_chat_conversation_crud();
     let agent_description_crud = crud_router!(AgentDescription, <AgentDescription as DBSchema>::PartialUpdateType);
     let tool_execution_crud = crud_router!(ToolExecution, ToolExecution);
+
     Router::<Arc<ServerState>>::new().nest(DatabaseTable::UserWorkspace.to_string(), workspace_crud)
                                      .nest(DatabaseTable::GitRepository.to_string(), git_repo_crud)
+                                     .nest(DatabaseTable::Cdrm.to_string(), cdrm_crud)
                                      .nest(DatabaseTable::Topic.to_string(), topic_crud)
                                      .nest(DatabaseTable::Subject.to_string(), subject_crud)
                                      .nest(DatabaseTable::Tag.to_string(), tag_crud)

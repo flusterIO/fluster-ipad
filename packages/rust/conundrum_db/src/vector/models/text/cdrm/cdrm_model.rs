@@ -36,19 +36,22 @@ use crate::vector::models::{
     },
 };
 
-#[derive(Serialize, Deserialize, Clone, Debug, Dummy, DatabaseEntity)]
+#[derive(Serialize, Deserialize, Clone, Debug, Dummy, DatabaseEntity, specta::Type)]
 #[serde(transparent)]
 #[db(table = DatabaseTable::Cdrm, unit = TextBasedContent<'a, CdrmContent, TextBasedChunk, ParseConundrumOptions>, use_type_path = true)]
 pub struct CdrmModel(pub TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>);
 
 impl IntoPartial<<CdrmModel as DBSchema>::PartialUpdateType> for CdrmModel {
     fn into_partial(&self) -> <CdrmModel as DBSchema>::PartialUpdateType {
-        let mut partial = TextBasedContent::<CdrmContent, TextBasedChunk, ParseConundrumOptions>::new_partial(
-            Some(self.0.content.clone()),
-            self.0.title.clone(),
-            self.0.ws_root.clone(),
-            self.0.relative_path.clone(),
-        );
+        let mut partial =
+            TextBasedContent::<CdrmContent, TextBasedChunk, ParseConundrumOptions>::new_partial(Some(self.0
+                                                                                                         .content
+                                                                                                         .clone()),
+                                                                                                self.0.title.clone(),
+                                                                                                self.0.ws_root.clone(),
+                                                                                                self.0
+                                                                                                    .relative_path
+                                                                                                    .clone());
         partial.id = self.0.id.clone();
         CdrmModelPartial(partial)
     }

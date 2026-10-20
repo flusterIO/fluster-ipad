@@ -1206,6 +1206,13 @@ export interface MermaidCodeBlock {
 	theme: MermaidTheme;
 }
 
+export interface ModelSelection {
+	/** Stable provider key, such as `ollama` or `openai`. */
+	provider: string;
+	/** Provider-specific model identifier. */
+	model_id: string;
+}
+
 export interface NextJsConundrumOutput {
 	files: BlogFileSummary[];
 }
@@ -1671,11 +1678,6 @@ export interface UnorderedTaskListItem {
 
 export interface UnorderedTaskListModel {
 	items: UnorderedTaskListItem[];
-}
-
-export interface ModelSelection {
-	provider: string;
-	model_id: string;
 }
 
 export interface UserMessageInput {

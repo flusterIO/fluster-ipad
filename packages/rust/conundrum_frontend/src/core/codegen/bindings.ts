@@ -14,6 +14,24 @@
  */
 export type AIGeneratedInput = string
 
+export type AIGeneratedStatus = 
+/**
+ * This was completely written by humans.
+ */
+"None" | 
+/**
+ * This is primarily human written, but with some AI generated content.
+ */
+"Some" | 
+/**
+ * Mostly AI written with some human input
+ */
+"Most" | 
+/**
+ * Completely AI written.
+ */
+"All"
+
 export type AIInteractions = { notes: AINotes; ai_generated_input: AIGeneratedInput }
 
 export type AIMessage = { id: DatabaseId; convo_id: DatabaseId; agent_id: DatabaseId; body: string; ctime: DateTime }
@@ -35,6 +53,8 @@ export type AnyComponentKey = { tag: "AutoInserted"; content: AutoInsertedCompon
 export type AutoInsertedComponentName = "NoteLink" | "AutoInsertedTag" | "FlusterCitation" | "DictionaryEntry" | "FlusterAiParsePendingContainer" | "AutoInsertedHeading" | "AutoInsertedCodeBlock" | "AutoInsertedBlockQuote" | "AutoInsertedMathBlock" | "AutoInsertedMarkdownLink" | "AutoInsertedMarkdownParagraph"
 
 export type CaseInsensitiveString = string
+
+export type CdrmContent = string
 
 export type ConundrumCompileTarget = "jsx" | "html" | "markdown" | "text" | "mdx" | "math_svg"
 
@@ -315,7 +335,7 @@ value: string; variant: TaggableVariant;
  * `/Users/bigsexy/notes/`, then a valid glob to match files in this
  * directory might look like `physics/*.{mdx,cdrm,md}`.
  */
-glob: string; ctime: DateTime; utime: DateTime }[] } | { key: "crud.chat_conversation.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; selected_model?: ModelSelection | null; ctime: DateTime; utime?: DateTime })[] } | { key: "crud.git_repository.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id?: DatabaseId; 
+glob: string; ctime: DateTime; utime: DateTime }[] } | { key: "crud.cdrm.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: (TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>)[] } | { key: "crud.chat_conversation.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; selected_model?: ModelSelection | null; ctime: DateTime; utime?: DateTime })[] } | { key: "crud.git_repository.get_by_predicate"; input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }; result: ({ id?: DatabaseId; 
 /**
  * Will match the root of the workspace if this is a workspace repository,
  * otherwise user's can optionally set this to a local path to allow AI
@@ -523,7 +543,7 @@ value: string; variant: TaggableVariant;
  * `/Users/bigsexy/notes/`, then a valid glob to match files in this
  * directory might look like `physics/*.{mdx,cdrm,md}`.
  */
-glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; ctime: DateTime | null; utime: DateTime | null })[]; result: null } | { key: "crud.chat_conversation.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_conversation.delete_conversation"; input: string; result: null } | { key: "crud.chat_conversation.save_many"; input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; selected_model?: ModelSelection | null; ctime: DateTime; utime?: DateTime })[]; result: null } | { key: "crud.chat_conversation.update_many"; input: ({ id: DatabaseId; label: string | null; desc: string | null; requires_label_update: boolean | null; selected_model: ModelSelection | null; ctime: DateTime | null; utime: DateTime | null })[]; result: null } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ id?: DatabaseId; 
+glob: string; ctime: DateTime; utime: DateTime }[]; result: null } | { key: "crud.auto_taggable.update_many"; input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; ctime: DateTime | null; utime: DateTime | null })[]; result: null } | { key: "crud.cdrm.delete_by_predicate"; input: string; result: null } | { key: "crud.cdrm.save_many"; input: (TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>)[]; result: null } | { key: "crud.cdrm.update_many"; input: (TextBasedContentPartial<CdrmContent, TextBasedChunk, ParseConundrumOptions>)[]; result: null } | { key: "crud.chat_conversation.delete_by_predicate"; input: string; result: null } | { key: "crud.chat_conversation.delete_conversation"; input: string; result: null } | { key: "crud.chat_conversation.save_many"; input: ({ id: DatabaseId; label: string; desc: string | null; requires_label_update: boolean; selected_model?: ModelSelection | null; ctime: DateTime; utime?: DateTime })[]; result: null } | { key: "crud.chat_conversation.update_many"; input: ({ id: DatabaseId; label: string | null; desc: string | null; requires_label_update: boolean | null; selected_model: ModelSelection | null; ctime: DateTime | null; utime: DateTime | null })[]; result: null } | { key: "crud.git_repository.delete_by_predicate"; input: string; result: null } | { key: "crud.git_repository.save_many"; input: ({ id?: DatabaseId; 
 /**
  * Will match the root of the workspace if this is a workspace repository,
  * otherwise user's can optionally set this to a local path to allow AI
@@ -711,6 +731,22 @@ export type TagResult = { body: string }
 
 export type TaggableVariant = "tag" | "topic" | "subject"
 
+export type TextBasedChunk = { id: DatabaseId; 
+/**
+ * The id pointing back to the primary document. There's no point in having
+ * an actual id on a struct that will always retrieved by vector
+ * similarity.
+ */
+document_id: DatabaseId; content: string; 
+/**
+ * The index of the chunk as it appears in the whole document.
+ */
+chunk_idx: number; local_vector: DBVector; remote_vector: DBVector | null }
+
+export type TextBasedContent<ContentType, ChunkType, ParseParameters> = { id: DatabaseId; content: ContentType; title: string | null; ai_generated: AIGeneratedStatus; ws_root: string | null; relative_path: string | null; ctime: DateTime; utime: DateTime; last_sync: DateTime | null; ai: AIInteractions; chunk_type?: null; parse_params?: null }
+
+export type TextBasedContentPartial<ContentType, ChunkType, ParseParameters> = { id: DatabaseId; content: ContentType | null; title: string | null; ai_generated: AIGeneratedStatus | null; ws_root: string | null; relative_path: string | null; ctime: DateTime | null; utime: DateTime | null; last_sync: DateTime | null; ai: AIInteractions | null; chunk_type: null | null; parse_params: null | null }
+
 export type TokenExpendeture = { total: number; incoming: number; outgoing: number }
 
 export type ToolExecution = { id: DatabaseId; tool_name: MCPToolName; args: JsonContent | null; convo_id: DatabaseId; agent_id: DatabaseId | null; ctime: DateTime }
@@ -801,6 +837,12 @@ export type Procedures = {
 	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: { id: DatabaseId; value: string; variant: TaggableVariant; glob: string; ctime: DateTime; utime: DateTime }[], error: unknown },
 	save_many: { kind: "mutation", input: { id: DatabaseId; value: string; variant: TaggableVariant; glob: string; ctime: DateTime; utime: DateTime }[], output: null, error: unknown },
 	update_many: { kind: "mutation", input: ({ id: DatabaseId; value: string | null; variant: TaggableVariant | null; glob: string | null; ctime: DateTime | null; utime: DateTime | null })[], output: null, error: unknown },
+},
+	cdrm: {
+	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
+	get_by_predicate: { kind: "query", input: { predicate: PredicateType; pagination: PaginationParams; sort: SortQuery[] | null }, output: (TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>)[], error: unknown },
+	save_many: { kind: "mutation", input: (TextBasedContent<CdrmContent, TextBasedChunk, ParseConundrumOptions>)[], output: null, error: unknown },
+	update_many: { kind: "mutation", input: (TextBasedContentPartial<CdrmContent, TextBasedChunk, ParseConundrumOptions>)[], output: null, error: unknown },
 },
 	chat_conversation: {
 	delete_by_predicate: { kind: "mutation", input: string, output: null, error: unknown },
