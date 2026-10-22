@@ -160,7 +160,7 @@ $$
 \vec{m}_{\scriptsize \text{inertial}} = \sum_{i \neq j} \zeta G \frac{M_{\scriptsize \text{grav}}}{R_{ij}^2}\widehat{R}_{ij}
 $$
 
-Where $m_{j}$ is the body in question, $m_{i}$ iterates over all bodies in the system, and $\zeta$ is some yet unknown geometric scaling function that will give us the field equations we need to successfully bind electromagnetism with gravity within a decade.
+Where $m_{j}$ is the body in question, $m_{i}$ iterates over all bodies in the system, and $\zeta$ is some yet unknown geometric scaling function (likely producing an unwrapped Kaluza-Klein geometry) that will give us the field equations we need to successfully bind electromagnetism with gravity within a decade.
 
 If we then consider that this quantity may act _inside_ of the divergence that yields $\omega$ for masses that are more dominant of their local Machian environment (the Sun, Jupiter, etc.), we find
 
@@ -450,7 +450,7 @@ $$
 That's almost precisely our escape velocity, but we're looking for a stable orbit velocity! What the :poop:?!
 
 
-So what's going on here? We exist in a Machian Universe where inertia is comprised of this radiating force for all other bodies in the system. In our simplified equation that does not take into account the sum of all other bodies providing this resistance, we limit at our escape velocity. Let us test this model by evaluating this equation against a similar system: A planet on an arm of a spiral galaxy.
+So what's going on here? We exist in a Machian Universe where inertia is comprised of this radiating force for all other bodies in the system. In our simplified equation that does not take into account the sum of all other bodies providing this resistance, we limit at our escape velocity. Let us test this model by evaluating this equation against a system in which almost all flux would radiate outwards: A planet on an arm of a spiral galaxy.
 
 <Image
    src="/assets/diagrams/orbital_radius_intersection.png"
@@ -658,7 +658,7 @@ This model _will_ reproduce GR in the reference frame an observer in co-motion a
 
 Ok, I understand that this is a big leap, but with this many numerical alignments, what's more likely: That our 'constants' aren't constant, or that all of these alignments just coincidentally produce a combined average error approximating $\sim 0.01\%$?
 
-Take the theoretical function giving us our first plot for example. When I wrote this, I was homeless and offline. I had access to only what `scipy` and `astropy` export (mass and radius of the Sun and the Earth basically), but I didn't have access to any other data. I was still able to derive the other limit, _without_ knowing ahead of time that Saturn approximates it almost precisely. That is not number fitting, that is completely analogous to the blinding parameters often used in observation physics.
+Take the theoretical function giving us our first plot for example. When I wrote this, I was homeless and offline. I had access to only what `scipy` and `astropy` export (mass and radius of the Sun and the Earth basically), but I didn't have access to any other data. I was still able to derive the other limit, _without_ knowing ahead of time that Saturn approximates it almost precisely. That is not number fitting, that is completely analogous to the blinding parameters often used in observational physics.
 
 The evidence for this model is overwhelming, and it does all of this while producing _zero_ known temporal paradoxes of any kind. No killing your grandfather, or the endless cat/train reference frame problems, and no dependence on the dilation of a mysterious substance that nobody has ever directly measured.
 
@@ -668,7 +668,7 @@ This is a _massive_ change to our understanding of the Universe, which _should_ 
 
 While this model produces dramatically new geometries, it does ***not*** propose radically new _physics_, as the entire model is derived from one single modification to SR that's mathematically and geometrically equivalent to existing models in ***almost*** every way, and just look at the alignments with observation.
 
-It's time to truly think for yourself. The geometry is difficult to wrap your head around, but the math and physics is entirely consistent with observation... and I mean _all_ observation. Ghosts, UFO's, the afterlife, it is all successfully described by this geometry, albeit in a _very_ incomplete state. Thousands of years of repeated witness accounts of the same experiences are not any more anecdotal than trusting data transmitted from some distance away when we don't completely understand the medium in-between (SNe data). Even the Fermi paradox has a new explanation given this description of our 4th dimension. I'm not saying all of our fanciful myths are based on something real, but at least a significant subset can be successfully attributed to phenomenon regarding this temporal geometry.
+The geometry is difficult to wrap your head around, but the math and physics is entirely consistent with observation... and I mean _all_ observation. Ghosts, UFO's, the afterlife, it is all successfully described by this geometry, albeit in a _very_ incomplete state. Thousands of years of repeated witness accounts of the same experiences are not any more anecdotal than trusting data transmitted from some distance away when we don't completely understand the medium in-between (SNe data). Even the Fermi paradox has a new explanation given this description of our 4th dimension. I'm not saying all of our fanciful myths are based on something real, but at least a significant subset can be successfully attributed to phenomenon regarding this temporal geometry.
 
 The Egyptian myth, the weighing of the soul for example? That appears to be describing a real buoyancy force applied to what we'd call conciousness once it becomes unbound to mass which would likely produce a similar experience as to what people experience when they 'see the light'. Do I have an equation for it? Of course not... the point is that this _geometry_ opens the door to an entirely new axis of exploration, one that appears to be described to primitive people all around the world some time ago.
 
