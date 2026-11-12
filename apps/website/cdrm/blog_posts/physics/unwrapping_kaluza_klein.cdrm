@@ -1,0 +1,114 @@
+---
+title: Unwrapping Kaluza Klein
+id: unwrappingKaluzaKlein
+summary: Exploring an unwrapped fifth dimension and its relationship to gravitational time dilation.
+subject: LinkOnly
+---
+
+# Unwrapping Kaluza Klein
+
+<Admonition title="Abstract" info>
+
+The Kaluza–Klein model seeks to unify electromagnetism and gravity within a five-dimensional spacetime by introducing an additional spatial dimension whose geometry can encode electromagnetic and gravitational fields. In its traditional formulation, the fifth dimension is compactified, which was largely motivated by the fact that we don't appear to _observe_ a 4th spatial dimension.
+
+Under the coordinate transformations proposed [here](https://flusterapp.com/blog/by_path/on_the_gravitational_nature_of_time), this 4th orthogonal spatial dimension becomes not only apparent, but directly measurable.
+
+Here, we aim to bind this 4th spatial dimension with the unwrapped Kaluza-Klein geometry to compare the magnitudes between the coordinate transformations being proposed and the associated $\mathbf{KK}$ (Kaluza-Klein) dimension.
+
+</Admonition>
+
+
+## Interpreting The $\alpha \omega$ Geometry
+
+Consider the Universe, where the 3 $\mathbb{R}^{3}$ axis' are compressed into a 2-dimensional plane. Time then acts as the orthogonal dimension, where each temporal 'slice' represents the state of the Universe in an instance of time. As 'time' progresses, an observer progresses along this orthogonal axis into a further dilated coordinate system. To an observer in motion along this axis, this appears to be the separation of coordinates as a function of time, giving rise to gravitational acceleration.
+
+It's important to note here, that there is not necessarily any spatial separation between any two temporal slices, as the math appears to indicate that these fields directly overlap and are simply defined by the property that coordinate sets do not interact across some discrepancy in spatial density.
+
+<Image 
+   src="/assets/diagrams/5dGeometry.png"
+   alt="5-dimensional Kaluza-Klein Geometry reinterpreted for the divergent gravity model"
+   maxHeight="large"
+   centerSelf
+   paddingY="medium"
+   caption="**Warning:** AI Generated"
+/>
+
+## Deriving $t_{\left( r \right)}$
+
+Before we jump into the Kaluza-Klein model, let's investigate the radial time dilation scalar according to General Relativity as this establishes an important relationship for our geometry.
+
+Let's consider that according to Einstein's theory of General Relativity, time dilation at some distance $r$ is described by the following:
+
+$$
+t_{\text{GR}} = \sqrt{1 - 2 \frac{GM}{Rc^{2}}}
+$$
+
+
+As the coordinate transformations being proposed interpret time as nothing but the dilation of space, we should define a function that is the inverse of $t_{\text{GR}}$ as
+
+$$
+t_{\left( R \right)} = \frac{1}{t_{\text{GR}}} = \frac{1}{\sqrt{1 - 2 \frac{GM}{Rc^{2}}}}
+$$
+
+This then gives a relationship where for $v_{\left( \gamma \right)}$, where
+
+
+$$
+v_{\left( \gamma \right)} = c \sqrt{1 - \frac{1}{\gamma^{2}}}
+$$
+
+which can be easily derived by solving Einstein's equation for $\gamma$ for $v$.
+
+We then find
+
+$$
+v_{\left( t_{\left( R \right)} \right)} = \sqrt{2 \frac{GM}{R}} = \text{Escape Velocity}
+$$
+
+
+Let's then consider the fact that the escape velocity is given by
+
+$$
+\begin{aligned}
+E_{\text{Kinetic}} & = \int g ~ dR \\
+\frac{1}{2}mv^{2} & = \int G \frac{M}{R^{2}} ~ dR \\
+v & = \sqrt{2GM \int \frac{1}{R^{2}}}
+\end{aligned}
+$$
+
+
+And Kinetic energy in turn is given by
+
+$$
+E_{\text{Kinetic}} = \int p ~ dx = \int m \dot{x} ~ dx
+$$
+
+
+For this reason, we should not consider escape velocity when considering spatial dilation, but rather gravitational acceleration. It is only when this quantity is integrated radially that we find the escape velocity.
+
+## Defining the $\mathbf{KK}$ Metric
+
+
+Let's start with the electromagnetic field tensor.
+
+$$
+F^{\mu \nu} = \left[\begin{matrix}0 & - E_{x} & - E_{y} & - E_{z}\\E_{x} & 0 & B_{z} & - B_{y}\\E_{y} & - B_{z} & 0 & B_{x}\\E_{z} & B_{y} & B_{x} & 0\end{matrix}\right] \qquad  F_{\mu \nu} = \left[\begin{matrix}0 & E_{x} & E_{y} & E_{z}\\- E_{x} & 0 & B_{z} & - B_{y}\\- E_{y} & - B_{z} & 0 & B_{x}\\- E_{z} & B_{y} & B_{x} & 0\end{matrix}\right]
+$$
+
+Then 
+
+$$
+F_{\mu \nu} = \partial_\mu A_{\nu} - \partial_\nu A_{\mu}
+$$
+
+Or
+
+$$
+F_{\mu \nu} = \left[\begin{matrix}0 & - \frac{\frac{\partial}{\partial S_{x}} \phi{\left(S_{x},S_{y},S_{z} \right)}}{c} & - \frac{\frac{\partial}{\partial S_{y}} \phi{\left(S_{x},S_{y},S_{z} \right)}}{c} & - \frac{\frac{\partial}{\partial S_{z}} \phi{\left(S_{x},S_{y},S_{z} \right)}}{c}\\\frac{\frac{\partial}{\partial S_{x}} \phi{\left(S_{x},S_{y},S_{z} \right)}}{c} & 0 & - \frac{\partial}{\partial S_{y}} A_{x}{\left(S_{x},S_{y},S_{z} \right)} + \frac{\partial}{\partial S_{x}} A_{y}{\left(S_{x},S_{y},S_{z} \right)} & - \frac{\partial}{\partial S_{z}} A_{x}{\left(S_{x},S_{y},S_{z} \right)} + \frac{\partial}{\partial S_{x}} A_{z}{\left(S_{x},S_{y},S_{z} \right)}\\\frac{\frac{\partial}{\partial S_{y}} \phi{\left(S_{x},S_{y},S_{z} \right)}}{c} & \frac{\partial}{\partial S_{y}} A_{x}{\left(S_{x},S_{y},S_{z} \right)} - \frac{\partial}{\partial S_{x}} A_{y}{\left(S_{x},S_{y},S_{z} \right)} & 0 & - \frac{\partial}{\partial S_{z}} A_{y}{\left(S_{x},S_{y},S_{z} \right)} + \frac{\partial}{\partial S_{y}} A_{z}{\left(S_{x},S_{y},S_{z} \right)}\\\frac{\frac{\partial}{\partial S_{z}} \phi{\left(S_{x},S_{y},S_{z} \right)}}{c} & \frac{\partial}{\partial S_{z}} A_{x}{\left(S_{x},S_{y},S_{z} \right)} - \frac{\partial}{\partial S_{x}} A_{z}{\left(S_{x},S_{y},S_{z} \right)} & \frac{\partial}{\partial S_{z}} A_{y}{\left(S_{x},S_{y},S_{z} \right)} - \frac{\partial}{\partial S_{y}} A_{z}{\left(S_{x},S_{y},S_{z} \right)} & 0\end{matrix}\right]
+$$
+
+This gives the following metric when completely expanded, where $\kappa$ acts as a coupling parameter.
+
+$$
+g_{AB} = \left[\begin{matrix}\kappa^{2} \left(- \frac{E_{x} x}{2} - \frac{E_{y} y}{2} - \frac{E_{z} z}{2}\right)^{2} + 1 & \kappa^{2} \left(\frac{B_{y} z}{2} - \frac{B_{z} y}{2} + \frac{E_{x} c t}{2}\right) \left(- \frac{E_{x} x}{2} - \frac{E_{y} y}{2} - \frac{E_{z} z}{2}\right) & \kappa^{2} \left(\frac{B_{x} z}{2} + \frac{B_{z} x}{2} + \frac{E_{y} c t}{2}\right) \left(- \frac{E_{x} x}{2} - \frac{E_{y} y}{2} - \frac{E_{z} z}{2}\right) & \kappa^{2} \left(\frac{B_{x} y}{2} - \frac{B_{y} x}{2} + \frac{E_{z} c t}{2}\right) \left(- \frac{E_{x} x}{2} - \frac{E_{y} y}{2} - \frac{E_{z} z}{2}\right) & \kappa \left(- \frac{E_{x} x}{2} - \frac{E_{y} y}{2} - \frac{E_{z} z}{2}\right)\\\kappa^{2} \left(\frac{B_{y} z}{2} - \frac{B_{z} y}{2} + \frac{E_{x} c t}{2}\right) \left(- \frac{E_{x} x}{2} - \frac{E_{y} y}{2} - \frac{E_{z} z}{2}\right) & \bar{v} + \kappa^{2} \left(\frac{B_{y} z}{2} - \frac{B_{z} y}{2} + \frac{E_{x} c t}{2}\right)^{2} & \kappa^{2} \left(\frac{B_{x} z}{2} + \frac{B_{z} x}{2} + \frac{E_{y} c t}{2}\right) \left(\frac{B_{y} z}{2} - \frac{B_{z} y}{2} + \frac{E_{x} c t}{2}\right) & \kappa^{2} \left(\frac{B_{x} y}{2} - \frac{B_{y} x}{2} + \frac{E_{z} c t}{2}\right) \left(\frac{B_{y} z}{2} - \frac{B_{z} y}{2} + \frac{E_{x} c t}{2}\right) & \kappa \left(\frac{B_{y} z}{2} - \frac{B_{z} y}{2} + \frac{E_{x} c t}{2}\right)\\\kappa^{2} \left(\frac{B_{x} z}{2} + \frac{B_{z} x}{2} + \frac{E_{y} c t}{2}\right) \left(- \frac{E_{x} x}{2} - \frac{E_{y} y}{2} - \frac{E_{z} z}{2}\right) & \kappa^{2} \left(\frac{B_{x} z}{2} + \frac{B_{z} x}{2} + \frac{E_{y} c t}{2}\right) \left(\frac{B_{y} z}{2} - \frac{B_{z} y}{2} + \frac{E_{x} c t}{2}\right) & \kappa^{2} \left(\frac{B_{x} z}{2} + \frac{B_{z} x}{2} + \frac{E_{y} c t}{2}\right)^{2} & \kappa^{2} \left(\frac{B_{x} y}{2} - \frac{B_{y} x}{2} + \frac{E_{z} c t}{2}\right) \left(\frac{B_{x} z}{2} + \frac{B_{z} x}{2} + \frac{E_{y} c t}{2}\right) & \kappa \left(\frac{B_{x} z}{2} + \frac{B_{z} x}{2} + \frac{E_{y} c t}{2}\right)\\\kappa^{2} \left(\frac{B_{x} y}{2} - \frac{B_{y} x}{2} + \frac{E_{z} c t}{2}\right) \left(- \frac{E_{x} x}{2} - \frac{E_{y} y}{2} - \frac{E_{z} z}{2}\right) & \kappa^{2} \left(\frac{B_{x} y}{2} - \frac{B_{y} x}{2} + \frac{E_{z} c t}{2}\right) \left(\frac{B_{y} z}{2} - \frac{B_{z} y}{2} + \frac{E_{x} c t}{2}\right) & \kappa^{2} \left(\frac{B_{x} y}{2} - \frac{B_{y} x}{2} + \frac{E_{z} c t}{2}\right) \left(\frac{B_{x} z}{2} + \frac{B_{z} x}{2} + \frac{E_{y} c t}{2}\right) & \kappa^{2} \left(\frac{B_{x} y}{2} - \frac{B_{y} x}{2} + \frac{E_{z} c t}{2}\right)^{2} & \kappa \left(\frac{B_{x} y}{2} - \frac{B_{y} x}{2} + \frac{E_{z} c t}{2}\right)\\\kappa \left(- \frac{E_{x} x}{2} - \frac{E_{y} y}{2} - \frac{E_{z} z}{2}\right) & \kappa \left(\frac{B_{y} z}{2} - \frac{B_{z} y}{2} + \frac{E_{x} c t}{2}\right) & \kappa \left(\frac{B_{x} z}{2} + \frac{B_{z} x}{2} + \frac{E_{y} c t}{2}\right) & \kappa \left(\frac{B_{x} y}{2} - \frac{B_{y} x}{2} + \frac{E_{z} c t}{2}\right) & 1\end{matrix}\right]
+$$

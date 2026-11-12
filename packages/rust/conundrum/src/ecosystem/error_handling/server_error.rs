@@ -35,6 +35,8 @@ pub enum ServerError {
     SkippingIrrelevantAIOutput,
     #[error("AI Error: {:#?}", .0)]
     AIError(AIError),
+    #[error("{:?}", .0)]
+    WrappedError(String),
 }
 
 impl From<AIError> for ServerError {

@@ -1,5 +1,8 @@
+use std::path::PathBuf;
+
 use arrow_schema::{Field, Fields};
 use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
+use conundrum::ecosystem::error_handling::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult};
 use fake::Dummy;
 
 /// The path on the user's system, divided between the workspace path and the
@@ -11,6 +14,19 @@ pub struct WorkspaceRelativeStringPath {
     /// The relative path from the user's workspace root to the file or
     /// directory in question.
     pub relative_path: String,
+}
+
+impl WorkspaceRelativeStringPath {
+    pub fn absolute_path(&self) -> PathBuf {
+        PathBuf::from(self.workspace_path.clone()).join(self.relative_path.clone())
+    }
+
+    pub async fn read_to_string(&self) -> ConundrumFSResult<String> {
+        tokio::fs::read_to_string(self.absolute_path()).await.map_err(|e| {
+                                                                 log::error!("File read error: {:?}", e);
+                                                                 ConundrumFSError::FsError(format!("{:?}", e))
+                                                             })
+    }
 }
 
 impl DatabaseField for WorkspaceRelativeStringPath {

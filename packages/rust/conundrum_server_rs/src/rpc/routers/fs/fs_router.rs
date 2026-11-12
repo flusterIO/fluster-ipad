@@ -16,6 +16,7 @@ use conundrum_db::vector::{
     models::ecosystem_data::server_state::server_state::ServerState,
     parameters::fs::path_validity_check::PathValidationRequest,
 };
+use conundrum_fs::models::user_workspace::workspace_relative_path_strings::WorkspaceRelativeStringPath;
 use rspc::{Procedure, Router};
 
 pub fn get_fs_router() -> Router<Arc<ServerState>> {
@@ -25,6 +26,12 @@ pub fn get_fs_router() -> Router<Arc<ServerState>> {
                                                 let x = req.execute_request().await?;
                                                                                    Ok(x)
                                                                                }))
+        .procedure("read_to_string",
+                                            Procedure::<Arc<ServerState>, WorkspaceRelativeStringPath, String>::builder::<ServerError>().query(|_, req: WorkspaceRelativeStringPath| async move {
+                                                return req.read_to_string().await.map_err(|e| {
+                                                    ServerError::WrappedError(format!("{:?}", e))
+                                                });
+;                                                                              }))
         .procedure("explore_directory",
                                             Procedure::<Arc<ServerState>, String, Vec<FSPathSimpleResult>>::builder::<ServerError>().query(|_, req: String| async move {
                                                 let f = std::fs::read_dir(

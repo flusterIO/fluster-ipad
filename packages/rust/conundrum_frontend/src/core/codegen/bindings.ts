@@ -448,7 +448,16 @@ entity_name: string; is_joining_table: boolean; description: string } } | { key:
 /**
  * The _relative_ path
  */
-path: string; variant: PathVariant; parsable: ParsableFileType | null })[] } | { key: "fs.validate_path"; input: { path: string; 
+path: string; variant: PathVariant; parsable: ParsableFileType | null })[] } | { key: "fs.read_to_string"; input: { 
+/**
+ * The path to the root of the user's workspace
+ */
+workspace_path: string; 
+/**
+ * The relative path from the user's workspace root to the file or
+ * directory in question.
+ */
+relative_path: string }; result: string } | { key: "fs.validate_path"; input: { path: string; 
 /**
  * This only makes sense with an empty permitted_types array. Otherwise the
  * source_type is obviously a file. This will however validate 'any' paths
@@ -918,6 +927,7 @@ export type Procedures = {
 },
 	fs: {
 	explore_directory: { kind: "query", input: string, output: ({ path: string; variant: PathVariant; parsable: ParsableFileType | null })[], error: unknown },
+	read_to_string: { kind: "query", input: { workspace_path: string; relative_path: string }, output: string, error: unknown },
 	validate_path: { kind: "query", input: { path: string; source_type: PathSourceType; permitted_types: ParsableFileType[] }, output: boolean, error: unknown },
 },
 	initialize: {
