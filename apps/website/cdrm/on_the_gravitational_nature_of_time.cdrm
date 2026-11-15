@@ -190,6 +190,130 @@ This gives the outline of a single function that describes $\left( \frac{d}{dR}g
 
 Plugging in the values for Saturn gives $\omega = 0.007269$ or  $\pm 0.38\%$, off by $2.7 \times 10^{-5}$ and $\omega_{\oplus} = 0.014537 = \left( \alpha \left( 2 - \alpha \right) \right) \pm 0.025\%$ for Earth... and we've made several apparently successful assumptions about the geometry of the function, reproducing $\alpha$ to within $0.0034\%$ for the Sun using those modifications.
 
+## The Geometry Behind the Transformations
+> What the modified Lorentz transformations look like when you draw them, and where Schwarzschild falls out
+
+Everything above is words and a handful of numbers. This section is the geometry, and it's the part of the model I can defend line by line. I'll also be upfront about what it does and doesn't do: it reproduces general relativity in the places I can check. It doesn't replace it.
+
+### The Lorentz Factor Is a Slope
+
+In the transformations above, $B$'s measuring rod sees the separation as $\gamma$ times larger than the ordinary displacement. Call the ordinary displacement $dx = v\tau$ and the dilated separation $dx^{(U)} = \gamma v \tau$. The difference between them is the leg of a right triangle:
+
+$$ {#eq_slope}
+\left(dx^{(U)}\right)^2 = dx^2 + dy^2
+\quad \Rightarrow \quad
+dy = v\tau\sqrt{\gamma^2 - 1} = \tau \frac{v^2}{\sqrt{c^2 - v^2}}
+$$
+
+The slope of that triangle is $\partial_x y = \sqrt{\gamma^2 - 1} = \gamma\beta$, and the angle $\theta$ it makes with the ordinary axis satisfies
+
+$$
+\sin\theta = \beta, \qquad \cos\theta = \frac{1}{\gamma}.
+$$
+
+If you know special relativity, you'll recognize this immediately: with rapidity $\eta$, $\gamma = \cosh\eta$ and $\gamma\beta = \sinh\eta$, so the triangle is just $\cosh^2\eta = 1 + \sinh^2\eta$. I promised no new mathematics, and that's true. The one new thing is reading $\gamma\beta$ as the _slope of a surface_ in a fourth spatial coordinate $y$.
+
+<Hint label="Prior art" primary>
+This isn't the first non-compact extra dimension. Wesson's induced-matter theory leaves the fifth coordinate unrestricted, and the Campbell-Magaard theorem says any (analytic) solution of the 4D Einstein equations embeds locally in a 5D Ricci-flat space. The difference here is that $y$ is fixed kinematically by $\gamma$, not by the field equations.
+</Hint>
+
+### Where Schwarzschild Comes From
+
+Now let $B$ be a body falling from rest at infinity toward a mass $M$, so that its velocity is the escape velocity, $\beta^2 = r_s/R$ with $r_s = 2GM/c^2$. Integrating the slope:
+
+$$ {#eq_flamm}
+\frac{\partial y}{\partial R} = \beta\gamma = \sqrt{\frac{r_s}{R - r_s}}
+\quad \Rightarrow \quad
+y = 2\sqrt{r_s\left(R - r_s\right)}
+$$
+
+That's a paraboloid (Flamm's paraboloid), and the distance measured along it is
+
+$$
+d\ell^2 = dR^2 + dy^2 = \frac{dR^2}{1 - r_s/R},
+$$
+
+which is exactly the spatial part of the Schwarzschild metric. The $\gamma$ we started with is the radial metric function.
+
+<Card title="Why the escape velocity? Because nothing else works">
+
+I didn't choose $\beta^2 = r_s/R$. For a spherical slice of flat 4D space with slope $\beta\gamma$, the principal curvatures are $\kappa_\theta = \beta/R$ and $\kappa_R = d\beta/dR$, and the Gauss equation gives the slice's scalar curvature:
+
+$$ {#eq_scalar_curv}
+{}^{(3)}\!R = \frac{2}{R^2}\frac{d}{dR}\left(R\beta^2\right)
+$$
+
+In vacuum, the time-symmetric Hamiltonian constraint of GR requires ${}^{(3)}\!R = 0$, so $R\beta^2$ is constant. That constant is $r_s$. The escape-velocity slope is the _only_ slope that makes the embedded slice scalar-flat.
+</Card>
+
+### The Lapse Is Not an Extra Assumption
+
+The embedded slice only knows about space. For a long time, the missing piece was $g_{00}$, and I simply assumed that the lapse is $N = 1/\gamma$. It turns out that you don't have to.
+
+In a static vacuum region the Einstein equations include ${}^{(3)}\!R_{ij} = \nabla_i\nabla_j N / N$. The Gauss equation of the embedding gives the left side in terms of $\beta$, and the angular component becomes
+
+$$ {#eq_lapse_ode}
+\frac{N'}{N} = \gamma^2\left(\beta\beta' + \frac{\beta^2}{R}\right)
+$$
+
+For $\beta^2 = r_s/R$ this is
+
+$$
+\frac{N'}{N} = \frac{1}{2}\frac{d}{dR}\ln\left(1 - \frac{r_s}{R}\right)
+\quad \Rightarrow \quad
+N = \sqrt{1 - \frac{r_s}{R}} = \frac{1}{\gamma},
+$$
+
+and the radial component is then satisfied identically. There's a nice geometric reading of this: $N = \cos\theta = dR/d\ell$. Gravitational time dilation is the foreshortening of the embedded slice, the same triangle as above.
+
+With the lapse in hand, the standard Schwarzschild results follow: the circular orbit speed $v^2 = GM/(R - r_s)$, the innermost stable orbit at $6GM/c^2$, and the perihelion advance $6\pi GM/\left(a(1-e^2)c^2\right)$. In this framework those are consequences, not independent tests.
+
+<Hint error label="What this is not">
+I import the static vacuum equations from GR. I haven't derived them from anything of my own. The identification of $y$ with the Flamm slice also only holds for free fall from rest at infinity: a body dropped from rest at $R_0$ has $\gamma_{\text{rel}} = N(R_0)/N(R)$, which is a different relation.
+</Hint>
+
+### Flows, Friedmann, and the Sciama Relation
+
+The spatial slices of free-falling observers are flat, so the natural coordinates are Painleve-Gullstrand:
+
+$$ {#eq_pg_metric}
+ds^2 = -c^2 dT^2 + \left(dR + \beta c\, dT\right)^2 + R^2 d\Omega^2,
+\qquad
+\beta^2 = \frac{2 G m(R)}{c^2 R}
+$$
+
+Here $\beta c$ is literally the speed at which space flows past a free-falling observer, and $m(R)$ is the mass enclosed. Now apply the same relation to a uniform universe, $m = \frac{4\pi}{3}\rho R^3$:
+
+$$ {#eq_friedmann}
+\left(\frac{\beta c}{R}\right)^2 = \frac{8\pi G \rho}{3} = H^2
+$$
+
+That's the Friedmann equation for a flat universe. The infall of a body toward a mass and the expansion of the universe are the _same_ relation with opposite sign, which is the divergence picture above in its cleanest form.
+
+At the Hubble radius $R_H = c/H$ the flow reaches the speed of light, $\beta = 1$, and so
+
+$$ {#eq_sciama}
+\frac{G\, m(R_H)}{c^2 R_H} = \frac{1}{2}.
+$$
+
+This is the Sciama-Dicke relation between the mass and the size of the universe, and here it falls out of a single line. It's also why I keep calling inertia Machian: the cosmic gravitational potential reaches order unity only at the Hubble radius, whereas a galaxy's own potential, $GM/Rc^2$, is about a millionth of that.
+
+### Time as a Length
+
+I said above there's no dimensionality issue. I still think that, but it should be said carefully. If $\tau$ is a scalar of distance, then every formula containing it can be written with lengths alone. Define the length
+
+$$ {#eq_length_only}
+L_\tau \equiv c\,(1~\text{s}) = 299{,}792{,}458~\text{m}
+\qquad \Rightarrow \qquad
+\frac{v}{c} = \sqrt{\frac{GM}{c^2}}\;\frac{L_\tau}{R^{3/2}}.
+$$
+
+Every quantity here is a length, and $v/c$ is dimensionless. So the use of seconds doesn't depend on any particular system of units, but it does mean the model contains one fixed reference length, $L_\tau$, which I haven't derived. The $0.5\%$ match to the CMB dipole is then best read as a determination of $L_\tau$ (one light-second, to about $0.5\%$) and not a free prediction.
+
+<Hint label="Worth knowing" primary>
+The same formula can be written $v = c\sqrt{4\pi G\bar\rho/3}\,\left(1~\text{s}\right)$, so for Earth it depends only on the mean density. With the same $L_\tau$ it gives roughly $190~\text{km/s}$ for the Sun and $130~\text{km/s}$ for Saturn. That's why I keep saying Earth sits at an upper limit of mass density.
+</Hint>
+
 ## The Equivalence Principle
 > Deriving our kinematic and cosmological velocities from the equivalence principle while resolving the crisis in cosmology
 
@@ -470,6 +594,58 @@ $$
 
 If we plug in our galactic parameters, the value we find falls almost perfectly on top of the work carried out by Anna Eilers and her colleagues (plot above), with only visible mass $\left((5 \times 10^{10}) M_{\odot}\right)$. Also, keep in mind that I didn't even attempt to integrate mass radially to fit the curve, as I don't believe our models are accurate enough to provide a realistic mass distribution. Integrating mass in this manner would fit the curve of the observational data better, providing more than just a single intersection.
 
+## What the Whole Rotation Curve Says
+> Testing the galactic claim against the full Eilers curve, using Cautun's baryonic model
+
+<Admonition title="Update to the claim above" info>
+In the section above I said the value "falls almost perfectly on top of" the Eilers curve, and that I hadn't tried to integrate mass radially because I didn't trust the mass distribution. I've now done the integration, using the baryonic model of Cautun et al. (bulge, thin and thick stellar discs, HI and H$_2$ gas, and the circumgalactic medium) and all 38 points of the Eilers curve. The honest summary is: the single intersection is real, but it is a single intersection.
+</Admonition>
+
+With Cautun's model the enclosed baryonic mass at the solar radius is $4.45 \times 10^{10}~M_\odot$, a little below the round $5 \times 10^{10}~M_\odot$ I used above. That gives about $217~\text{km/s}$ instead of $230~\text{km/s}$, still within roughly $5\%$ of the observed value. Here is the same equation at other radii, next to the observed circular speed:
+
+- $5.3~\text{kpc}$: equation $232.7~\text{km/s}$, observed $226.8~\text{km/s}$
+- $8.2~\text{kpc}$: equation $216.3~\text{km/s}$, observed $228.9~\text{km/s}$
+- $12.3~\text{kpc}$: equation $193.3~\text{km/s}$, observed $222.2~\text{km/s}$
+- $17.3~\text{kpc}$: equation $170.7~\text{km/s}$, observed $216.4~\text{km/s}$
+- $24.8~\text{kpc}$: equation $147.0~\text{km/s}$, observed $198.4~\text{km/s}$
+
+The equation agrees with observation to about $5\%$ out to roughly $10~\text{kpc}$. Beyond that it falls below the data: by $13\%$ at $12~\text{kpc}$, $21\%$ at $17~\text{kpc}$ and $26\%$ at $25~\text{kpc}$. It doesn't reproduce the rotation curve, and this is the outer region where I argued it should match best. The enclosed mass that _would_ match the data rises from $3.2 \times 10^{10}~M_\odot$ at $5.3~\text{kpc}$ to about $9.4 \times 10^{10}~M_\odot$ at $17-20~\text{kpc}$, while the baryons only grow by a factor of about $1.6$ over that range.
+
+### Orbits in Single-Body Systems
+
+There's a second thing worth knowing about this equation. Take the nearest things we have to single-body systems and compare the _observed_ orbital speed with $\sqrt{2GM/R}$. The squared ratio $\left(v_{\text{obs}}/v_{\text{orbit}}\right)^2$ is $0.49$ for Mercury, $0.50$ for Earth and Jupiter around the Sun, and $0.50$ for the Moon and Io. Real orbits sit at $1/\sqrt{2}$ of this velocity, which is the ordinary circular speed.
+
+So in the paper I describe $\dot{x}$ in equation <EqRef id="eq_orbital_vel" /> as the _flow_ velocity: the speed that radial free fall reaches, the natural limit of the flow in a single-body system. It's not the speed of a circular orbit in a near single-body system.
+
+### A Hypothesis, Not a Derivation
+
+If the Machian picture is right, the galactic discrepancy has to come from inertia, and the Sciama relation tells us where to look: the cosmic potential reaches order unity only at the Hubble radius. Here is the simplest statement of that idea I can make.
+
+<Card title="Hypothesis M: horizon-limited Machian inertia">
+The inertial resistance of a body accelerating at $g$ comes from the cosmic flow potential within a radius $c^2/g$. When $g \gtrsim cH$ that radius lies inside the Hubble radius and the resistance is complete. When $g \lesssim cH$ it extends past the Hubble radius, part of the contribution is missing, and inertial mass is reduced:
+
+$$
+m_i = m\,\mu\left(g/g_0\right), \qquad g_0 = \kappa'\, c H_0
+$$
+
+with $\mu \to 1$ for $g \gg g_0$ and $\mu \to g/g_0$ for $g \ll g_0$. In the deep limit $g = \sqrt{g_N g_0}$.
+</Card>
+
+If the asymptotic speed doesn't depend on $R$ and is set only by $GM$, $c$ and $H$, dimensional analysis leaves one family, $v = (GMH)^{p}c^{1-3p}$, and the deep limit above picks $p = \tfrac14$:
+
+$$ {#eq_btfr_flows}
+\left(\frac{v}{c}\right)^4 = \frac{\kappa'}{2}\,\beta_N^2\,\beta_H,
+\qquad
+\beta_N^2\beta_H = \frac{2GMH}{c^3}
+$$
+
+The product $\beta_N^2\beta_H$ doesn't depend on $R$. That's a flat rotation curve with $v^4 \propto M$, the baryonic Tully-Fisher relation, with its normalization set by the expansion rate. Two further consequences: the Solar System is Newtonian (at Neptune $g_N$ exceeds $g_0$ by a factor of order $10^{4}-10^{5}$), and $g_0$ should _evolve_ with redshift as $H(z)$.
+
+Fitting $g_0$ to the Eilers curve with the Cautun baryons gives $g_0 \approx 0.25\,cH_0$ for Cautun's preferred model, and $0.18-0.29\,cH_0$ across the variations they allow (their alternative baryon set, and stellar mass $\pm 1\sigma$). That is the right order of magnitude. It is not the value $\kappa' = 1/2\pi$ that I would have liked: fixing $g_0 = cH_0/2\pi$ gives a $\chi^2$ of about $117$ per point for the preferred model and about $12$ for the alternative set.
+
+<Hint error label="What this is, and isn't">
+This has the same structure as Milgrom's modified inertia. What I'm adding is a mechanism (horizon-limited Machian inertia, built from the flow velocities above) and the tie of the scale to $cH$. Neither the horizon cutoff nor the function $\mu$ is derived from the geometry, and one galaxy can't determine $\kappa'$. It would count against the idea if $\kappa'$ varies between galaxies beyond the uncertainty of their baryonic masses, if $g_0$ doesn't evolve with $H(z)$, or if the embedding eventually yields a $\kappa'$ outside the range above.
+</Hint>
 
 ## Electric Field Divergence Equivalent
 
