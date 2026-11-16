@@ -11,7 +11,15 @@ subject: Physics
 
 <Admonition title="What is this?">
 
-This is being rewritten. Check the paper above.
+This is both a sample note representing what Conundrum is capable of, and my presentation of a modified model of relativity that inspired Conundrum. Let me explain...
+
+Late one night in the fall of 2021 I was going over some of Einstein's lectures when I had a realization: His assumptions made far more sense before the observations that gave us the Big Bang. I began to play around with new coordinate transformations when I realized everything... absolutely *everything* aligns with observation when you apply the _only_ set of transformations that reproduce experiment without requiring the absurd notion that is relativistic simultaneity.
+
+The problem? The **only** set of coordinate transformations that satisfy experiment that do not require this anti-scientific principle conclude that the Earth is expanding _with_ the rest of the Universe, and that _this_ is the source of the equivalence principle. Avi Loebe couldn't get that past peer review, no matter how many quantities align with observation, so instead I took a different approach. I quit my job, became homeless, and built a few open source academic tools while living on the side of the street in Milwaukee just so I can publish this article along side the documentation.
+
+This isn't another internet fringe theory thought up for clicks... this is a model that should appear like a Rorschach test to any free thinking physicist that is willing to say "I don't know, but the math works". That was the approach we should have had with relativity since 1905. The definition of an event in SR is ***completely*** nonsensical and in disagreement with reality itself, and it should have never been accepted as anything other than a mathematical bandaid intended to apply precisely the properties satisfied by this model: $d/v$ is constant in each coordinate system.
+
+While the field equations are a work in progress, the model naturally reproduces the geometry of general relativity in a specific frame and does so while producing upwards of a dozen numerical alignments with observation and a resolution to at least 2 of the most pressing issues in physics. _This_ many alignments and the simultaneous resolution of _this_ many paradoxes are not a coincidence, no matter what your geologist friend tells you.
 
 <Hint>
 There are two complete video walkthroughs on our [Youtube](https://www.youtube.com/@Fluster_io) channel, as well as an `.ipynb` [notebook](https://github.com/flusterIO/alphaOmegaGravity/blob/main/alpha_omega_gravity.ipynb), a complete python package `alpha_omega_gravity`, and a standalone mac application to explore the model further.

@@ -1,0 +1,37 @@
+---
+title: On the gravitational nature of time
+id: on_the_gravitational_nature_of_time
+summary: A sample note and a modified model of relativity that treats time as a position along a fourth spatial axis, with the derivations that fell out of it.
+subject: Physics
+---
+
+# On The Gravitational Nature Of Time
+
+<Hint label="Update"> This is a summary of the more academic article available [here](/paper)</Hint>
+
+<Admonition title="What is this?">
+
+This is both a sample note representing what Conundrum is capable of and a short summary of a modified model of relativity that inspired Conundrum and Fluster; let me explain...
+
+It was early 2021 when I was putting aside my software work for the night at 3am. I had put in some toast when I opened a book I had sitting there, a book of Einstein's lectures. I flipped to a random page when something stood out at me: Einstein's famous quote on the length of moving rods from "On The Electrodynamics of Moving Bodies".
+
+Maybe it was just seeing that line out of context that triggered something in me, but I realized that Einstein's insistence on a static (non-expanding) Universe early in his career led him to make certain assumptions that I feel should be revisited in the context of cosmic inflation.
+
+I quit my job as a software engineer to work on this model full time, studying physics while living on the side of the street with my dog but I think I have it: Classically synchronous General Relativity.
+
+<Hint>
+There are two video walkthroughs on our [Youtube](https://www.youtube.com/@Fluster_io) channel, as well as an `.ipynb` [notebook](https://github.com/flusterIO/alphaOmegaGravity/blob/main/alpha_omega_gravity.ipynb), a python package `alpha_omega_gravity`, and a standalone mac application to explore the model further. Those accompany the earlier version of this note.
+</Hint>
+
+</Admonition>
+
+<Card title="Where things stand">
+
+I'll be upfront about this as we go, but here's the scorecard.
+
+**Solid (given the vacuum equations of GR):** the Lorentz factor as the slope of a fourth spatial coordinate, the geometry of Schwarzschild and of the whole expanding Universe from that one slope, gravitational time dilation falling out of the same picture, and a neat link between a falling apple and cosmic expansion.
+
+**A hypothesis (with predictions I can be proven wrong by):** inertia is Machian and switches regime at an acceleration around $cH_0$. I test it against the Milky Way below.
+
+**Number fitting:** a handful of coincidences I find fun and can't justify. They're clearly labeled.
+</Card>

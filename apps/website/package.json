@@ -24,7 +24,24 @@
     "lint": "next lint",
     "start": "next start",
     "transpileTailwind": "tsc -p ./tsconfig.tailwind.json",
-    "typecheck": "tsc --noEmit -p ./tsconfig.json"
+    "typecheck": "tsc --noEmit -p ./tsconfig.json",
+    "build:plots": "wireit",
+    "build:plot-trig-derivation-of-y": "wireit"
+  },
+  "wireit": {
+    "build:plot-trig-derivation-of-y": {
+      "clean": false,
+      "command": "cd ./plot_generators && sudo pdflatex -interaction=nonstopmode --output-directory=./output ./trig_deriv_of_y.tex",
+      "output": [
+        "./plot_generators/trig_deriv_of_y.{!tex}"
+      ]
+    },
+    "build:plots": {
+      "clean": false,
+      "dependencies": [
+        "build:plot-trig-derivation-of-y"
+      ]
+    }
   },
   "dependencies": {
     "@content-collections/core": "0.9.1",
