@@ -1,28 +1,132 @@
 ---
 title: On the gravitational nature of time
 id: on_the_gravitational_nature_of_time
-summary: A sample note and a modified model of relativity that partially unifies electromagnetism and gravity.
+summary: A sample note and a modified model of relativity that treats time as a position along a fourth spatial axis, with the derivations that fell out of it.
 subject: Physics
 ---
 
 # On The Gravitational Nature Of Time
 
-<Hint label="Update"> A more academic rewrite that incorporates the Kaluza-Klein metric is available [here](/paper)</Hint>
+<Hint label="Update"> This is a summary of the more academic article available [here](/paper)</Hint>
 
 <Admonition title="What is this?">
 
-This is both a sample note representing what Conundrum is capable of, and my presentation of a modified model of relativity that inspired Conundrum. Let me explain...
+This is both a sample note representing what Conundrum is capable of and a short summary of a modified model of relativity that inspired Conundrum and Fluster; let me explain...
 
-Late one night in the fall of 2021 I was going over some of Einstein's lectures when I had a realization: His assumptions made far more sense before the observations that gave us the Big Bang. I began to play around with new coordinate transformations when I realized everything... absolutely *everything* aligns with observation when you apply the _only_ set of transformations that reproduce experiment without requiring the absurd notion that is relativistic simultaneity.
+It was early 2021 when I was putting aside my software work for the night at 3am. I had put in some toast when I opened a book I had sitting there, a book of Einstein's lectures. I flipped to a random page when something stood out to me: Einstein's famous quote on the length of moving rods from "On The Electrodynamics of Moving Bodies".
 
-The problem? The **only** set of coordinate transformations that satisfy experiment that do not require this anti-scientific principle conclude that the Earth is expanding _with_ the rest of the Universe, and that _this_ is the source of the equivalence principle. Avi Loebe couldn't get that past peer review, no matter how many quantities align with observation, so instead I took a different approach. I quit my job, became homeless, and built a few open source academic tools while living on the side of the street in Milwaukee just so I can publish this article along side the documentation.
+Maybe it was just seeing that line out of context that triggered something in me, but I realized that Einstein's insistence on a static (non-expanding) Universe early in his career led him to make certain assumptions that I feel should be revisited in the context of cosmic inflation.
 
-This isn't another internet fringe theory thought up for clicks... this is a model that should appear like a Rorschach test to any free thinking physicist that is willing to say "I don't know, but the math works". That was the approach we should have had with relativity since 1905. The definition of an event in SR is ***completely*** nonsensical and in disagreement with reality itself, and it should have never been accepted as anything other than a mathematical bandaid intended to apply precisely the properties satisfied by this model: $d/v$ is constant in each coordinate system.
-
-While the field equations are a work in progress, the model naturally reproduces the geometry of general relativity in a specific frame and does so while producing upwards of a dozen numerical alignments with observation and a resolution to at least 2 of the most pressing issues in physics. _This_ many alignments and the simultaneous resolution of _this_ many paradoxes are not a coincidence, no matter what your geologist friend tells you.
-
-<Hint>
-There are two complete video walkthroughs on our [Youtube](https://www.youtube.com/@Fluster_io) channel, as well as an `.ipynb` [notebook](https://github.com/flusterIO/alphaOmegaGravity/blob/main/alpha_omega_gravity.ipynb), a complete python package `alpha_omega_gravity`, and a standalone mac application to explore the model further.
-</Hint>
+I quit my job as a software engineer to work on this model full time, studying physics while living on the side of the street with my dog but I think I have it: Classically synchronous General Relativity.
 
 </Admonition>
+
+## The Lighthouse & The Clock-Tower
+> The thought experiment that started it all
+
+Let there be two observers, $A$ and $B$. Let $A$ and $B$ agree that $B$ should travel between two arbitrary points in space, $p_1$ and $p_2$ at some relativistic velocity $v$. At $p_2$ place a time keeping device large enough to be visible from $p_1$ where $A$ remains at relative rest.
+
+At what time does $B$ reach $p_2$?
+
+That extra clock at $p_2$ complicates things, no? It should.
+
+While this can technically be resolved by claiming that a clock travelling with $B$ would measure $\Delta t = \gamma\frac{d}{v}$, I take the position that it is absolutely absurd to dilate the clock moving with $B$ while the clock at $p_2$ continues to tick at an inertial pace. How can one process ($A$ transitioning between $p_1$ and $p_2$) as measured by $A$ be different from that elapsed period according to $B$? 
+
+This is 100% analogous to conducting the simple trigonometric parallax experiment, "Put your thumb over the light switch in the corner of the room" and the light switch _actually_ moving when you swap your hand over to the other eye.
+
+
+### Unwrapping Kaluza-Klein
+
+<Image src="/assets/diagrams/paper/trig_deriv_of_y.png" maxHeight="smedium" centerSelf/>
+
+<Card title="Where things stand" desc="I'll be upfront about this as we go, but here's the scorecard" sidebar right>
+
+
+**Solid (given the vacuum equations of GR):** the Lorentz factor as the slope of a fourth spatial coordinate, the geometry of Schwarzschild and of the whole expanding Universe from that one slope, gravitational time dilation falling out of the same picture, and a neat link between a falling apple and cosmic expansion. <br />
+
+**A hypothesis (with predictions I can be proven wrong by):** inertia is Machian and switches regime at an acceleration around $cH_0$. I test it against the Milky Way below. <br />
+
+**Number fitting:** a handful of coincidences I find fun and can't justify. They're clearly labeled.
+</Card>
+
+Consider the figure above where $i = 1, 2, 3$. As in the [paper](/paper), $\mathbf{U}$ represents 
+
+
+$$
+\partial_y \mathcal{H} = \mathcal{F} \left( x_{i}, y \right)
+$$
+
+where $\mathbf{S}$ and $\mathbf{U}$ represent an embedded surface within this 4-dimensional hyperspace, $\mathcal{H}$ giving the functions of $\mathbb{R}^{3}$ space
+
+$$
+\mathbf{S} \left( x_{i} \right) = \mathcal{F} \left( x_{i}, \mathbf{S}_{y} \right) \quad , \quad \mathbf{U} \left( x_{i} \right) = \mathcal{F} \left( x_{i}, \mathbf{U}_{y} \right)
+$$
+
+This is the geometry we'll use throughout this derivation.
+
+
+> This is to be understood similary to the relationship between the surface of a sphere and it's volume, only our $\mathbb{R}^{3}$ volume is equivalent to the surface of an $\mathbb{R}^{4}$ space!
+
+We then end up with 
+
+$$
+\boxed{
+\partial_\tau y = \frac{v^{2}}{\sqrt{c^{2} - v^{2}}}
+} \qquad \boxed{
+\partial_x y = \frac{v}{\sqrt{c^{2} - v^{2}}}
+}
+$$
+
+Which remains closed since 
+
+$$
+v \left( \gamma \right) \partial_x y = \partial_\tau y
+$$
+
+
+where
+
+$$
+v \left( \gamma \right) = c \sqrt{1 - \frac{1}{\gamma^{2}}}
+$$
+or the Lorentz factor solved for $v$.
+
+We can then solve this trigonometrically to find
+
+$$
+\boxed{
+\gamma = \sqrt{1 + \left( \partial_x y \right)^{2}}
+}
+$$
+
+### The Metric
+
+This then gives a simplified metric of
+
+$$
+G_{AB}
+=
+\begin{pmatrix}
+g_{\mu\nu} & 0\\
+0 & G_{44}
+\end{pmatrix}
+$$
+
+for the line element
+
+$$
+dS^2
+=
+g_{\mu\nu}dx^\mu dx^\nu
++
+G_{44}dy^2
+$$
+
+And since the force is radial, for a static source $G_{44} = 1$, we find 
+
+$$
+\Gamma^R_{44}
+=
+-\frac{1}{2}g^{RR}
+\frac{\partial G_{44}}{\partial R}.
+$$
