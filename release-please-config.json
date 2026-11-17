@@ -2,6 +2,7 @@
     "release-type": "rust",
     "prerelease-type": "beta",
     "initial-version": "0.0.1",
+    "force-tag-creation": true,
     "plugins": [
         {
             "type": "cargo-workspace",
