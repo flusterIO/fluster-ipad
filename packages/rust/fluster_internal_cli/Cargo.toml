@@ -1,6 +1,6 @@
 [package]
 name = "fluster_internal_cli"
-version.workspace = true
+version = "0.0.1"
 authors.workspace = true
 description.workspace = true
 documentation.workspace = true

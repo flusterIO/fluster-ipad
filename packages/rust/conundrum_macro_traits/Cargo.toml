@@ -1,6 +1,6 @@
 [package]
 name = "conundrum_macro_traits"
-version.workspace = true
+version = "0.0.1"
 authors.workspace = true
 description.workspace = true
 categories.workspace = true
