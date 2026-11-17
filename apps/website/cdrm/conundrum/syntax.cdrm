@@ -1,0 +1,195 @@
+---
+title: Conundrum Syntax Quick Reference
+id: conundrum_syntax_quick_ref
+summary: Conundrum Syntax Quick Reference
+subject: Conundrum
+---
+
+
+# Conundrum Syntax
+
+## Embedded Docs
+
+You can show embedded docs within any rendered note using the `Docs?` or `Docs??` command on a line all by it's ow. It needs to start the line, and must contain no leading white space or surround text on the same line. This works for all component names, `Docs`, and a handful of other commands that are described in the `Docs` command
+
+```md 
+Docs? // Short docs
+Docs?? // Long docs
+```
+
+Below is the output of `Docs?`
+
+Docs?
+
+## Text
+
+--- Titles ---
+
+```txt
+# My Big Heading
+> Keep in mind, you can add a subtitle by sliding a blockquote to the line directly underneath a title.
+## My smaller Heading
+### My smaller Heading
+#### My smaller Heading
+##### My smaller Heading
+###### My smaller Heading
+```
+
+# My Big Heading
+> Keep in mind, you can add a subtitle by sliding a blockquote to the line directly underneath a title.
+## My smaller Heading
+### My smaller Heading
+#### My smaller Heading
+##### My smaller Heading
+###### My smaller Heading
+
+--- Styled Text ---
+
+Styled text follows the same rules as markdown, with 
+
+````md 
+- My _italic_ text
+- My **bold** text
+- My ***Bold and Italic*** text
+- My ~~strikethrough~~ text
+````
+
+- My _italic_ text
+- My **bold** text
+- My ***Bold and Italic*** text
+- My ~~strikethrough~~ text
+
+## Math
+
+--- block level math ---
+
+```md 
+$$ {#my-equation}
+\Delta\phi
+=
+\frac{6\pi GM}
+{a(1-e^2)c^2}
+$$
+
+The optional id allows me to reference it by number: <EqRef id="my-equation"/>
+```
+
+$$ {#my-equation}
+\Delta\phi
+=
+\frac{6\pi GM}
+{a(1-e^2)c^2}
+$$
+
+The optional id allows me to reference it by number: <EqRef id="my-equation"/>
+
+## Code
+
+> The language is optional, but a complete list of supported languages can be found [here]()
+
+--- Code Block ---
+
+````md
+```python
+import scipy.constants as spc
+import numpy as np
+
+v = np.linspace(0, spc.c, 1000)
+gamma = 1 / np.sqrt(1 - v**2 / spc.c**2)
+```
+````
+
+```python
+import scipy.constants as spc
+import numpy as np
+
+v = np.linspace(0, spc.c, 1000)
+gamma = 1 / np.sqrt(1 - v**2 / spc.c**2)
+```
+
+--- inline code ---
+
+```md 
+My python codeblock: `v = np.linspace(0, spc.c, 1000){:python}`
+```
+
+My python codeblock: `v = np.linspace(0, spc.c, 1000){:python}`
+
+> The last block inside of the brackets optionally specifies the language.
+
+## Layout
+
+
+--- Lists ---
+
+List items start with a `-` or a number, and can optionally contain a checkbox.
+
+```md
+
+1. My List Item
+2. My List Item
+3. My List Item
+  My item's description
+4. My List Item
+```
+
+1. My List Item
+2. My List Item
+3. My List Item
+  My item's description
+4. My List Item
+
+```md
+
+- My List Item
+- My List Item
+- My List Item
+- My List Item
+```
+
+- My List Item
+- My List Item
+- My List Item
+- My List Item
+
+To continue a list item with an optional description, indent the following line by 2 spaces or 1 tab for every time the item is nested plus one. For example, if the item is not nested at all, use 2 spaces or 1 tab. If the item is nested once, use 4 spaces or 2 tabs, etc.
+
+--- Checkboxes ---
+
+```md
+
+- [ ] Checkbox
+- [x] Checked Checkbox
+- [?] Question Mark Checkbox
+- [-] Dash Checkbox
+- [!] Exclamation Checkbox
+- [!] Item with a desciption
+  The description comes following 2 spaces for every time the item is nested + 1, so 2 spaces if the item is not nested, 4 if it's nested once, etc..
+
+```
+
+- [ ] Checkbox
+- [x] Checked Checkbox
+- [?] Question Mark Checkbox
+- [-] Dash Checkbox
+- [!] Exclamation Checkbox
+- [!] Item with a desciption
+  The description comes following 2 spaces for every time the item is nested + 1, so 2 spaces if the item is not nested, 4 if it's nested once, etc..
+
+--- Horizontal Rule ---
+
+```
+--- 
+--- With content in the middle ---
+```
+
+--- 
+--- With content in the middle ---
+
+## Components
+
+One of the primary features that sets Conundrum apart from Markdown is the addition of components. Components are just pieces of UI that you can insert as one piece, and modify the output based on a set of properties. You can see a list of all available components via the `Components??` documentation, and more details for any component using the same question mark syntax following the name of that component, for example: `Card??`
+
+This is the output of `Components?`
+
+Components?
