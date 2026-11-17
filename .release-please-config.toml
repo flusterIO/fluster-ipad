@@ -1,0 +1,131 @@
+
+# yaml-language-server: $schema=./docs/development/release_plz_json_schema.json
+[workspace]
+allow_dirty = true # allow updating repositories with uncommitted changes
+changelog_update = false # disable changelog updates
+dependencies_update = true # update dependencies with `cargo update`
+git_release_enable = false # disable GitHub/Gitea releases
+pr_branch_prefix = "release-rust-" # PR branch prefix
+pr_labels = ["release"] # add the `release` label to the release Pull Request
+publish_allow_dirty = true # add `--allow-dirty` to `cargo publish`
+semver_check = false # disable API breaking changes checks
+publish_timeout = "10m" # set a timeout for `cargo publish`
+release_commits = "^feat:" # prepare release only if at least one commit matches a regex
+changelog_path = "./CHANGELOG.md"
+publish = false
+git_release_enable = false
+
+
+[[package]] # the double square brackets define a TOML table array
+name = "conundrum_db"
+changelog_include = ["package_b"] # include commits from `package_b` in the changelog
+changelog_update = true # enable changelog update for `package_a`
+git_release_enable = true # enable GitHub/Gitea releases for `package_a`
+publish = true # disable `cargo publish` for `package_a`
+
+[[package]]
+name = "conundrum" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+semver_check = true # enable semver_check for `package_b`
+publish_no_verify = false # add `--no-verify` to `cargo publish` for `package_b`
+publish_all_features = true # add `--all-features` to `cargo publish` for `package_b`
+
+[[package]]
+name = "conundrum_cli" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+[[package]]
+name = "conundrum_config" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+[[package]]
+name = "conundrum_db" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+[[package]]
+name = "conundrum_fs" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+[[package]]
+name = "conundrum_macro_traits" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+[[package]]
+name = "conundrum_macros" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+[[package]]
+name = "conundrum_swift" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+[[package]]
+name = "conundrum_server_rs" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+[[package]]
+name = "conundrum_tools" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+[[package]]
+name = "conundrum_wasm" 
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+[[package]]
+name = "fluster_core_utilities"
+release = true 
+git_release_enable = true 
+publish = true 
+changelog_update = true 
+
+
+[changelog]
+protect_breaking_commits = true # always include commits with breaking changes in the changelog
+
+[changelog]
+body = """
+
+## `{{ package }}` - [{{ version }}]{%- if release_link -%}({{ release_link }}){% endif %} - {{ timestamp | date(format="%Y-%m-%d") }}
+{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group | upper_first }}
+{% for commit in commits %}
+{%- if commit.scope -%}
+- *({{commit.scope}})* {% if commit.breaking %}[**breaking**] {% endif %}{{ commit.message }}{%- if commit.links %} ({% for link in commit.links %}[{{link.text}}]({{link.href}}) {% endfor -%}){% endif %}
+{% else -%}
+- {% if commit.breaking %}[**breaking**] {% endif %}{{ commit.message }}
+{% endif -%}
+{% endfor -%}
+{% endfor -%}
+"""
