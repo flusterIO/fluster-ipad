@@ -38,7 +38,7 @@ documentation = "https://flusterapp.com/blog"
 homepage = "https://flusterapp.com"
 repository = "https://github.com/flusterIO/fluster-ipad"
 edition = "2024"
-license-file = "LICENSE.txt"
+license-file = "LICENSE.md"
 rust-version = "1.94"
 
 [workspace.dependencies]

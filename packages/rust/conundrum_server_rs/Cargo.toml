@@ -46,10 +46,10 @@ glob-match = "0.2.1"
 ollama-rs = "0.3.5"
 langchain-rust = { version = "4.6.0", features = ["uuid", "ollama", "ollama-rs", "pdf-extract", "opensearch", "git", "fastembed"] }
 ignore = "0.4.31"
-conundrum = {path = "../conundrum/"}
-conundrum_fs = {path = "../conundrum_fs/"}
-conundrum_db = {path = "../conundrum_db/"}
-conundrum_tools = {path = "../conundrum_tools/" }
+conundrum = {path = "../conundrum/", version = "0"}
+conundrum_fs = {path = "../conundrum_fs/", version = "0"}
+conundrum_db = {path = "../conundrum_db/", version = "0"}
+conundrum_tools = {path = "../conundrum_tools/", version = "0" }
 gix = {version = "0.87.1", features = ["serde", "merge"]}
 # pyo3 = { version = "0.29.0", features = ["anyhow", "auto-initialize", "bigdecimal", "chrono", "either", "uuid"] }
 

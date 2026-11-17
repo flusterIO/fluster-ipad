@@ -13,7 +13,7 @@ schemars = "1.2.1"
 serde.workspace = true
 serde_json = { version = "1.0.45", default-features = false, features = ["alloc"] }
 strum_macros.workspace = true
-conundrum = { path = "../conundrum/" }
+conundrum = { path = "../conundrum/", version = "0" }
 anyhow = "1.0.102"
 thiserror.workspace = true
 typeshare.workspace = true
