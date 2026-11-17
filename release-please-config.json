@@ -1,5 +1,5 @@
 {
-  "release-type": "rust",
+  "release-type": "manifest-release",
   "prerelease-type": "beta",
   "initial-version": "0.0.1",
   "plugins": ["node-workspace", "cargo-workspace"],
