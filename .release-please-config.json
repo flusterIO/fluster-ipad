@@ -1,0 +1,58 @@
+{
+  "release-type": "rust",
+  "prerelease-type": "beta",
+  "initial-version": "0.0.1",
+  "plugins": ["node-workspace", "cargo-workspace"],
+  "always-update": true,
+  "changelog-type": "github",
+  "packages": {
+    "packages/rust/conundrum": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum"
+    },
+    "packages/rust/conundrum_cli": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum_cli"
+    },
+    "packages/rust/conundrum_config": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum_config"
+    },
+    "packages/rust/conundrum_db": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum_db"
+    },
+    "packages/rust/conundrum_fs": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum_fs"
+    },
+    "packages/rust/conundrum_macro_traits": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum_macro_traits"
+    },
+    "packages/rust/conundrum_macros": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum_macros"
+    },
+    "packages/rust/conundrum_swift": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum_swift"
+    },
+    "packages/rust/conundrum_server_rs": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum_server_rs"
+    },
+    "packages/rust/conundrum_tools": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum_tools"
+    },
+    "packages/rust/conundrum_wasm": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/conundrum_wasm"
+    },
+    "packages/rust/fluster_core_utilities": {
+      "release-type": "rust",
+      "changelog-path": "packages/rust/fluster_core_utilities"
+    }
+  }
+}
