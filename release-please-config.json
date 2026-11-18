@@ -1,5 +1,5 @@
 {
-    "release-type": "manifest-release",
+    "release-type": "rust",
     "initial-version": "0.0.1",
     "force-tag-creation": true,
     "always-update": true,
@@ -10,6 +10,7 @@
         "packages/rust/conundrum_logic",
         "packages/rust/conundrum_docgen"
     ],
+    "sequential-calls": false,
     "plugins": [
         {
             "type": "cargo-workspace",
