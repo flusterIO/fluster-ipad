@@ -1,5 +1,5 @@
 {
-    "release-type": "rust",
+    "release-type": "manifest-release",
     "initial-version": "0.0.1",
     "force-tag-creation": true,
     "always-update": true,
