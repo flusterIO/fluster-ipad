@@ -20,7 +20,7 @@ jobs:
           config-file: release-please-config.json
           manifest-file: release-please-manifest.json
       - name: Inspect step outputs
-        run: echo '${{ toJSON(steps) }}'
+        run: echo '${{ steps }}'
       - uses: actions/checkout@v4
         name: Checkout released commit
         if: ${{ steps.release.outputs['conundrum--release_created'] }}
