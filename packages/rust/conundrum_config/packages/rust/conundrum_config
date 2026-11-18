@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.1.1](https://github.com/flusterIO/fluster-ipad/compare/conundrum_config-v0.1.0...conundrum_config-v0.1.1) (2026-11-18)
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * conundrum bumped from 0.1.0 to 0.1.1
+
 ## 0.1.0 (2026-11-18)
 
 
