@@ -3216,7 +3216,7 @@ checksum = "3d52eff69cd5e647efe296129160853a42795992097e8af39800e1060caeea9b"
 
 [[package]]
 name = "conundrum"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "arbitrary",
@@ -3358,7 +3358,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_cli"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "assert_cmd",
@@ -3414,7 +3414,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_config"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "clap-verbosity",
@@ -3445,7 +3445,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_dashboard"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "conundrum",
  "conundrum_server_rs",
@@ -3458,7 +3458,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_db"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "apalis-cron",
  "arrow-array",
@@ -3530,7 +3530,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_docgen"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "askama 0.15.6",
  "clap",
@@ -3593,7 +3593,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_lsp"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "ariadne",
  "conundrum",
@@ -3607,11 +3607,11 @@ dependencies = [
 
 [[package]]
 name = "conundrum_macro_traits"
-version = "0.0.1"
+version = "0.1.0"
 
 [[package]]
 name = "conundrum_macros"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "conundrum_macro_traits",
  "convert_case 0.11.0",
@@ -3626,7 +3626,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_py"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "conundrum",
  "conundrum_db",
@@ -3638,7 +3638,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_server_rs"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "anyhow",
  "arrow-array",
@@ -3720,7 +3720,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_tools"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "lancedb",
  "pretty_env_logger",
@@ -3733,7 +3733,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_wasm"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "conundrum",
  "getrandom 0.3.4",
@@ -6417,7 +6417,7 @@ dependencies = [
 
 [[package]]
 name = "fluster_bibliography"
-version = "0.1.0"
+version = "0.1.1"
 dependencies = [
  "hayagriva 0.9.1",
  "log",
@@ -6431,7 +6431,7 @@ dependencies = [
 
 [[package]]
 name = "fluster_core_utilities"
-version = "0.0.1"
+version = "0.1.0"
 dependencies = [
  "chrono",
  "conundrum",
@@ -6465,7 +6465,7 @@ dependencies = [
 
 [[package]]
 name = "fluster_database"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "ignore",
  "tokio",
@@ -6491,7 +6491,7 @@ dependencies = [
 
 [[package]]
 name = "fluster_internal_cli"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "clap",
  "conundrum",
@@ -6506,7 +6506,7 @@ dependencies = [
 
 [[package]]
 name = "fluster_wasm"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "conundrum",
  "conundrum_lsp",
@@ -24244,14 +24244,14 @@ dependencies = [
 
 [[package]]
 name = "uniffi_bindgen"
-version = "0.0.1"
+version = "0.0.2"
 dependencies = [
  "uniffi",
 ]
 
 [[package]]
 name = "uniffi_bindgen"
-version = "0.29.5"
+version = "0.0.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a04b99fa7796eaaa7b87976a0dbdd1178dc1ee702ea00aca2642003aef9b669e"
 dependencies = [
