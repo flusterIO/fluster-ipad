@@ -9,9 +9,9 @@ name = "_core"
 crate-type = ["cdylib"]
 
 [dependencies]
-conundrum = { path = "../../rust/conundrum/" }
-conundrum_server_rs = { path = "../../rust/conundrum_server_rs/" }
-conundrum_db = { path = "../../rust/conundrum_db/" }
+conundrum = { path = "../../rust/conundrum/", version = "0" }
+conundrum_server_rs = { path = "../../rust/conundrum_server_rs/", version = "0" }
+conundrum_db = { path = "../../rust/conundrum_db/", version = "0" }
 pyo3-polars = "0.28.0"
 pyo3 = { version = "0.29.2", features = ["full"] }
 polars = { version = "0.55.2", features = ["lazy"] }

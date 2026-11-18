@@ -10,7 +10,7 @@ license-file.workspace = true
 [dependencies]
 askama = "0.15.6"
 clap = { version = "4.6.1", features = ["derive"] }
-conundrum = {path = "../conundrum/", features = ["docgen", "db"]}
+conundrum = { path = "../conundrum/", features = ["docgen", "db"], version = "0" }
 conundrum_config = {path = "../conundrum_config/"}
 conundrum_cli = {path = "../conundrum_cli/"}
 schemars = "1.2.1"
