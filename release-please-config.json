@@ -3,7 +3,7 @@
   "initial-version": "0.0.1",
   "force-tag-creation": true,
   "always-update": true,
-  "changelog-type": "github",
+  "changelog-type": "default",
   "version-file": "version.txt",
   "bootstrap-sha": "1a849e40",
   "exclude-paths": [
