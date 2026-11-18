@@ -6,7 +6,10 @@
   "changelog-type": "github",
   "version-file": "version.txt",
   "bootstrap-sha": "1a849e40",
-  "exclude-paths": ["./packages/rust/conundrum_logic"],
+  "exclude-paths": [
+    "packages/rust/conundrum_logic",
+    "packages/rust/conundrum_docgen/"
+  ],
   "plugins": [
     {
       "type": "cargo-workspace",
