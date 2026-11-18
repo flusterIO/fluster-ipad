@@ -11,7 +11,7 @@ license-file.workspace = true
 ariadne = "0.6.0"
 lsp-types = "0.97.0"
 miette = "7.6.0"
-conundrum = { path = "../conundrum/", features = ["wasm"] }
+conundrum = { path = "../conundrum/", features = ["wasm"], version = "0" }
 winnow = { workspace = true }
 tree-sitter = { version = "0.26.7" }
 
