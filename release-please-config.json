@@ -3,7 +3,7 @@
     "initial-version": "0.0.1",
     "force-tag-creation": true,
     "always-update": true,
-    "changelog-type": "default",
+    "changelog-type": "github",
     "version-file": "version.txt",
     "bootstrap-sha": "1a849e40",
     "exclude-paths": [
@@ -11,6 +11,7 @@
         "packages/rust/conundrum_docgen"
     ],
     "sequential-calls": false,
+    "pull-request-footer": "\n\nView more at [Fluster](https://flusterapp.com)",
     "plugins": [
         {
             "type": "cargo-workspace",
