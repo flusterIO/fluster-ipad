@@ -1,0 +1,15 @@
+# Changelog
+
+## 0.1.0 (2026-11-18)
+
+
+### Features
+
+* CI/CD ([a77da1c](https://github.com/flusterIO/fluster-ipad/commit/a77da1c2beec72f563807908190cdf7706c877b5))
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * conundrum_macro_traits bumped from 0 to 0.1.0
