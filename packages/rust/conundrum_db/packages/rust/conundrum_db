@@ -1,5 +1,22 @@
 # Changelog
 
+## 0.1.0 (2026-11-18)
+
+## What's Changed
+* chore: release main by @github-actions[bot] in https://github.com/flusterIO/fluster-ipad/pull/2
+
+
+**Full Changelog**: https://github.com/flusterIO/fluster-ipad/commits/conundrum_db-v0.1.0
+
+
+### Dependencies
+
+* The following workspace dependencies were updated
+  * dependencies
+    * conundrum bumped from 0.1.1 to 0.1.0
+    * conundrum_fs bumped from 0.1.1 to 0.1.0
+    * conundrum_macros bumped from 0.1.1 to 0.1.0
+
 ## [0.1.1](https://github.com/flusterIO/fluster-ipad/compare/conundrum_db-v0.1.0...conundrum_db-v0.1.1) (2026-11-18)
 
 
