@@ -1,8 +1,9 @@
 {
     "release-type": "rust",
-    "prerelease-type": "beta",
     "initial-version": "0.0.1",
     "force-tag-creation": true,
+    "always-update": true,
+    "changelog-type": "github",
     "plugins": [
         {
             "type": "cargo-workspace",
@@ -27,8 +28,6 @@
             ]
         }
     ],
-    "always-update": true,
-    "changelog-type": "github",
     "packages": {
         "packages/rust/conundrum": {
             "changelog-path": "packages/rust/conundrum",
