@@ -10,7 +10,7 @@
         "packages/rust/conundrum_logic",
         "packages/rust/conundrum_docgen"
     ],
-    "sequential-calls": false,
+    "sequential-calls": true,
     "pull-request-footer": "\n\nView more at [Fluster](https://flusterapp.com)",
     "plugins": [
         {
