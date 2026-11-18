@@ -1,6 +1,6 @@
 [package]
 name = "conundrum_config"
-version = "0.1.1"
+version = "0.1.0"
 authors.workspace = true
 description.workspace = true
 documentation.workspace = true
@@ -13,7 +13,7 @@ schemars = "1.2.1"
 serde.workspace = true
 serde_json = { version = "1.0.45", default-features = false, features = ["alloc"] }
 strum_macros.workspace = true
-conundrum = { path = "../conundrum/", version = "0.1.1" }
+conundrum = { path = "../conundrum/", version = "0.1.0" }
 anyhow = "1.0.102"
 thiserror.workspace = true
 typeshare.workspace = true

@@ -152,7 +152,7 @@ checksum = "37909eebbb50d72f9059c3b6d82c0463f2ff062c9e95845c43a6c9c0355411be"
 
 [[package]]
 name = "fluster_core_utilities"
-version = "0.1.1"
+version = "0.1.0"
 dependencies = [
  "thiserror",
  "uniffi",
@@ -533,7 +533,7 @@ dependencies = [
 
 [[package]]
 name = "uniffi_bindgen"
-version = "0.0.3"
+version = "0.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "a04b99fa7796eaaa7b87976a0dbdd1178dc1ee702ea00aca2642003aef9b669e"
 dependencies = [
