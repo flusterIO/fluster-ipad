@@ -186,7 +186,6 @@ fake.workspace = true
 [lints]
 workspace = true
 
-
 [[bench]]
 name = "conundrum_full_parse"
 harness = false
