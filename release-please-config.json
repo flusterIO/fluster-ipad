@@ -8,7 +8,7 @@
   "bootstrap-sha": "1a849e40",
   "exclude-paths": [
     "packages/rust/conundrum_logic",
-    "packages/rust/conundrum_docgen/"
+    "packages/rust/conundrum_docgen"
   ],
   "plugins": [
     {
