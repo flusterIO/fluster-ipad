@@ -47,8 +47,7 @@
         },
         "packages/rust/conundrum": {
             "changelog-path": "packages/rust/conundrum",
-            "component": "conundrum",
-            "always-update": true
+            "component": "conundrum"
         },
         "packages/rust/conundrum_cli": {
             "changelog-path": "packages/rust/conundrum_cli",
