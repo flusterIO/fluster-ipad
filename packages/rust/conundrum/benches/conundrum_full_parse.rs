@@ -4,7 +4,7 @@ use conundrum::lang::runtime::{
     state::parse_state::{ConundrumModifier, ConundrumCompileTarget},
 };
 use criterion::{BatchSize, Criterion, criterion_group, criterion_main};
-use fluster_core_utilities::{
+use fluster_core_utilities_dev::{
     core_types::development_utils::benchmark_magnitudes::{BenchmarkGeneratedDateString, BenchmarkMagnitude},
     test_utilities::get_test_mdx_content::{self, format_benchmark_file_path, get_unchanging_benchmark_test_content},
 };

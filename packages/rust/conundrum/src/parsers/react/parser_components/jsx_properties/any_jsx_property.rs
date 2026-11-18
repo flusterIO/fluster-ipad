@@ -1,5 +1,5 @@
-use winnow::Parser;
 use winnow::combinator::{alt, delimited, opt, repeat};
+use winnow::Parser;
 
 use crate::lang::elements::parsed_elements::ParsedElement;
 use crate::lang::runtime::state::conundrum_error_variant::ConundrumModalResult;
@@ -44,7 +44,7 @@ pub fn jsx_properties_string(input: &mut ConundrumInput) -> ConundrumModalResult
 mod tests {
     use std::ops::Deref;
 
-    use fluster_core_utilities::core_types::fluster_error::FlusterError;
+    use fluster_core_utilities_dev::core_types::fluster_error::FlusterError;
     use winnow::Parser;
 
     use crate::{

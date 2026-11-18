@@ -1,4 +1,4 @@
-use fluster_core_utilities::test_utilities::get_workspace_root::get_workspace_root;
+use fluster_core_utilities_dev::test_utilities::get_workspace_root::get_workspace_root;
 
 /// Accepts a path relative to the **monorepo root**.
 pub fn get_documentation_content(relative_path: &str) -> String {

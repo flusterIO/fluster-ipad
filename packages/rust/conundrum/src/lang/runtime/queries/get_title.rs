@@ -60,7 +60,7 @@ pub fn get_title_group(content: String,
 
 #[cfg(test)]
 mod tests {
-    use fluster_core_utilities::test_utilities::get_test_mdx_content;
+    use fluster_core_utilities_dev::test_utilities::get_test_mdx_content;
 
     use super::*;
 

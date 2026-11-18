@@ -3,7 +3,7 @@ use conundrum::lang::runtime::{
     state::parse_state::{ConundrumCompileTarget, ConundrumModifier},
 };
 use criterion::{BatchSize, Criterion, criterion_group, criterion_main};
-use fluster_core_utilities::test_utilities::get_test_mdx_content::{self};
+use fluster_core_utilities_dev::test_utilities::get_test_mdx_content::{self};
 use tokio::runtime::Runtime;
 
 fn conundrum_get_title(c: &mut Criterion) {

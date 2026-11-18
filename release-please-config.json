@@ -1,81 +1,84 @@
 {
-    "release-type": "rust",
-    "initial-version": "0.0.1",
-    "force-tag-creation": true,
-    "always-update": true,
-    "changelog-type": "github",
-    "plugins": [
-        {
-            "type": "cargo-workspace",
-            "merge": false
-        },
-        {
-            "type": "linked-versions",
-            "groupName": "conundrum",
-            "components": [
-                "conundrum",
-                "conundrum_cli",
-                "conundrum_config",
-                "conundrum_db",
-                "conundrum_fs",
-                "conundrum_macro_traits",
-                "conundrum_macros",
-                "conundrum_swift",
-                "conundrum_server_rs",
-                "conundrum_tools",
-                "conundrum_wasm",
-                "fluster_core_utilities"
-            ]
-        }
-    ],
-    "packages": {
-        "packages/rust/conundrum": {
-            "changelog-path": "packages/rust/conundrum",
-            "component": "conundrum"
-        },
-        "packages/rust/conundrum_cli": {
-            "changelog-path": "packages/rust/conundrum_cli",
-            "component": "conundrum_cli"
-        },
-        "packages/rust/conundrum_config": {
-            "changelog-path": "packages/rust/conundrum_config",
-            "component": "conundrum_config"
-        },
-        "packages/rust/conundrum_db": {
-            "changelog-path": "packages/rust/conundrum_db",
-            "component": "conundrum_db"
-        },
-        "packages/rust/conundrum_fs": {
-            "changelog-path": "packages/rust/conundrum_fs",
-            "component": "conundrum_fs"
-        },
-        "packages/rust/conundrum_macro_traits": {
-            "changelog-path": "packages/rust/conundrum_macro_traits",
-            "component": "conundrum_macro_traits"
-        },
-        "packages/rust/conundrum_macros": {
-            "changelog-path": "packages/rust/conundrum_macros",
-            "component": "conundrum_macros"
-        },
-        "packages/rust/conundrum_swift": {
-            "changelog-path": "packages/rust/conundrum_swift",
-            "component": "conundrum_swift"
-        },
-        "packages/rust/conundrum_server_rs": {
-            "changelog-path": "packages/rust/conundrum_server_rs",
-            "component": "conundrum_server_rs"
-        },
-        "packages/rust/conundrum_tools": {
-            "changelog-path": "packages/rust/conundrum_tools",
-            "component": "conundrum_tools"
-        },
-        "packages/rust/conundrum_wasm": {
-            "changelog-path": "packages/rust/conundrum_wasm",
-            "component": "conundrum_wasm"
-        },
-        "packages/rust/fluster_core_utilities": {
-            "changelog-path": "packages/rust/fluster_core_utilities",
-            "component": "fluster_core_utilities"
-        }
+  "release-type": "rust",
+  "initial-version": "0.0.1",
+  "force-tag-creation": true,
+  "always-update": true,
+  "changelog-type": "github",
+  "version-file": "version.txt",
+  "bootstrap-sha": "1a849e40",
+  "plugins": [
+    {
+      "type": "cargo-workspace",
+      "updateAllPackages": true,
+      "merge": false
+    },
+    {
+      "type": "linked-versions",
+      "groupName": "conundrum",
+      "components": [
+        "conundrum",
+        "conundrum_cli",
+        "conundrum_config",
+        "conundrum_db",
+        "conundrum_fs",
+        "conundrum_macro_traits",
+        "conundrum_macros",
+        "conundrum_swift",
+        "conundrum_server_rs",
+        "conundrum_tools",
+        "conundrum_wasm",
+        "fluster_core_utilities"
+      ]
     }
+  ],
+  "packages": {
+    "packages/rust/conundrum": {
+      "changelog-path": "packages/rust/conundrum",
+      "component": "conundrum"
+    },
+    "packages/rust/conundrum_cli": {
+      "changelog-path": "packages/rust/conundrum_cli",
+      "component": "conundrum_cli"
+    },
+    "packages/rust/conundrum_config": {
+      "changelog-path": "packages/rust/conundrum_config",
+      "component": "conundrum_config"
+    },
+    "packages/rust/conundrum_db": {
+      "changelog-path": "packages/rust/conundrum_db",
+      "component": "conundrum_db"
+    },
+    "packages/rust/conundrum_fs": {
+      "changelog-path": "packages/rust/conundrum_fs",
+      "component": "conundrum_fs"
+    },
+    "packages/rust/conundrum_macro_traits": {
+      "changelog-path": "packages/rust/conundrum_macro_traits",
+      "component": "conundrum_macro_traits"
+    },
+    "packages/rust/conundrum_macros": {
+      "changelog-path": "packages/rust/conundrum_macros",
+      "component": "conundrum_macros"
+    },
+    "packages/rust/conundrum_swift": {
+      "changelog-path": "packages/rust/conundrum_swift",
+      "component": "conundrum_swift"
+    },
+    "packages/rust/conundrum_server_rs": {
+      "changelog-path": "packages/rust/conundrum_server_rs",
+      "component": "conundrum_server_rs"
+    },
+    "packages/rust/conundrum_tools": {
+      "changelog-path": "packages/rust/conundrum_tools",
+      "component": "conundrum_tools"
+    },
+    "packages/rust/conundrum_wasm": {
+      "changelog-path": "packages/rust/conundrum_wasm",
+      "component": "conundrum_wasm"
+    },
+    "packages/rust/fluster_core_utilities": {
+      "changelog-path": "packages/rust/fluster_core_utilities",
+      "component": "fluster_core_utilities"
+    }
+  }
 }
