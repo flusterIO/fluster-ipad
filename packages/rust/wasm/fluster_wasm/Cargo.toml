@@ -2,7 +2,7 @@
 edition.workspace = true
 name = "fluster_wasm"
 publish = false
-version = "0.0.4"
+version = "0.0.5"
 
 [lib]
 crate-type = ["cdylib"]
