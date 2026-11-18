@@ -1,15 +1,1 @@
-{
-    ".": "0.0.1",
-    "packages/rust/conundrum": "0.0.1",
-    "packages/rust/conundrum_cli": "0.0.1",
-    "packages/rust/conundrum_config": "0.0.1",
-    "packages/rust/conundrum_db": "0.0.1",
-    "packages/rust/conundrum_fs": "0.0.1",
-    "packages/rust/conundrum_macro_traits": "0.0.1",
-    "packages/rust/conundrum_macros": "0.0.1",
-    "packages/rust/conundrum_swift": "0.0.1",
-    "packages/rust/conundrum_server_rs": "0.0.1",
-    "packages/rust/conundrum_tools": "0.0.1",
-    "packages/rust/conundrum_wasm": "0.0.1",
-    "packages/rust/fluster_core_utilities": "0.0.1"
-}
+{}
