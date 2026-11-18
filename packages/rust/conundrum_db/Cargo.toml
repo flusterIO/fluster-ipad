@@ -1,6 +1,6 @@
 [package]
 name = "conundrum_db"
-version = "0.1.0"
+version = "0.1.1"
 authors.workspace = true
 description.workspace = true
 documentation.workspace = true
@@ -30,9 +30,9 @@ crossbeam = { version = "0.8.4", features = [
 thiserror.workspace = true
 uuid = { version = "1.23.2", features = ["v4"] }
 convert_case = "0.11.0"
-conundrum = { path = "../conundrum/", version="0.1.0", features = ["db"] }
-conundrum_fs = { path = "../conundrum_fs/", version="0.1.0" }
-conundrum_macros = { path = "../conundrum_macros/", version="0.1.0" }
+conundrum = { path = "../conundrum/", version="0.1.1", features = ["db"] }
+conundrum_fs = { path = "../conundrum_fs/", version="0.1.1" }
+conundrum_macros = { path = "../conundrum_macros/", version="0.1.1" }
 schemars = { version = "1.2.1", features = ["chrono04", "either1", "uuid1"] }
 either = "1.16.0"
 log = "0.4.32"
