@@ -21,7 +21,7 @@ jobs:
           manifest-file: release-please-manifest.json
       - uses: actions/checkout@v4
         name: Checkout released commit
-        if: ${{ steps.release.outputs['packages/rust/conundrum--release_created'] }}
+        if: ${{ steps.release.outputs['conundrum--release_created'] }}
       - uses: dtolnay/rust-toolchain@stable
         name: Install Rust toolchain
         if: ${{ steps.release.outputs['packages/rust/conundrum--release_created'] }}
