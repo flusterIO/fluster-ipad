@@ -1,6 +1,6 @@
 [package]
 name = "conundrum_cli"
-version = "0.1.1"
+version = "0.1.0"
 authors.workspace = true
 description.workspace = true
 documentation.workspace = true
@@ -28,9 +28,9 @@ tui-checkbox = "0.4.3"
 tui-nodes = "0.10.0"
 tui-piechart = "0.3.1"
 tui-scrollview = "0.6.2"
-conundrum = { path = "../conundrum/", version = "0.1.1" }
-conundrum_db = { path = "../conundrum_db/", version = "0.1.1" }
-conundrum_server_rs = { path = "../conundrum_server_rs/", version = "0.1.1" }
+conundrum = { path = "../conundrum/", version = "0.1.0" }
+conundrum_db = { path = "../conundrum_db/", version = "0.1.0" }
+conundrum_server_rs = { path = "../conundrum_server_rs/", version = "0.1.0" }
 anyhow = "1.0.102"
 serde.workspace = true
 thiserror.workspace = true
@@ -45,7 +45,7 @@ figment = { version = "0.10.19", features = ["json", "toml", "yaml", "serde_json
 just = "1.51.0"
 walkdir = "2.5.0"
 ignore = "0.4.25"
-conundrum_config = {path = "../conundrum_config/", version = "0.1.1"}
+conundrum_config = {path = "../conundrum_config/", version = "0.1.0"}
 prettycli = "0.1.1"
 clap-cargo = { version = "0.18.3", features = ["cargo_metadata"] }
 clap-verbosity = "2.1.0"

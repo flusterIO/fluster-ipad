@@ -1,6 +1,6 @@
 [package]
 name = "conundrum_dashboard"
-version = "0.1.2"
+version = "0.1.3"
 description = "A Tauri App"
 authors = ["you"]
 edition = "2021"
@@ -22,5 +22,5 @@ tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1.0.45", default-features = false, features = ["alloc"] }
-conundrum = { path = "../../../packages/rust/conundrum/", version = "0"}
-conundrum_server_rs = { path = "../../../packages/rust/conundrum_server_rs/", version = "0"}
+conundrum = { path = "../../../packages/rust/conundrum/", version = "0.1.0"}
+conundrum_server_rs = { path = "../../../packages/rust/conundrum_server_rs/", version = "0.1.0"}
