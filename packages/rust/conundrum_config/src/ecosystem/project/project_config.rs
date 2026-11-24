@@ -123,6 +123,26 @@ impl ProjectConfig {
         Ok(r)
     }
 
+    /// Parses a single file from the project. Returns `None` if it isn't a Conundrum file, can't be read, or
+    /// fails to parse (failures are logged). This does *not* apply ignore rules; callers are expected to only
+    /// pass paths they already know belong to the project (e.g. ones previously returned by `get_files`).
+    pub fn parse_file(&self, path: &std::path::Path) -> Option<ProjectFileDescription> {
+        let ext = path.extension().and_then(|s| s.to_str())?;
+        if !ParsableFileType::extension_is_conundrum_file(ext) {
+            return None;
+        }
+        let content = std::fs::read_to_string(path).ok()?;
+        match run_conundrum(self.opts.duplicate_with_new_content(content)) {
+            Ok(results) => Some(ProjectFileDescription { input_path: path.to_path_buf(),
+                                                         root_path: self.source.input.resolve(),
+                                                         results }),
+            Err(err) => {
+                error!("Conundrum failed to parse the file at {:?} because of the following error: {:?}", path, err);
+                None
+            }
+        }
+    }
+
     pub fn get_files(&self) -> ConfigResult<Vec<ProjectFileDescription>> {
         let items: Arc<Mutex<Vec<ProjectFileDescription>>> = Arc::new(Mutex::new(Vec::new()));
         let root_path = self.source.input.resolve();
