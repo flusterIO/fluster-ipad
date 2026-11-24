@@ -1,0 +1,113 @@
+---
+title: Lorentz Slope, an Interactive Companion
+id: lorentz_slope_visualizer
+summary: A native Mac app that lets you play with every relation in "The Lorentz Factor as the Slope of an Additional Spatial Coordinate" instead of just reading it.
+topic: Relativity Visualizer
+subject: Physics
+---
+
+# Lorentz Slope
+> An interactive companion to the manuscript, built so you can move the sliders yourself.
+
+<Image
+    src="/assets/images/screenshots/visualizer/screenshot.png"
+    alt="The Lorentz Slope overview screen, showing the paper title, the core identity, and an interactive Flamm embedding."
+    maxHeight="large"
+    centerSelf
+    paddingY="medium"
+/>
+
+Equations on a page are easy to nod along to and hard to _feel_. **Lorentz Slope** is a native Mac app, written in Swift, that turns the paper into something you can poke at. Every relation in the manuscript gets its own screen with live controls, readouts that update as you drag, and a plain statement of where that relation sits in the argument.
+
+> **Read the paper:** [The Lorentz Factor as the Slope of an Additional Spatial Coordinate: Embedding, Painlevé–Gullstrand Flow, and the Issue of Simultaneity](https://zenodo.org/records/24487055) on Zenodo. The app follows it section by section, and every screen is tagged with the section it comes from.
+
+## The idea in one line
+
+The paper's central relation treats the Lorentz factor as the slope of an extra spatial coordinate $y$:
+
+$$ {#lorentz-slope}
+\gamma = \sqrt{1 + (\partial_x y)^2}, \qquad \partial_x y = \beta\gamma = \sinh\eta
+$$
+
+The right triangle behind it is just $\cosh^2\eta = 1 + \sinh^2\eta$, read as the slope of an embedding. See <EqRef id="lorentz-slope"/>, and then go watch it move in the app.
+
+## Honest labels on every relation
+
+The overview groups the paper's four main relations, and each carries a status badge: some are plain **Identities**, some are **Imported from GR** (such as the Hamiltonian constraint), and one is an explicit hypothesis that goes beyond general relativity. Where the construction can be checked, it is equivalent to general relativity, and the app says so rather than hiding it. That seemed like the right way to build a tool meant to help people evaluate the model, not just admire it.
+
+## What's inside
+
+The sidebar mirrors the structure of the paper:
+
+- **Kinematics of y**
+  - Lighthouse & Clock-Tower
+  - γ as a Slope
+  - Minkowski Interval
+- **Embedding & Metric**
+  - Flamm Embedding
+  - Mass Distributions
+  - The Component $G_{44}$
+  - The Four-Potential
+- **Lapse & Dynamics**
+  - Lapse from the Embedding
+  - Interior & Buchdahl Bound
+  - Orbits & Precession
+  - Rotation & Frame Dragging
+- **Flow & Cosmology**
+  - Painlevé–Gullstrand Flow
+  - Hubble Flow & Sciama
+- **Galactic Hypothesis**
+  - Hypothesis M
+- **Numerical Observations**
+  - Characteristic Velocities
+  - Fine-Structure Alignments
+- **Exploration**
+  - Star Lab
+
+## A few screens
+
+### Flamm embedding
+
+Drag to orbit and scroll to zoom a static slice embedded as the hypersurface $y(R) = 2\sqrt{r_s(R - r_s)}$, with tracer particles moving at the flow speed. Slide the probe radius and watch the flow speed, slope, tilt and lapse update together, alongside the cross-section and the slice functions.
+
+<Image
+    src="/assets/images/screenshots/visualizer/flamm_embedding.png"
+    alt="The Flamm Embedding screen with a 3D funnel surface, sliders for extent and probe radius, and live readouts for flow speed, slope, tilt and lapse."
+    maxHeight="large"
+    centerSelf
+    paddingY="medium"
+/>
+
+### Minkowski interval
+
+Boost an event and see the components grow while the interval does not. The screen is explicit that for $dt = 0$ this coincides with the standard Lorentz transformation, so it works as a consistency check and not as an independent derivation.
+
+<Image
+    src="/assets/images/screenshots/visualizer/minkowski_interval.png"
+    alt="The Minkowski Interval screen, showing a hyperbola of boosted events, a velocity slider, and the invariant interval readout."
+    maxHeight="large"
+    centerSelf
+    paddingY="medium"
+/>
+
+### Orbits and precession
+
+Choose a semilatus rectum, eccentricity and number of revolutions, and the app integrates the orbit and measures the perihelion advance numerically. It shows the leading-order estimate and the first-order solution next to it, with the photon sphere and ISCO marked, and the Mercury figure from the paper for reference.
+
+<Image
+    src="/assets/images/screenshots/visualizer/orbits_precession.png"
+    alt="The Orbits and Precession screen with a precessing orbit, sliders for orbit shape, and readouts for the measured and analytic perihelion advance."
+    maxHeight="large"
+    centerSelf
+    paddingY="medium"
+/>
+
+## Why build it?
+
+Fluster itself was built to support the work behind this paper, and a note-taking app can only take you so far when the thing you want to understand is a geometry. The model reaches some unconventional conclusions, so the most useful thing I can do is make it easy to inspect: change a parameter, see what the relation does, and compare it against the manuscript. If something doesn't hold up, I'd like you to be able to find it.
+
+--- Go further ---
+
+- Start with the **[paper on Zenodo](https://zenodo.org/records/24487055)**.
+- Read the longer write-up in [On the Gravitational Nature of Time](https://flusterapp.com/blog/by_path/on_the_gravitational_nature_of_time).
+- See the independent [Lean & Python ledger](https://flusterapp.com/blog/by_path/lean_proof_ledger) that checks the paper's algebra.
