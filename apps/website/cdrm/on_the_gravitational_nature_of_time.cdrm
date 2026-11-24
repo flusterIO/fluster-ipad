@@ -176,7 +176,9 @@ Equations on a page are easy to nod along to. The **Lorentz Slope** app turns ea
 
 ## Checked, not just claimed
 
-Ideas like this live or die on whether the algebra is right. An independent, AI-assisted ledger by Pablo Nogueira Grossi re-derived the paper's headline relations in Lean 4 (24 theorems, no `sorry`) with symbolic and numerical cross-checks, and the results are published openly: the slope identity, the Flamm and cap geometries, the Buchdahl bound, the Painlevé–Gullstrand reduction, the Hubble flow, and the Mercury advance all check out. The ledger is explicit that it is **unreviewed by a specialist** and covers the algebra, not the physics interpretation. See the [full ledger](/blog/by_path/lean_proof_ledger) and the Zenodo preprint it checks.
+Ideas like this live or die on whether the algebra is right. An independent, AI-assisted ledger by Pablo Nogueira Grossi re-derived the paper's headline relations in Lean 4 (24 theorems) with symbolic and numerical cross-checks, and the results are published openly: the slope identity, the Flamm and cap geometries, the Buchdahl bound, the Painlevé–Gullstrand reduction, the Hubble flow, and the Mercury advance all check out. The ledger is explicit that it is **unreviewed by a specialist** and covers the algebra, not the physics interpretation. See the [full ledger](/blog/by_path/lean_proof_ledger) and the Zenodo preprint it checks.
+
+A much more thorough symolic package exists **[here](https://pypi.org/project/alpha-omega-gravity/)**. It might not work flawlessly as it's part of my personal workflow, but the general functionality will save you some time creating all the functions from the paper in sympy by hand.
 
 ## What's waiting in the paper
 
