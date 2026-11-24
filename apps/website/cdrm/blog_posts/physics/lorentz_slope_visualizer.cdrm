@@ -1,7 +1,7 @@
 ---
 title: Lorentz Slope, an Interactive Companion
 id: lorentz_slope_visualizer
-summary: A native Mac app that lets you play with every relation in "The Lorentz Factor as the Slope of an Additional Spatial Coordinate" instead of just reading it.
+summary: A native Mac app that lets you play with every relation in the paper "Absolute Time in Higher-Dimensional Geometry" instead of just reading it.
 topic: Relativity Visualizer
 subject: Physics
 ---
@@ -19,7 +19,7 @@ subject: Physics
 
 Equations on a page are easy to nod along to and hard to _feel_. **Lorentz Slope** is a native Mac app, written in Swift, that turns the paper into something you can poke at. Every relation in the manuscript gets its own screen with live controls, readouts that update as you drag, and a plain statement of where that relation sits in the argument.
 
-> **Read the paper:** [The Lorentz Factor as the Slope of an Additional Spatial Coordinate: Embedding, Painlevé–Gullstrand Flow, and the Issue of Simultaneity](https://zenodo.org/records/24487055) on Zenodo. The app follows it section by section, and every screen is tagged with the section it comes from.
+> **Read the paper:** [Absolute Time in Higher-Dimensional Geometry: Classically Simultaneous Relativity via an Unwrapped Kaluza-Klein Dimension](https://zenodo.org/records/24487055) on Zenodo. The app follows it section by section, and every screen is tagged with the section it comes from.
 
 ## The idea in one line
 
