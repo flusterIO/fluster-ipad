@@ -58,6 +58,7 @@ struct CreateNoteSheetView: View {
                   body: "# \(titleValue)",
                 ),
                 subject: selectedSubject,
+                topic: selectedTopic,
               )
               modelContext.insert(model)
               editingNote = model
@@ -77,8 +78,13 @@ struct CreateNoteSheetView: View {
       }
       )
       .onDisappear {
-        if let note = editingNote, let _subject = selectedSubject {
-          note.subject = _subject
+        if let note = editingNote {
+          if let _subject = selectedSubject {
+            note.subject = _subject
+          }
+          if let _topic = selectedTopic {
+            note.topic = _topic
+          }
         }
       }
       .navigationTitle("Create new note")

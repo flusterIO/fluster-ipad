@@ -27,7 +27,10 @@ struct PaperTabView: View {
     NavigationStack {
       if let en = Binding($editingNote) {
         PaperKitView(editingNote: en, focusedPageIndex: $focusedPageIndex)
-          .id(focusedPageIndex)
+          .id("\(en.wrappedValue.id)-\(focusedPageIndex)")
+          .onChange(of: en.wrappedValue.id) { _, _ in
+            focusedPageIndex = 0
+          }
           .toolbar {
             ToolbarItem(id: "prev-page", placement: .primaryAction) {
               Button(
@@ -91,7 +94,18 @@ struct PaperTabView: View {
                   actions: {
                     Button(
                       action: {
-                        editingNote?.paper.remove(at: focusedPageIndex)
+                        // focusedPageIndex indexes the pages sorted by pageIndex, which is not
+                        // necessarily the storage order of `paper`, so resolve the page first.
+                        if let note = editingNote {
+                          let sorted = note.paper.sorted(by: { $0.pageIndex < $1.pageIndex })
+                          if focusedPageIndex < sorted.count,
+                            let storageIndex = note.paper.firstIndex(where: {
+                              $0 === sorted[focusedPageIndex]
+                            })
+                          {
+                            note.paper.remove(at: storageIndex)
+                          }
+                        }
                         if focusedPageIndex > 0 {
                           focusedPageIndex = focusedPageIndex - 1
                         } else {

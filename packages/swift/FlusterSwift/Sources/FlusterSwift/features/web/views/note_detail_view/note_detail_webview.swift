@@ -44,6 +44,24 @@ import WebKit
         onLoad: onLoad,
         srcUrl: "/note_detail_webview_ipad"
       )
+      // onLoad only runs once, when the webview first loads. Re-push the details whenever the
+      // note is switched or its displayed metadata changes.
+      .onChange(of: detailsSignature) {
+        if showWebView {
+          Task { await onLoad() }
+        }
+      }
+    }
+    private var detailsSignature: String {
+      [
+        note.id,
+        note.getPreferedTitle(),
+        note.topic?.value ?? "",
+        note.subject?.value ?? "",
+        note.tags.map(\.value).joined(separator: ","),
+        note.citations.compactMap(\.citationKey).joined(separator: ","),
+        note.frontMatter.summary?.body ?? ""
+      ].joined(separator: "|")
     }
     func messageHandler(_ messageKey: String, _ messageBody: Any) {
     }

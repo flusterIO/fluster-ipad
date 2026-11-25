@@ -68,12 +68,18 @@ struct PaperKitView: View {
       }
     }
     .navigationTitle(
-      "Paper \(_item?.pageIndex == nil ? 1 : _item!.pageIndex + 1) of \(maxPageIndex + 1)"
+      "Paper \(min(focusedPageIndex, max(sortedPages.count - 1, 0)) + 1) of \(max(sortedPages.count, 1))"
     )
     .navigationSubtitle("\(editingNote.paper.count) pages total")
   }
   func handleFocusIndexPageCreation() async {
-    if focusedPageIndex >= sortedPages.count {
+    // Only create a page when asked for the very next one (the "Create" button). A stale index
+    // beyond that (e.g. left over from a different note) must not append blank pages.
+    if focusedPageIndex > sortedPages.count {
+      focusedPageIndex = max(sortedPages.count - 1, 0)
+      return
+    }
+    if focusedPageIndex == sortedPages.count {
       let markup = PaperMarkup(
         bounds: CGRect(origin: CGPoint(x: 0, y: 0), size: getPaperMarkupBounds()))
       do {

@@ -34,7 +34,7 @@ public final class AppDataContainer {
       isStoredInMemoryOnly: false
     )
     do {
-let container = try ModelContainer(
+        let container = try ModelContainer(
         for: schema,
         migrationPlan: AppDataMigrationPlan.self,
         configurations: [modelConfiguration]

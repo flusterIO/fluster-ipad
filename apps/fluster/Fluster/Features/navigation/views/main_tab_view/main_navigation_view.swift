@@ -315,7 +315,17 @@ struct MainView: View {
         }
       }
     )
+    .onChange(of: theme) {
+      handleThemeChange(newTheme: theme)
+    }
+    .onChange(of: colorSchemeSelection) {
+      handleColorSchemeSelectionChange()
+    }
+    .onChange(of: colorScheme) {
+      handleColorSchemeSelectionChange()
+    }
     .onAppear {
+      handleColorSchemeSelectionChange()
       if !hasPreviouslyLaunched {
         Task {
           try? await self.setEditingNoteFromEditingNoteId()
@@ -420,7 +430,8 @@ struct MainView: View {
     self.themeManager = ThemeManager(
       initialTheme: getTheme(
         themeName: newTheme,
-        darkMode: colorScheme == .dark
+        darkMode:
+          getColorScheme(selected: colorSchemeSelection, systemScheme: colorScheme) == .dark
       )
     )
   }
