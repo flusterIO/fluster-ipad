@@ -70,7 +70,7 @@ import WebKit
         self.srcUrl = srcUrl
     }
 
-    public var body: some View {
+    private var baseContent: some View {
       WebviewContainer(
         parent: self,
         webView: $webView,
@@ -137,6 +137,47 @@ import WebKit
           }
         }
       )
+    }
+    public var body: some View {
+      baseContent
+      .onChange(of: flusterTheme) {
+        Task(priority: .high) {
+          try? await EditorState.setFlusterTheme(
+            theme: flusterTheme, eval: webView.evaluateJavaScript)
+        }
+      }
+      .onChange(of: lockEditorScrollToPreview) {
+        Task(priority: .high) {
+          try? await EditorState.setLockEditorScrollToPreview(
+            payload: SetLockEditorScrollToPreviewPayload(
+              lock_editor_scroll_to_preview: lockEditorScrollToPreview),
+            eval: webView.evaluateJavaScript)
+        }
+      }
+      .onChange(of: editorSaveMethod) {
+        Task(priority: .high) {
+          try? await EditorState.setEditorSaveMethod(
+            saveMethod: editorSaveMethod, eval: webView.evaluateJavaScript)
+        }
+      }
+      .onChange(of: includeEmojiSnippets) {
+        Task(priority: .high) {
+          try? await EditorState.setSnippetProps(
+            payload: SetSnippetPropsPayload(
+              snippetProps: SnippetState(includeEmojiSnippets: includeEmojiSnippets)),
+            eval: webView.evaluateJavaScript)
+        }
+      }
+      .onChange(of: cslFile) {
+        // Citation formatting depends on the CSL file, so re-send the citations.
+        updateParsedEditorValue()
+      }
+      .onChange(of: equationNumberingStrategy) {
+        // No dedicated action exists for this setting, so re-send the full state.
+        Task(priority: .high) {
+          await handleInitialState()
+        }
+      }
     }
     func setColorScheme(colorScheme: ColorScheme) async {
       try? await EditorState.setDarkMode(colorScheme: colorScheme, eval: webView.evaluateJavaScript)

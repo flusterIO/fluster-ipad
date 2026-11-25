@@ -76,6 +76,17 @@ extension EditorState {
     }
   }
 
+  public static func setFlusterTheme(theme: FlusterTheme, eval: @escaping EvalJavascriptFunc)
+    async throws
+  {
+    let action = SetFlusterThemeAction(
+      type: WebviewContainerActions.setFlusterTheme,
+      payload: SetFlusterThemePayload(fluster_theme: theme))
+    if let parsedData = EditorState.encodeAction(data: action) {
+      try await MdxEditorClient.sendEditorStateUpdate(data: parsedData, evalulateJavaScript: eval)
+    }
+  }
+
   public static func setDarkMode(colorScheme: ColorScheme, eval: @escaping EvalJavascriptFunc)
     async throws
   {

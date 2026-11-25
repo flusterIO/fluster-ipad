@@ -17,6 +17,7 @@ import WebKit
       frame: CGRect(x: 0, y: 0, width: 1, height: 1), configuration: getConfig()
     )
 
+    @Environment(\.modelContext) private var modelContext: ModelContext
     @Binding var fullScreenCover: MainFullScreenCover?
     @Binding var note: NoteModel
     @AppStorage(AppStorageKeys.embeddedCslFile.rawValue) private var cslFile: EmbeddedCslFileSwift =
@@ -38,7 +39,13 @@ import WebKit
         show: $showWebView,
         url: URL.embeddedFlusterUrl(
           folder: "note_detail_webview_ipad", fileName: "index_ipad.html"),
-        messageHandlerKeys: [],
+        messageHandlerKeys: [
+          NoteDetailWebviewActions.requestNoteDetailData.rawValue,
+          NoteDetailWebviewActions.onTagClick.rawValue,
+          NoteDetailWebviewActions.onTopicClick.rawValue,
+          NoteDetailWebviewActions.onSubjectClick.rawValue,
+          MdxPreviewWebviewActions.onCitationClick.rawValue
+        ],
         messageHandler:
           self.messageHandler,
         onLoad: onLoad,
@@ -64,6 +71,41 @@ import WebKit
       ].joined(separator: "|")
     }
     func messageHandler(_ messageKey: String, _ messageBody: Any) {
+      switch messageKey {
+        case NoteDetailWebviewActions.requestNoteDetailData.rawValue:
+          Task(priority: .high) { await onLoad() }
+        case NoteDetailWebviewActions.onTagClick.rawValue:
+          guard let value = messageBody as? String else { return }
+          if let tag = fetchFirst(TagModel.self, #Predicate<TagModel> { $0.value == value }) {
+            fullScreenCover = .tagSearch(tag: tag)
+          }
+        case NoteDetailWebviewActions.onTopicClick.rawValue:
+          guard let value = messageBody as? String else { return }
+          if let topic = fetchFirst(TopicModel.self, #Predicate<TopicModel> { $0.value == value }) {
+            fullScreenCover = .topicSearch(topic: topic)
+          }
+        case NoteDetailWebviewActions.onSubjectClick.rawValue:
+          guard let value = messageBody as? String else { return }
+          if let subject = fetchFirst(
+            SubjectModel.self, #Predicate<SubjectModel> { $0.value == value })
+          {
+            fullScreenCover = .subjectSearch(subject: subject)
+          }
+        case MdxPreviewWebviewActions.onCitationClick.rawValue:
+          guard let key = messageBody as? String else { return }
+          if let entry = fetchFirst(
+            BibEntryModel.self, #Predicate<BibEntryModel> { $0.citationKey == key })
+          {
+            fullScreenCover = .citationByKey(citation: entry)
+          }
+        default:
+          return
+      }
+    }
+    private func fetchFirst<T: PersistentModel>(_ type: T.Type, _ predicate: Predicate<T>) -> T? {
+      var descriptor = FetchDescriptor<T>(predicate: predicate)
+      descriptor.fetchLimit = 1
+      return try? modelContext.fetch(descriptor).first
     }
     func onLoad() async {
       let dateFormatter = RelativeDateTimeFormatter()

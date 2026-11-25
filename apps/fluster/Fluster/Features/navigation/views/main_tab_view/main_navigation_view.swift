@@ -79,6 +79,9 @@ struct MainView: View {
   @State private var editingNote: NoteModel?
   @State private var selectedTab: IpadMainViewTab = IpadMainViewTab.notes
   @State private var findInNotePresented: Bool = false
+  /// True when the view is wider than tall. The pinned Search tab is portrait-only and the
+  /// sidebar Notes tab is landscape-only.
+  @State private var isLandscape: Bool = false
 
   init() {
   }
@@ -169,14 +172,14 @@ struct MainView: View {
       .customizationID("\(IpadMainViewTab.searchNotes.rawValue)-tabbar")
       .customizationBehavior(.disabled, for: .sidebar)
       .tabPlacement(.pinned)
+      .hidden(isLandscape)
       TabSection(
         "Search",
         content: {
           Tab(
             "Notes",
             systemImage: "book.pages.fill",
-            value: IpadMainViewTab.searchNotes,
-            role: .search
+            value: IpadMainViewTab.searchNotesList
           ) {
             NavigationStack {
               MarkdownNotesSearchResultsView(
@@ -184,9 +187,10 @@ struct MainView: View {
               )
             }
           }
-          .customizationID(IpadMainViewTab.searchNotes.rawValue)
+          .customizationID(IpadMainViewTab.searchNotesList.rawValue)
           .customizationBehavior(.disabled, for: .tabBar)
           .defaultVisibility(.hidden, for: .tabBar)
+          .hidden(!isLandscape)
           Tab(
             "Bookmarks",
             systemImage: FlusterIcon.bookmark.rawValue,
@@ -315,6 +319,17 @@ struct MainView: View {
         }
       }
     )
+    .onGeometryChange(for: Bool.self) { proxy in
+      proxy.size.width > proxy.size.height
+    } action: { newValue in
+      isLandscape = newValue
+      // Don't leave a now-hidden tab selected.
+      if newValue && selectedTab == .searchNotes {
+        selectedTab = .searchNotesList
+      } else if !newValue && selectedTab == .searchNotesList {
+        selectedTab = .searchNotes
+      }
+    }
     .onChange(of: theme) {
       handleThemeChange(newTheme: theme)
     }

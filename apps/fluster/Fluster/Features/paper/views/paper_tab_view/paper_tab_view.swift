@@ -8,9 +8,11 @@
 import FlusterData
 import FlusterSwift
 import PencilKit
+import SwiftData
 import SwiftUI
 
 struct PaperTabView: View {
+  @Environment(\.modelContext) private var modelContext: ModelContext
   @State private var toolbar: PKToolPicker = PKToolPicker()
   @State private var showDeletePageConfirmation: Bool = false
   @Environment(ThemeManager.self) private var themeManager: ThemeManager
@@ -103,7 +105,10 @@ struct PaperTabView: View {
                               $0 === sorted[focusedPageIndex]
                             })
                           {
-                            note.paper.remove(at: storageIndex)
+                            let page = note.paper.remove(at: storageIndex)
+                            // Removing from the array only unlinks the page; delete the model so
+                            // it isn't orphaned in the store.
+                            modelContext.delete(page)
                           }
                         }
                         if focusedPageIndex > 0 {
