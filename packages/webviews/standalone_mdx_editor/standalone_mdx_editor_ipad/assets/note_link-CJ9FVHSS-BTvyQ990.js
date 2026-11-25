@@ -1,0 +1,1 @@
+import{bz as i,bT as o,bU as t}from"./main-CSAj7I-T.js";const a=({id:e,children:s})=>i.jsx("a",{role:"button",onClick:()=>{o(t.ViewNoteByUserDefinedId,e)},className:"text-primary font-semibold",children:s});a.displayName="NoteLink";export{a as NoteLink};

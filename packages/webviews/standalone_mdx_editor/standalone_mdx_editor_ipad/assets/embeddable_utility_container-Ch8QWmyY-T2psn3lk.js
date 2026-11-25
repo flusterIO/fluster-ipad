@@ -1,0 +1,1 @@
+import{by as l,bz as n,bA as r}from"./main-CSAj7I-T.js";const o=({children:s,style:e,...a})=>{const{containerClasses:i,emphasisBackgroundClasses:t}=l.parse(a);return n.jsx("div",{className:r("w-full my-6 inline-block",t,i),style:e,children:s})};o.displayName="EmbeddableUtilityContainer";export{o as EmbeddableUtilityContainer};

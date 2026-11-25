@@ -1,0 +1,1 @@
+import{bz as s}from"./main-CSAj7I-T.js";const o=({idx:t,citationKey:i})=>s.jsxs("sup",{className:"text-primary",onClick:()=>{console.log("citationKey: ",i)},children:[" ",t+1]});o.displayName="FlusterCitation";export{o as FlusterCitation};

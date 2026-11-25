@@ -1,0 +1,1 @@
+import{bz as s,bV as e,bX as l}from"./main-CSAj7I-T.js";const o=()=>s.jsx("div",{className:"w-full flex flex-col justify-start items-start gap-y-1",children:e.map(t=>{const i={[t]:!0};return s.jsxs("div",{children:["This is ",s.jsx(l,{...i,children:t})," highlighted"]})})});o.displayName="HighlightDocsDemo";export{o as InContentHighlightDocsDemo};

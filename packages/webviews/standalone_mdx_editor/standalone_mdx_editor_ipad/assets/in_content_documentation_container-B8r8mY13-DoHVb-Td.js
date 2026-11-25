@@ -1,0 +1,1 @@
+import{bz as r}from"./main-CSAj7I-T.js";const o=({children:n})=>r.jsx("div",{className:"w-full border rounded p-4 bg-fd-card text-fd-card-foreground my-8 border-primary/40 inline-block",children:n});o.displayName="InContentDocumentationContainer";export{o as InContentDocumentationContainer};

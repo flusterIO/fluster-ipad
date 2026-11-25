@@ -1,0 +1,1 @@
+import{bz as r,bT as a,bU as s}from"./main-CSAj7I-T.js";const t=({data:o})=>r.jsx("span",{role:"button",className:"bg-primary text-primary-foreground px-1 rounded-md cursor-pointer",onClick:()=>{a(s.OnTagClick,o.body)},children:`#${o.body}`});t.displayName="AutoInsertedTag";export{t as AutoInsertedTag};

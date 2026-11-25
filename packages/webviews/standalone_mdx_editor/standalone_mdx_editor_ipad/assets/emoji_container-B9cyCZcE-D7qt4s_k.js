@@ -1,0 +1,1 @@
+import{bS as n,bz as r,bA as i}from"./main-CSAj7I-T.js";const o=({children:s,...a})=>{const{containerClasses:e}=n.parse(a);return r.jsx("div",{className:i("[&>svg]:max-w-full [&>svg]:max-h-full",e),children:s})};o.displayName="EmojiContainer";export{o as EmojiContainer};
