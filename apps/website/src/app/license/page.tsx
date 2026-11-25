@@ -3,6 +3,14 @@ import { files } from "../../features/cdrm/cdrm.json";
 import { ClientConundrumPage } from "../blog/by_path/[[...slug]]/client_cdrm";
 import { type AnyBuilderOutput } from "../../../../../packages/rust/conundrum_ts/dist/src/types/general";
 import Footer from "#/features/footer";
+import { buildMetadata } from "#/core/seo/site";
+
+export const metadata = buildMetadata({
+    title: "License",
+    description: "Licensing for Fluster and Conundrum.",
+    path: "/license",
+});
+
 
 const LicensePage = (): ReactNode => {
     const item = files.find((f) => {

@@ -1,4 +1,3 @@
-
 ## Conundrum
 
 #### A modular knowledge toolkit for the vibe-coding era.

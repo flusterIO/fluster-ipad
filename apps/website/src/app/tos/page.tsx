@@ -2,6 +2,14 @@ import React, { type ReactNode } from "react";
 import { files } from "../../features/cdrm/cdrm.json";
 import { buttonVariants } from "../../core/shad/ui/button";
 import Link from "next/link";
+import { buildMetadata } from "#/core/seo/site";
+
+export const metadata = buildMetadata({
+    title: "Terms of Service",
+    description: "Terms of service for Fluster.",
+    path: "/tos",
+});
+
 
 const TermsOfServicePage = (): ReactNode => {
     const tos = files.find(

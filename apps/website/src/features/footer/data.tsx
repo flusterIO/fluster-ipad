@@ -38,6 +38,10 @@ export const footerLinks: Record<FooterLinkKeys, LinkGroupItems> & {
     ],
     physics: [
         {
+            href: "/paper",
+            label: "Absolute Time in Higher-Dimensional Geometry (paper)",
+        },
+        {
             href: "/blog/by_path/on_the_gravitational_nature_of_time",
             label: "On the gravitational nature of time",
         },

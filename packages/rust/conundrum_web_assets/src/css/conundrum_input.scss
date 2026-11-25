@@ -7,22 +7,23 @@
 @source not "../glue/component_glue_output/**";
 @plugin "@tailwindcss/typography";
 
+
 @source inline("bg-emphasis-primary bg-emphasis-info bg-emphasis-error bg-emphasis-warn bg-emphasis-success bg-emphasis-important bg-emphasis-research bg-emphasis-highlight text-emphasis-warn");
 
 @layer base {
   :root {
     --border-radius: 0.5rem;
-    --emphasis-info: 221 100% 65%;
+    --emphasis-info: 221.0 100.0% 65.0%;
     --emphasis-info-foreground: 0 0% 100%;
-    --emphasis-error: 0 100% 50%;
+    --emphasis-error: 0.0 100.0% 50.0%;
     --emphasis-error-foreground: 0 0% 100%;
-    --emphasis-warn: 20 100% 55%;
+    --emphasis-warn: 20.0 100.0% 55.0%;
     --emphasis-warn-foreground: 222.2 84% 4.9%;
     --emphasis-success: 142 100% 40%;
     --emphasis-success-foreground: 0 0% 100%;
-    --emphasis-important: 270 100% 55%;
+    --emphasis-important: 270.0 100.0% 55.0%;
     --emphasis-important-foreground: 0 0% 100%;
-    --emphasis-research: 185 100% 40%;
+    --emphasis-research: 185.0 100.0% 40.0%;
     --emphasis-research-foreground: 0 0% 100%;
     --emphasis-highlight: 60 100% 48%;
     --emphasis-highlight-foreground: 222.2 84% 4.9%;
@@ -45,7 +46,6 @@
     --color-fd-accent: hsla(0, 0%, 82%, 50%);
     --color-fd-accent-foreground: hsl(0, 0%, 9%);
     --color-fd-ring: hsl(0, 0%, 63.9%);
-    --color-link: hsl(210, 100%, 55.9%);
     --chart-1: #1a5f8e;
     --chart-2: #c16a26;
     --chart-3: #2f4f4f;
@@ -61,17 +61,17 @@
   }
 
   body.dark {
-    --emphasis-info: 221 100% 65%;
+    --emphasis-info: 221.0 100.0% 65.0%;
     --emphasis-info-foreground: 0 0% 100%;
-    --emphasis-error: 0 100% 65%;
+    --emphasis-error: 0.0 100.0% 65.0%;
     --emphasis-error-foreground: 0 0% 100%;
-    --emphasis-warn: 20 100% 55%;
+    --emphasis-warn: 20.0 100.0% 55.0%;
     --emphasis-warn-foreground: 222.2 84% 4.9%;
     --emphasis-success: 142 100% 50%;
     --emphasis-success-foreground: 222.2 84% 4.9%;
-    --emphasis-important: 270 100% 70%;
+    --emphasis-important: 270.0 100.0% 70.0%;
     --emphasis-important-foreground: 0 0% 100%;
-    --emphasis-research: 185 100% 50%;
+    --emphasis-research: 185.0 100.0% 50.0%;
     --emphasis-research-foreground: 222.2 84% 4.9%;
     --emphasis-primary: 217.2 91.2% 59.8%;
     --emphasis-primary-foreground: 210 40% 98%;
@@ -107,6 +107,7 @@
     --chart-11: #87ceeb;
     --chart-12: #e99675;
   }
+
 
   @theme inline {
     --radius: var(--border-radius);
@@ -181,6 +182,7 @@
     --color-chart-12: var(--chart-12);
   }
 
+
   body[data-cdrm-theme="cdrm"] {
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
@@ -208,6 +210,7 @@
     --border-radius: 0.5rem;
     --general-link-color: #2563eb;
     --brand: 198.6 88.7% 48.4%;
+
 
     .dark:not(.light *),
     &.dark,
@@ -237,6 +240,7 @@
       --general-link-color: #1e90ff;
     }
   }
+
 }
 
 body {
@@ -288,6 +292,7 @@ p {
     }
   }
 }
+
 
 .dark .min-scrollbar {
   scrollbar-width: thin;

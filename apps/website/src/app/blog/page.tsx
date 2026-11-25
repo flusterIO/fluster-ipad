@@ -4,7 +4,15 @@ import { blogSearchParamsToQuery } from "@conundrum/ts/ui/blog-ssr";
 import { getNextJsPages } from "@conundrum/ts/providers/next";
 import data from "../../features/cdrm/cdrm.json";
 import { ConundrumContentList } from "#/features/blog/content_list/content_list";
+import { buildMetadata } from "#/core/seo/site";
 import { type AnyBuilderOutput } from "../../../../../packages/rust/conundrum_ts/dist/src/types/general";
+
+export const metadata = buildMetadata({
+    title: "Fluster & Conundrum Blog",
+    description:
+        "Guides, release notes and research from the Fluster and Conundrum projects, including the physics paper behind the interactive visualizer.",
+    path: "/blog",
+});
 
 interface BlogHomePageProps {
     searchParams: Promise<BlogSearchParams | undefined>;

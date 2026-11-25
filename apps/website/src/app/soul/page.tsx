@@ -3,6 +3,15 @@ import { files } from "../../features/cdrm/cdrm.json";
 import { ClientConundrumPage } from "../blog/by_path/[[...slug]]/client_cdrm";
 import { type BlogFileSummary } from "../../../../../packages/rust/conundrum_ts/dist/src/code_gen";
 import Footer from "#/features/footer";
+import { buildMetadata } from "#/core/seo/site";
+
+export const metadata = buildMetadata({
+    title: "The Soul of Conundrum",
+    description:
+        "The principles behind Conundrum, the open markup language that powers Fluster.",
+    path: "/soul",
+});
+
 
 const SoulOfConundrumPage = (): ReactNode => {
     const page = files.find((f) => {

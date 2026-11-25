@@ -3680,7 +3680,6 @@ name = "conundrum_swift"
 version = "0.1.0"
 dependencies = [
  "conundrum",
- "fluster_core_utilities",
  "tokio",
  "uniffi",
 ]

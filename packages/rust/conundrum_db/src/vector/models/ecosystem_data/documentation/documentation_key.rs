@@ -4,30 +4,39 @@ use conundrum::ecosystem::error_handling::db_error::DatabaseError;
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, fake::Dummy, strum_macros::Display, strum_macros::EnumIter)]
 pub enum DocumentationKey {
 
+    #[strum(to_string = "readme.cdrm")]
+    #[serde(rename = "readme.cdrm")]
+    Readme,
     #[strum(to_string = "usage/intro.cdrm")]
     #[serde(rename = "usage/intro.cdrm")]
     Intro,
-
     #[strum(to_string = "protocol/conundrum_protocol.cdrm")]
     #[serde(rename = "protocol/conundrum_protocol.cdrm")]
     ConundrumProtocol,
-
     #[strum(to_string = "protocol/language/conundrum_lang.cdrm")]
     #[serde(rename = "protocol/language/conundrum_lang.cdrm")]
     ConundrumLang,
-
+    #[strum(to_string = "legal/soul.cdrm")]
+    #[serde(rename = "legal/soul.cdrm")]
+    Soul,
     #[strum(to_string = "legal/license.cdrm")]
     #[serde(rename = "legal/license.cdrm")]
     License,
+    #[strum(to_string = "api/developer/warnings.cdrm")]
+    #[serde(rename = "api/developer/warnings.cdrm")]
+    Warnings,
 }
 
 impl Into<String> for DocumentationKey {
      fn into(self) -> String {
          match self {
+             Self::Readme => include_str!("../../../../../../../../docs/generated/vector/readme.cdrm").to_string(),
              Self::Intro => include_str!("../../../../../../../../docs/generated/vector/usage/intro.cdrm").to_string(),
              Self::ConundrumProtocol => include_str!("../../../../../../../../docs/generated/vector/protocol/conundrum_protocol.cdrm").to_string(),
              Self::ConundrumLang => include_str!("../../../../../../../../docs/generated/vector/protocol/language/conundrum_lang.cdrm").to_string(),
+             Self::Soul => include_str!("../../../../../../../../docs/generated/vector/legal/soul.cdrm").to_string(),
              Self::License => include_str!("../../../../../../../../docs/generated/vector/legal/license.cdrm").to_string(),
+             Self::Warnings => include_str!("../../../../../../../../docs/generated/vector/api/developer/warnings.cdrm").to_string(),
          }
      }
 }

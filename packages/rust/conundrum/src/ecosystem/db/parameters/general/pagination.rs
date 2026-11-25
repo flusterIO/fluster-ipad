@@ -1,7 +1,8 @@
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
+use uniffi::Record;
 
-#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy)]
+#[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, Record)]
 pub struct PaginationParams {
     pub per_page: u32,
     pub page: u32,

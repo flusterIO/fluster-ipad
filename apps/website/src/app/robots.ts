@@ -1,12 +1,14 @@
 import type { MetadataRoute } from "next";
+import { siteUrl } from "#/core/seo/site";
 
 export default function robots(): MetadataRoute.Robots {
     return {
         rules: {
             userAgent: "*",
             allow: "/",
-            disallow: "/private/",
+            disallow: ["/private/", "/api/"],
         },
-        sitemap: "https://flusterapp.com/sitemap.xml",
+        sitemap: `${siteUrl}/sitemap.xml`,
+        host: siteUrl,
     };
 }

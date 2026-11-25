@@ -9,7 +9,6 @@ import type { Metadata } from "next";
 const blacklist_taggables = ["LinkOnly", "link-only"];
 
 export const metadata: Metadata = {
-  title: "Fluster & Conundrum Blog",
   description: "The blog powered by Conundrum, about Conundrum.",
 };
 

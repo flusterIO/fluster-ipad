@@ -35,7 +35,7 @@ const HeroSection = () => {
                 <div className="text-center w-[min(90vw,56rem)] z-10">
                     <Badge variant="secondary" className="mb-4">
                         <Sparkles className="w-3 h-3 mr-1" />
-                        AI-Powered Research Platform
+                        Now on iPad & Mac
                     </Badge>
                     <motion.h1
                         className={

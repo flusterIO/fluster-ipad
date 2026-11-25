@@ -21,7 +21,7 @@ const generateIndexFileRecursively = (dirPath: string): void => {
     let s = "";
     for (const f of files) {
         const fi = f.lastIndexOf(".");
-        s += `pub mod ${f.slice(0, fi <= 0 ? f.length : fi, 0)};\n`;
+        s += `pub mod ${f.slice(0, fi <= 0 ? f.length : fi)};\n`;
     }
     const modPath = path.join(dirPath, "mod.rs");
     fs.writeFileSync(modPath, s, {

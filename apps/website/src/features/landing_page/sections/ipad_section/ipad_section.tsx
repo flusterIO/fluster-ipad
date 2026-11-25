@@ -11,14 +11,15 @@ export const IpadSection = (): ReactNode => {
                             New
                         </div>
                         <h2 className="text-3xl md:text-4xl font-bold text-gray-100 mb-4">
-                            iPad & Mac Apps Coming June 2026
+                            Fluster for iPad & Mac, Now Available
                         </h2>
                     </div>
                     <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-                        After a months long complete rewrite, the new iPad and Mac apps will
-                        be available soon, complete with Apple's PaperKit integration, and{" "}
+                        After a months long complete rewrite, the new iPad and Mac apps are
+                        here, complete with Apple's PaperKit integration for hand-drawn
+                        notes with Apple Pencil, and{" "}
                         <span className="italic">most</span> of the features Fluster users
-                        are familiar with available on initial launch.
+                        are familiar with available at launch.
                     </p>
                 </div>
                 <div className="w-full">

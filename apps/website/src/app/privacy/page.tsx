@@ -1,6 +1,15 @@
 import { Button, buttonVariants } from "#/core/shad/ui/button";
 import Link from "next/link";
 import React, { type ReactNode } from "react";
+import { buildMetadata } from "#/core/seo/site";
+
+export const metadata = buildMetadata({
+    title: "Privacy",
+    description:
+        "Fluster keeps your notes on your device and in your own iCloud. No third-party database ever sees your data.",
+    path: "/privacy",
+});
+
 
 const FlusterPrivacyPage = (): ReactNode => {
     return (
