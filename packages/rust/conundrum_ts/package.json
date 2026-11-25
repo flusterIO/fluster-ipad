@@ -7,6 +7,7 @@
   "scripts": {
     "build": "vite build && pnpm copy:globalCSS",
     "build:ipad": "vite build && pnpm copy:globalCSS",
+    "build:ipadProd": "FLUSTER_PROD_BUILD=true vite build && pnpm copy:globalCSS",
     "build:mac": "vite build && pnpm copy:globalCSS",
     "build:macProd": "FLUSTER_PROD_BUILD=true vite build && pnpm copy:globalCSS",
     "build:vite": "vite build && pnpm copy:globalCSS",

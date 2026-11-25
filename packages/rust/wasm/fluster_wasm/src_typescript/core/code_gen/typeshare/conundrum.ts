@@ -53,6 +53,11 @@ export type Children = ParsedElement[];
 
 export type ConundrumBoolean = boolean;
 
+/**
+ * ## TODO:
+ * - [ ] Move this to dashu asap. Everything down to the database package is
+ * depeneding on that sweet arbitrary precision.
+ */
 export type ConundrumFloat = number;
 
 export type ConundrumString = string;
@@ -64,6 +69,8 @@ export type ConundrumString = string;
 export type CssColor = CL;
 
 export type DOMId = string;
+
+export type DatabaseId = string;
 
 export type GridColumnProps = GridColumnsMap;
 
@@ -515,6 +522,10 @@ export interface BlockQuoteResult {
 	full_match: string;
 }
 
+/**
+ * ## TODO
+ * - [ ] Add a meta field that can collect arbitrary front-matter.
+ */
 export interface FrontMatterResult {
 	ignored_parsers: string[];
 	title?: string;
@@ -953,6 +964,31 @@ export interface JavascriptStringResult {
 export interface JsxStringPropertyResult {
 }
 
+/**
+ * ## Local Video
+ * 
+ * For embedding a local video in your note.
+ * 
+ * ### Example
+ * 
+ * ```tsx
+ * <Video
+ * path="/Some/local/file/path/myVideo.mp4"
+ * id="myOptionalId"
+ * />
+ * ```
+ * 
+ * You can then use the id of the video to link to specific time stamps using
+ * the `[my link content](video:myOptionalId@4:32)` to jump to 4 minutes and 32
+ * seconds.
+ */
+export interface LocalVideoComponent {
+	path: ConundrumString;
+	/** An optional user defined id used for video timestamp links. */
+	id?: ConundrumString;
+	sizable: SizablePropsGroup;
+}
+
 export interface MarkdownBoldAndItalicTextResult {
 	children: Children;
 }
@@ -1082,7 +1118,7 @@ export interface RenderedFootnoteResult {
 	 * Not necessarily the user provided index that is used as the key of
 	 * the footnote results map.
 	 */
-	idx: ConundrumInt;
+	idx: number;
 }
 
 /**
@@ -1123,7 +1159,7 @@ export interface MdxParsingResult {
 	 * so don't rely on this data during parsing *or* compilation. Use the
 	 * field on `ParseState` instead.
 	 */
-	footnotes: Record<ConundrumInt, RenderedFootnoteResult>;
+	footnotes: Record<number, RenderedFootnoteResult>;
 	included_components: AnyComponentKey[];
 }
 
@@ -1170,6 +1206,13 @@ export interface MermaidCodeBlock {
 	theme: MermaidTheme;
 }
 
+export interface ModelSelection {
+	/** Stable provider key, such as `ollama` or `openai`. */
+	provider: string;
+	/** Provider-specific model identifier. */
+	model_id: string;
+}
+
 export interface NextJsConundrumOutput {
 	files: BlogFileSummary[];
 }
@@ -1183,11 +1226,6 @@ export interface OrderedListItem {
 
 export interface OrderedListModel {
 	items: OrderedListItem[];
-}
-
-export interface PaginationParams {
-	per_page: number;
-	page: number;
 }
 
 /**
@@ -1269,6 +1307,7 @@ export enum EmbeddableComponentName {
 	Tab = "Tab",
 	Image = "Image",
 	Youtube = "Youtube",
+	LocalVideo = "Video",
 }
 
 export enum SupportedCodeBlockTheme {
@@ -1431,7 +1470,8 @@ export type ConundrumComponentType =
 	| { tag: "EmojiDocsDemo", content: EmojiDocsDemo }
 	| { tag: "Image", content: Image }
 	| { tag: "Color", content: ColorComponent }
-	| { tag: "Youtube", content: YoutubeComponent };
+	| { tag: "Youtube", content: YoutubeComponent }
+	| { tag: "LocalVideo", content: LocalVideoComponent };
 
 export interface ReactComponentSelfClosingResult {
 	full_text: string;
@@ -1563,6 +1603,20 @@ export interface TitleGroup {
 	subtitle?: string;
 }
 
+export enum MCPToolName {
+	HelloWorld = "hello_world",
+	QueryWorkspaces = "query_workspaces",
+}
+
+export interface ToolExecution {
+	id: DatabaseId;
+	tool_name: MCPToolName;
+	args?: JsonContent;
+	convo_id: DatabaseId;
+	agent_id?: DatabaseId;
+	ctime: DateTime;
+}
+
 export interface Underline {
 	children: Children;
 	/** Default: .highlight */
@@ -1626,6 +1680,17 @@ export interface UnorderedTaskListModel {
 	items: UnorderedTaskListItem[];
 }
 
+export interface UserMessageInput {
+	convo_id?: DatabaseId;
+	/**
+	 * If the sender is the user, this is the agent requested. If the sender is
+	 * AI, this is the AI sending the response.
+	 */
+	agent_id?: DatabaseId;
+	model?: ModelSelection;
+	body: string;
+}
+
 /**
  * The `Container` component is an intentionally almost entirely unstyled
  * component that accepts most of the _generic_ properties accepted elsewhere.
@@ -1644,13 +1709,28 @@ export interface UtilityContainer {
 /**
  * ## Youtube
  * 
- * For embedding youtube videos directly in your notes.
+ * For embedding YouTube videos directly in your notes. The video renders in a
+ * responsive 16:9 player (capped at `768px` wide) loaded from
+ * `youtube-nocookie.com`, and accepts every [`SizablePropsGroup`] property so
+ * it can be floated, bordered, rounded, and so on.
+ * 
+ * The full user-facing documentation lives in
+ * `embedded/component_docs/youtube-full.mdx` and is registered through
+ * [`youtube_component_config`](super::youtube_config::youtube_component_config).
+ * 
+ * ### Properties
+ * 
+ * - `url` (required): any common YouTube url (`watch?v=`, `youtu.be/`,
+ * `/embed/`, `/shorts/`, `/live/`) or a bare 11 character video id. A start
+ * time in the url (`t=90`, `t=90s`, `start=90`) is honored.
+ * - `id` (optional): a user defined id used for timestamp links.
+ * - Any sizable property.
  * 
  * ### Example
  * 
  * ```tsx
  * <Youtube
- * url="https://youtube.com/someVideoUrl"
+ * url="https://youtube.com/watch?v=someVideoId"
  * id="myOptionalId"
  * />
  * ```
@@ -1665,6 +1745,17 @@ export interface YoutubeComponent {
 	id?: ConundrumString;
 	sizable: SizablePropsGroup;
 }
+
+export type AIError = 
+	| { tag: "ConundrumError", content: ConundrumErrorVariant }
+	| { tag: "FailToInitializeModel", content: string }
+	| { tag: "SkippingIrrelevantAIOutput", content?: undefined }
+	| { tag: "EmbeddingFail", content: string }
+	| { tag: "InvalidProps", content: string }
+	| { tag: "InvalidEnvironment", content: string }
+	| { tag: "InvalidLocalProvider", content?: undefined }
+	| { tag: "InvalidRemoteProvider", content?: undefined }
+	| { tag: "FailToExtractText", content: string };
 
 export enum AiSerializationRequestType {
 	CreateNoteSpecificStudyGuide = "CreateNoteSpecificStudyGuide",
@@ -1693,7 +1784,52 @@ export enum AutoInsertedComponentName {
 
 export enum CdrmEnvVariable {
 	LogLevel = "CDRM_LOG_LEVEL",
+	ServerPort = "CDRM_SERVER_PORT",
+	CSLFilePath = "CDRM_CSL_FILE_PATH",
 }
+
+export type ChatEvent = 
+	/**
+	 * Returned directly after the user sends their message, only attaching an
+	 * id and the ctime.
+	 */
+	| { type: "user_message_bounce_back", content: {
+	user_message: UserMessage;
+}}
+	| { type: "text_delta", content: {
+	text: string;
+	is_reasoning: boolean;
+}}
+	| { type: "redacted", content: {
+	text: string;
+}}
+	/** A complete block of reasoning logic. */
+	| { type: "reasoning_block", content: {
+	text: string;
+}}
+	/** A summary of the reasoning content. */
+	| { type: "reasoning_summary", content: {
+	text: string;
+}}
+	| { type: "encrypted", content: {
+	text: string;
+}}
+	| { type: "done", content: {
+	input_tokens: number;
+	output_tokens: number;
+	total_tokens: number;
+}}
+	| { type: "tool_call", content: ToolExecution }
+	| { type: "tool_result_text", content: {
+	content: string;
+}}
+	| { type: "tool_result_image", content: {
+	image_type?: string;
+}}
+	| { type: "user_content", content: {
+	text: string;
+}}
+	| { type: "many", content: ChatEvent[] };
 
 export type CodeBlockLanguage = 
 	| { tag: "DefaultLanguage", content?: undefined }
@@ -1754,7 +1890,37 @@ export type ConundrumErrorVariant =
 	| { tag: "EmojiRenderError", content: string }
 	| { tag: "WasmError", content: string }
 	| { tag: "InvalidColor", content: string }
-	| { tag: "MermaidError", content: string };
+	| { tag: "MermaidError", content: string }
+	| { tag: "InvalidCSL", content?: undefined }
+	| { tag: "EmptyBibliography", content?: undefined }
+	| { tag: "InvalidBiblatex", content: string }
+	| { tag: "InvalidSettingKey", content: string }
+	| { tag: "SerializationError", content: {
+	entity_name: string;
+}};
+
+export type ConundrumFSError = 
+	| { tag: "GeneralFSError", content?: undefined }
+	| { tag: "InvalidDataDirectory", content?: undefined }
+	| { tag: "FileNotChildOfDir", content: {
+	parent: string;
+	child: string;
+}}
+	| { tag: "FsError", content: string }
+	| { tag: "ConundrumError", content: ConundrumErrorVariant }
+	| { tag: "PathSerializationError", content?: undefined }
+	| { tag: "UnsupportedFileExtension", content: string }
+	| { tag: "PathDoesntExist", content: string }
+	| { tag: "NoFileExtensionFound", content: {
+	target_file: string;
+}}
+	| { tag: "InvalidExtension", content: {
+	target_file: string;
+}}
+	| { tag: "InvalidFileMeta", content: {
+	target_file: string;
+}}
+	| { tag: "InvalidDirectory", content?: undefined };
 
 export type ConundrumLogicToken = 
 	| { tag: "Number", content: ConundrumNumber }
@@ -1781,6 +1947,56 @@ export enum ConundrumWebEvents {
 
 export enum CopyToClipboardSource {
 	EmojiName = "emoji-name",
+}
+
+export enum DatabaseTable {
+	EcosystemLog = "ecosystem_log",
+	Tag = "tag",
+	Topic = "topic",
+	Subject = "subject",
+	Cdrm = "cdrm",
+	HTML = "html",
+	Pdf = "pdf",
+	Notebook = "notebook",
+	FrontMatter = "front_matter",
+	Typst = "typst",
+	UserWorkspace = "user_workspace",
+	WorkspacePath = "workspace_path",
+	QAPair = "qa_pair",
+	ChatConversation = "chat_conversation",
+	AgentMessage = "agent_message",
+	SystemPromptMessage = "system_prompt_message",
+	UserMessage = "user_message",
+	AgentReasoning = "reasoning_block",
+	ToolExecution = "tool_execution",
+	AcademicResultMetric = "academic_res_metric",
+	BibEntry = "bib_entry",
+	AutoTaggable = "auto_taggable",
+	Milestone = "milestone",
+	Assignment = "assignment",
+	AssignmentTag = "assignment_tag",
+	AssignmentTopic = "assignment_topic",
+	AssignmentSubject = "assignment_subject",
+	AgentDescription = "agent_description",
+	GitRepository = "git_repository",
+	KeyboardShortcut = "keyboard_shortcut",
+	EcosystemSetting = "ecosystem_setting",
+	LongTermGoal = "long_term_goal",
+	ShortTermGoal = "short_term_goal",
+	Alarm = "alarm",
+	StreetAddress = "street_address",
+	PhoneContact = "phone_contact",
+	/** --- 'Joining' tables --- */
+	WorkspaceRepository = "workspace_repository",
+	MilestoneAlarm = "milestone_alarm",
+	/** ---- Chunks ---- */
+	CdrmChunk = "cdrm_chunk",
+	TypstChunk = "typst_chunk",
+	MessageChunk = "message_chunk",
+	MCPToolRecord = "mcp_tool",
+	DocumentationChunk = "documentation_chunk",
+	NotebookCellChunk = "notebook_cell_chunk",
+	HTMLChunk = "html_chunk",
 }
 
 export enum DocumentationComponentName {
@@ -1810,6 +2026,7 @@ export enum EmbeddableComponentId {
 	Tab = "tab-group-tab",
 	EqRef = "equation-reference",
 	Youtube = "youtube",
+	LocalVideo = "video",
 }
 
 /**

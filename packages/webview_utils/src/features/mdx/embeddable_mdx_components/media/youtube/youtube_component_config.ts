@@ -1,4 +1,4 @@
-import { EmbeddableComponentId, EmbeddableComponentName } from "@/code_gen/typeshare/conundrum"
+import { EmbeddableComponentId, EmbeddableComponentName } from "../../../../../core/code_gen/typeshare/conundrum"
 import { CompletionSections, ComponentCategory, type EmbeddableComponentConfig, SnippetDefaultType } from "../../embeddable_component_config"
 import { snippetCompletion } from "@codemirror/autocomplete"
 

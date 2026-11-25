@@ -16,7 +16,6 @@ use crate::{
             mcp_tool_names::MCPToolNameList,
         },
     },
-    db_models::generators::db_model_generator::compile_database_models,
     documentation::{emphasis::EmphasisDocs, highlight::HighlightDocs, underline::UnderlineDocs},
     errors::DocGenError,
     generated_generators::docgen_generators::run_generated_generators,

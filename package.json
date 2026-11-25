@@ -16,9 +16,12 @@
     }
   ],
   "scripts": {
+    "build:ipadStep2": "wireit",
+    "build:ipadStep2Prod": "wireit",
     "build:macStep2": "wireit",
     "build:postCodegenCleanup": "tsx ./scripts/post_cross_language_modifications.ts",
     "build:webviewsIpad": "wireit",
+    "build:webviewsIpadProd": "wireit",
     "build:webviewsMac": "wireit",
     "build:webviewsMacProd": "wireit",
     "commit": "builtin command cat ./commit.md | aicommits -p",
@@ -43,6 +46,15 @@
         "./packages/webviews/dictionary_webview:build:mac"
       ]
     },
+    "build:webviewsIpadProd": {
+      "dependencies": [
+        "./packages/webviews/splitview_mdx_editor:build:ipadProd",
+        "./packages/webviews/note_detail_webview:build:ipadProd",
+        "./packages/webviews/standalone_mdx_preview:build:ipadProd",
+        "./packages/webviews/bibtex_editor_webview:build:ipadProd",
+        "./packages/webviews/dictionary_webview:build:ipadProd"
+      ]
+    },
     "build:webviewsMacProd": {
       "dependencies": [
         "./packages/webviews/splitview_mdx_editor:build:macProd",
@@ -56,6 +68,13 @@
       "dependencies": [
         "./packages/rust/conundrum_ts:build:ipad",
         "./packages/rust/wasm/conundrum_wasm:build",
+        "./packages/typescript/codemirror-lang-bib:build:parser"
+      ]
+    },
+    "build:ipadStep2Prod": {
+      "dependencies": [
+        "./packages/rust/conundrum_ts:build:ipadProd",
+        "./packages/rust/wasm/conundrum_wasm:buildProd",
         "./packages/typescript/codemirror-lang-bib:build:parser"
       ]
     },

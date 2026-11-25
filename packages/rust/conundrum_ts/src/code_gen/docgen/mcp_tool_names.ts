@@ -8,10 +8,14 @@ export const mcpToolNames = [
 
 
 export const aiPrimaryTasks = [ 
-   "general-chat", 
-   "note-creation", 
-   "note-summarization", 
-   "flash-card-creation", 
-   "fact-verification", 
-   "bibliography-extraction", 
-   "vector-generation-from-text", ] as const;
+   "embedding", 
+   "classification", 
+   "extraction", 
+   "structured-generation", 
+   "code-generation", 
+   "code-transformation", 
+   "summarization", 
+   "question-answering", 
+   "creative-generation", 
+   "tool-calling", 
+   "agent", ] as const;

@@ -27,6 +27,7 @@
   "scripts": {
     "build": "wireit",
     "build:ipad": "wireit",
+    "build:ipadProd": "wireit",
     "build:mac": "wireit",
     "build:macProd": "wireit",
     "dev": "vite dev",
@@ -45,6 +46,12 @@
     },
     "build:ipad": {
       "command": "tsc -b && vite build -c ./vite_ipad.config.ts"
+    },
+    "build:ipadProd": {
+      "command": "tsc -b && vite build -c ./vite_ipad.config.ts",
+      "env": {
+        "FLUSTER_PROD_BUILD": "true"
+      }
     },
     "build": {
       "dependencies": [

@@ -40,6 +40,12 @@
         "FLUSTER_PROD_BUILD": "true"
       }
     },
+    "build:ipadProd": {
+      "command": "tsc -b && vite build -c ./vite_ipad.config.ts",
+      "env": {
+        "FLUSTER_PROD_BUILD": "true"
+      }
+    },
     "build:mac": {
       "command": "tsc -b && vite build -c ./vite_mac.config.ts"
     },
