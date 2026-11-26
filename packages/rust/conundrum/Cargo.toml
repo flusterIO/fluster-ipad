@@ -170,7 +170,7 @@ uuid = { version = "1.19.0", features = ["v4", "js"] }
 criterion = { version = "0.8.2", features = ["html_reports", "async_tokio"] }
 molc = "0.3.0"
 insta = "1.46.3"
-fluster_core_utilities_dev = { path = "../fluster_core_utilities/", version = "0", package = "fluster_core_utilities" }
+fluster_core_utilities_dev = { path = "../fluster_core_utilities/", package = "fluster_core_utilities" }
 cargo-doc-md = "0.11.0"
 rustdoc-md = "0.2.0"
 tower-test = "0.4.0"
