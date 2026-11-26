@@ -9,11 +9,11 @@ import ConundrumSwift
 import FlusterData
 import FlusterMdx
 import FlusterSwift
+import StoreKit
 import SwiftData
 import SwiftUI
-import StoreKit
 
-struct CreateNotePage: View {
+struct ValidatedCreateNotePageView: View {
   @EnvironmentObject private var appState: AppState
   @State private var titleText: String = ""
   @State private var subjectText: String = ""
@@ -32,71 +32,33 @@ struct CreateNotePage: View {
     SupportedCodeBlockTheme = .monokaiExtendedLight
   @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
   @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
-
+    
   var body: some View {
-    if auth.hasActiveSubscriptions {
-      GeometryReader { geo in
-        VStack {
-          VStack(alignment: .leading) {
-            Text("Create Note")
-              .font(.title2)
-              .padding(.top, 8)
-            Text(
-              "You can also create a note directly on your file system, and synchronize your notes."
-            )
-            .font(.caption)
-            .foregroundStyle(.secondary)
-            Text("Title")
-              .font(.headline)
-              .padding(.top, 8)
-            TextField(
-              text: $titleText,
-              prompt: Text("Title"),
-              label: {
-                Text("Title")
-              }
-            )
-            .focused($focusedInitialField)
-            if geo.size.width > 400 {
-              HStack {
-                VStack(alignment: .leading) {
-                  Text("Subject")
-                    .font(.headline)
-                    .padding(.top, 8)
-                  TextField(
-                    text: $subjectText, prompt: Text("Subject"),
-                    label: {
-                      Text("Subject")
-                    }
-                  )
-                  .textInputSuggestions {
-                    ForEach(subjects) { subject in
-                      Text(subject.value).textInputCompletion(subject.value)
-                    }
-                  }
-                }
-                VStack(alignment: .leading) {
-                  Text("Topic")
-                    .font(.headline)
-                    .padding(.top, 8)
-                  TextField(
-                    text: $topicText, prompt: Text("Topic"),
-                    label: {
-                      Text("Topic")
-                    }
-                  )
-                  .textInputSuggestions {
-                    ForEach(topics) { topic in
-                      Text(topic.value).textInputCompletion(topic.value)
-                    }
-                  }
-                }
-              }
-              .onAppear {
-                focusedInitialField = true
-              }
-            } else {
-              VStack {
+    GeometryReader { geo in
+      VStack {
+        VStack(alignment: .leading) {
+          Text("Create Note")
+            .font(.title2)
+            .padding(.top, 8)
+          Text(
+            "You can also create a note directly on your file system, and synchronize your notes."
+          )
+          .font(.caption)
+          .foregroundStyle(.secondary)
+          Text("Title")
+            .font(.headline)
+            .padding(.top, 8)
+          TextField(
+            text: $titleText,
+            prompt: Text("Title"),
+            label: {
+              Text("Title")
+            }
+          )
+          .focused($focusedInitialField)
+          if geo.size.width > 400 {
+            HStack {
+              VStack(alignment: .leading) {
                 Text("Subject")
                   .font(.headline)
                   .padding(.top, 8)
@@ -112,7 +74,7 @@ struct CreateNotePage: View {
                   }
                 }
               }
-              VStack {
+              VStack(alignment: .leading) {
                 Text("Topic")
                   .font(.headline)
                   .padding(.top, 8)
@@ -129,91 +91,166 @@ struct CreateNotePage: View {
                 }
               }
             }
-            HStack {
-              Spacer()
-              Button(
-                action: {
-                  // Handle create note here
-                  if !titleText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                    let item = NoteModel.fromNoteBody(noteBody: "# \(titleText)")
-                    if !subjectText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                      let sl = subjectText.lowercased()
-                      let existingSubject = subjects.first(where: { $0.value.lowercased() == sl })
-                      let subject = existingSubject ?? SubjectModel(value: subjectText)
-                      item.subject = subject
-                    }
-                    if !topicText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                      let tl = topicText.lowercased()
-                      let existingTopic = topics.first(where: { $0.value.lowercased() == tl })
-                      let topic = existingTopic ?? TopicModel(value: topicText)
-                      item.topic = topic
-                    }
-                    Task {
-                      do {
-                        try await item.preParse(
-                          modelContext: modelContext,
-                          uiParams: UiParams(
-                            darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
-                            mathFontScalar: Float(webviewMathFontScale),
-                            syntaxTheme: colorScheme == .dark
-                              ? codeBlockThemeDark : codeBlockThemeLight)
-                        )
-                        modelContext.insert(item)
-                        try modelContext.save()
-                        titleText = ""
-                        subjectText = ""
-                        topicText = ""
-                        appState.setEditingNote(editingNote: item)
-                        appState.mainView = defaultNoteView.toMainKey()
-                      } catch {
-                        print("Error creating note: \(error.localizedDescription)")
-                      }
-                    }
-                  }
-                },
+            .onAppear {
+              focusedInitialField = true
+            }
+          } else {
+            VStack {
+              Text("Subject")
+                .font(.headline)
+                .padding(.top, 8)
+              TextField(
+                text: $subjectText, prompt: Text("Subject"),
                 label: {
-                  Label(
-                    title: {
-                      Text("Create")
-                    },
-                    icon: {
-                      Image(systemName: "plus")
-                    })
+                  Text("Subject")
                 }
               )
-              .padding(.top)
-              .buttonStyle(.borderedProminent)
+              .textInputSuggestions {
+                ForEach(subjects) { subject in
+                  Text(subject.value).textInputCompletion(subject.value)
+                }
+              }
+            }
+            VStack {
+              Text("Topic")
+                .font(.headline)
+                .padding(.top, 8)
+              TextField(
+                text: $topicText, prompt: Text("Topic"),
+                label: {
+                  Text("Topic")
+                }
+              )
+              .textInputSuggestions {
+                ForEach(topics) { topic in
+                  Text(topic.value).textInputCompletion(topic.value)
+                }
+              }
             }
           }
-          .padding()
-          .frame(maxWidth: 450)
-          .glassEffect(in: .rect(cornerRadius: 12))
+          HStack {
+            Spacer()
+            Button(
+              action: {
+                // Handle create note here
+                if !titleText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                  let item = NoteModel.fromNoteBody(noteBody: "# \(titleText)")
+                  if !subjectText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    let sl = subjectText.lowercased()
+                    let existingSubject = subjects.first(where: { $0.value.lowercased() == sl })
+                    let subject = existingSubject ?? SubjectModel(value: subjectText)
+                    item.subject = subject
+                  }
+                  if !topicText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                    let tl = topicText.lowercased()
+                    let existingTopic = topics.first(where: { $0.value.lowercased() == tl })
+                    let topic = existingTopic ?? TopicModel(value: topicText)
+                    item.topic = topic
+                  }
+                  Task {
+                    do {
+                      try await item.preParse(
+                        modelContext: modelContext,
+                        uiParams: UiParams(
+                          darkMode: colorScheme == .dark, fontScalar: Float(webviewFontScale),
+                          mathFontScalar: Float(webviewMathFontScale),
+                          syntaxTheme: colorScheme == .dark
+                            ? codeBlockThemeDark : codeBlockThemeLight)
+                      )
+                      modelContext.insert(item)
+                      try modelContext.save()
+                      titleText = ""
+                      subjectText = ""
+                      topicText = ""
+                      appState.setEditingNote(editingNote: item)
+                      appState.mainView = defaultNoteView.toMainKey()
+                    } catch {
+                      print("Error creating note: \(error.localizedDescription)")
+                    }
+                  }
+                }
+              },
+              label: {
+                Label(
+                  title: {
+                    Text("Create")
+                  },
+                  icon: {
+                    Image(systemName: "plus")
+                  })
+              }
+            )
+            .padding(.top)
+            .buttonStyle(.borderedProminent)
+          }
         }
-        .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
-      }
-    } else {
-        SubscriptionStoreView(groupID: PRO_SUBSCRIPTION_GROUP,
-                              marketingContent: {
-            VStack {
-            Image("flusterIcon")
-              .resizable()
-              .frame(maxWidth: 80, maxHeight: 80)
-            Text("If you see the potential in Fluster and Conundrum, please consider subscribing. You'll get Unlimited notes, immediate access to the mobile app, and you'll be supporting the future growth of the Conundrum ecosystem.")
-                .frame(maxWidth: 450)
-                .multilineTextAlignment(.center)
-            }
-            .frame(idealHeight: 300)
-        },
-        )
         .padding()
-        .subscriptionStorePolicyDestination(url: try! URL("https://flusterapp.com/tos", strategy: .url), for: .termsOfService)
-        .subscriptionStorePolicyDestination(url: try! URL("https://flusterapp.com/privacy", strategy: .url), for: .privacyPolicy)
-        .storeButton(.visible, for: .policies)
-        .subscriptionStatusTask(for: PRO_SUBSCRIPTION_GROUP, priority: .userInitiated, action: { _ in
-            await auth.updatePurchased()
-        })
+        .frame(maxWidth: 450)
+        .glassEffect(in: .rect(cornerRadius: 12))
+      }
+      .frame(width: geo.size.width, height: geo.size.height, alignment: .center)
     }
   }
+}
+
+struct CreateNotePage: View {
+  @EnvironmentObject private var appState: AppState
+  @State private var titleText: String = ""
+  @State private var subjectText: String = ""
+  @State private var topicText: String = ""
+  @EnvironmentObject private var auth: AuthManager
+  @FocusState private var focusedInitialField: Bool
+  @Environment(\.modelContext) private var modelContext: ModelContext
+  @AppStorage(AppStorageKeys.defaultNoteView.rawValue) private var defaultNoteView:
+    DefaultNoteView = .editor
+  @Environment(\.colorScheme) private var colorScheme: ColorScheme
+  @AppStorage(AppStorageKeys.codeBlockThemeDark.rawValue) var codeBlockThemeDark:
+    SupportedCodeBlockTheme = .dracula
+  @AppStorage(AppStorageKeys.codeBlockThemeLight.rawValue) var codeBlockThemeLight:
+    SupportedCodeBlockTheme = .monokaiExtendedLight
+  @AppStorage(AppStorageKeys.webviewFontScale.rawValue) var webviewFontScale: Double = 1
+  @AppStorage(AppStorageKeys.webviewMathFontScale.rawValue) var webviewMathFontScale: Double = 1.2
+  #if DEBUG
+    var body: some View {
+      ValidatedCreateNotePageView()
+    }
+  #else
+    var body: some View {
+      if auth.hasActiveSubscriptions {
+        ValidatedCreateNotePageView()
+      } else {
+        SubscriptionStoreView(
+          groupID: PRO_SUBSCRIPTION_GROUP,
+          marketingContent: {
+            VStack {
+              Image("flusterIcon")
+                .resizable()
+                .frame(maxWidth: 80, maxHeight: 80)
+              Text(
+                "If you see the potential in Fluster and Conundrum, please consider subscribing. You'll get Unlimited notes, immediate access to the mobile app, and you'll be supporting the future growth of the Conundrum ecosystem."
+              )
+              .frame(maxWidth: 450)
+              .multilineTextAlignment(.center)
+            }
+            .frame(idealHeight: 300)
+          },
+        )
+        .padding()
+        .subscriptionStorePolicyDestination(
+          url: try! URL("https://flusterapp.com/tos", strategy: .url), for: .termsOfService
+        )
+        .subscriptionStorePolicyDestination(
+          url: try! URL("https://flusterapp.com/privacy", strategy: .url), for: .privacyPolicy
+        )
+        .storeButton(.visible, for: .policies)
+        .subscriptionStatusTask(
+          for: PRO_SUBSCRIPTION_GROUP, priority: .userInitiated,
+          action: { _ in
+            await auth.updatePurchased()
+          })
+      }
+    }
+  #endif
 }
 
 #Preview {
