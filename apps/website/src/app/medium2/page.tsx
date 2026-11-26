@@ -13,7 +13,7 @@ const MediumPage = (): ReactNode => {
             <figure>
                 <img
                     src="/assets/logo/fluster_banner_with_name.png"
-                    alt="The Fluster logo on a deep navy background"
+                    alt="Fluster's logo on a deep navy background"
                 />
             </figure>
 
