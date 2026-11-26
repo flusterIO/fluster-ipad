@@ -1,5 +1,5 @@
 # yaml-language-server: $schema=/Users/bigsexy/dev-utils/jsonSchemas/src/schemas/json/github-workflow.json
-name: Release
+name: Publish Rust crates
 
 on:
   push:
@@ -8,32 +8,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
-  pull-requests: write
+  contents: read
 
 jobs:
-  release-please:
-    runs-on: ubuntu-latest
-    name: "release-rust"
-    if: github.event_name == 'push'
-    outputs:
-      releases_created: ${{ steps.release.outputs.releases_created }}
-    steps:
-      - uses: googleapis/release-please-action@v4
-        id: release
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-          config-file: release-please-config.json
-          manifest-file: release-please-manifest.json
-
   publish:
     runs-on: ubuntu-latest
     name: Publish conundrum crates
-    needs: release-please
-    if: always() && (github.event_name == 'workflow_dispatch' || needs.release-please.outputs.releases_created == 'true')
     steps:
       - uses: actions/checkout@v4
-        name: Checkout release commit
+        name: Checkout versioned commit
       - uses: dtolnay/rust-toolchain@stable
         name: Install Rust toolchain
       - name: Publish conundrum crates
