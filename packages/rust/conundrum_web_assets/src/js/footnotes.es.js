@@ -1,4 +1,4 @@
-const LogLevels = {
+const l = {
   fatal: 0,
   error: 0,
   warn: 1,
@@ -9,127 +9,96 @@ const LogLevels = {
   debug: 4,
   trace: 5,
   verbose: Number.POSITIVE_INFINITY
-};
-const LogTypes = {
+}, d = {
   // Silent
   silent: {
     level: -1
   },
   // Level 0
   fatal: {
-    level: LogLevels.fatal
+    level: l.fatal
   },
   error: {
-    level: LogLevels.error
+    level: l.error
   },
   // Level 1
   warn: {
-    level: LogLevels.warn
+    level: l.warn
   },
   // Level 2
   log: {
-    level: LogLevels.log
+    level: l.log
   },
   // Level 3
   info: {
-    level: LogLevels.info
+    level: l.info
   },
   success: {
-    level: LogLevels.success
+    level: l.success
   },
   fail: {
-    level: LogLevels.fail
+    level: l.fail
   },
   ready: {
-    level: LogLevels.info
+    level: l.info
   },
   start: {
-    level: LogLevels.info
+    level: l.info
   },
   box: {
-    level: LogLevels.info
+    level: l.info
   },
   // Level 4
   debug: {
-    level: LogLevels.debug
+    level: l.debug
   },
   // Level 5
   trace: {
-    level: LogLevels.trace
+    level: l.trace
   },
   // Verbose
   verbose: {
-    level: LogLevels.verbose
+    level: l.verbose
   }
 };
-function isPlainObject$1(value) {
-  if (value === null || typeof value !== "object") {
+function f(s) {
+  if (s === null || typeof s != "object")
     return false;
-  }
-  const prototype = Object.getPrototypeOf(value);
-  if (prototype !== null && prototype !== Object.prototype && Object.getPrototypeOf(prototype) !== null) {
-    return false;
-  }
-  if (Symbol.iterator in value) {
-    return false;
-  }
-  if (Symbol.toStringTag in value) {
-    return Object.prototype.toString.call(value) === "[object Module]";
-  }
-  return true;
+  const t = Object.getPrototypeOf(s);
+  return t !== null && t !== Object.prototype && Object.getPrototypeOf(t) !== null || Symbol.iterator in s ? false : Symbol.toStringTag in s ? Object.prototype.toString.call(s) === "[object Module]" : true;
 }
-function _defu(baseObject, defaults, namespace = ".", merger) {
-  if (!isPlainObject$1(defaults)) {
-    return _defu(baseObject, {}, namespace);
-  }
-  const object = Object.assign({}, defaults);
-  for (const key in baseObject) {
-    if (key === "__proto__" || key === "constructor") {
+function g$1(s, t, e = ".", r) {
+  if (!f(t))
+    return g$1(s, {}, e);
+  const o = Object.assign({}, t);
+  for (const n in s) {
+    if (n === "__proto__" || n === "constructor")
       continue;
-    }
-    const value = baseObject[key];
-    if (value === null || value === void 0) {
-      continue;
-    }
-    if (Array.isArray(value) && Array.isArray(object[key])) {
-      object[key] = [...value, ...object[key]];
-    } else if (isPlainObject$1(value) && isPlainObject$1(object[key])) {
-      object[key] = _defu(
-        value,
-        object[key],
-        (namespace ? `${namespace}.` : "") + key.toString()
-      );
-    } else {
-      object[key] = value;
-    }
+    const p = s[n];
+    p != null && (Array.isArray(p) && Array.isArray(o[n]) ? o[n] = [...p, ...o[n]] : f(p) && f(o[n]) ? o[n] = g$1(
+      p,
+      o[n],
+      (e ? `${e}.` : "") + n.toString()
+    ) : o[n] = p);
   }
-  return object;
+  return o;
 }
-function createDefu(merger) {
-  return (...arguments_) => (
+function m(s) {
+  return (...t) => (
     // eslint-disable-next-line unicorn/no-array-reduce
-    arguments_.reduce((p, c) => _defu(p, c, ""), {})
+    t.reduce((e, r) => g$1(e, r, ""), {})
   );
 }
-const defu = createDefu();
-function isPlainObject(obj) {
-  return Object.prototype.toString.call(obj) === "[object Object]";
+const w = m();
+function v(s) {
+  return Object.prototype.toString.call(s) === "[object Object]";
 }
-function isLogObj(arg) {
-  if (!isPlainObject(arg)) {
-    return false;
-  }
-  if (!arg.message && !arg.args) {
-    return false;
-  }
-  if (arg.stack) {
-    return false;
-  }
-  return true;
+function L$1(s) {
+  return !(!v(s) || !s.message && !s.args || s.stack);
 }
-let paused = false;
-const queue = [];
-class Consola {
+let h = false;
+const y = [];
+class i {
   options;
   _lastLog;
   _mockFn;
@@ -138,17 +107,17 @@ class Consola {
    *
    * @param {Partial<ConsolaOptions>} [options={}] - Configuration options for the Consola instance.
    */
-  constructor(options = {}) {
-    const types = options.types || LogTypes;
-    this.options = defu(
+  constructor(t = {}) {
+    const e = t.types || d;
+    this.options = w(
       {
-        ...options,
-        defaults: { ...options.defaults },
-        level: _normalizeLogLevel(options.level, types),
-        reporters: [...options.reporters || []]
+        ...t,
+        defaults: { ...t.defaults },
+        level: u(t.level, e),
+        reporters: [...t.reporters || []]
       },
       {
-        types: LogTypes,
+        types: d,
         throttle: 1e3,
         throttleMin: 5,
         formatOptions: {
@@ -158,22 +127,18 @@ class Consola {
         }
       }
     );
-    for (const type in types) {
-      const defaults = {
-        type,
+    for (const r in e) {
+      const o = {
+        type: r,
         ...this.options.defaults,
-        ...types[type]
+        ...e[r]
       };
-      this[type] = this._wrapLogFn(defaults);
-      this[type].raw = this._wrapLogFn(
-        defaults,
+      this[r] = this._wrapLogFn(o), this[r].raw = this._wrapLogFn(
+        o,
         true
       );
     }
-    if (this.options.mockFn) {
-      this.mockTypes();
-    }
-    this._lastLog = {};
+    this.options.mockFn && this.mockTypes(), this._lastLog = {};
   }
   /**
    * Gets the current log level of the Consola instance.
@@ -188,9 +153,9 @@ class Consola {
    *
    * @param {number} level - The new log level to set.
    */
-  set level(level) {
-    this.options.level = _normalizeLogLevel(
-      level,
+  set level(t) {
+    this.options.level = u(
+      t,
       this.options.types,
       this.options.level
     );
@@ -204,11 +169,10 @@ class Consola {
    * @param {T} [opts] - Optional options for the prompt. See {@link PromptOptions}.
    * @returns {promise<T>} A promise that infer with the prompt options. See {@link PromptOptions}.
    */
-  prompt(message, opts) {
-    if (!this.options.prompt) {
+  prompt(t, e) {
+    if (!this.options.prompt)
       throw new Error("prompt is not supported!");
-    }
-    return this.options.prompt(message, opts);
+    return this.options.prompt(t, e);
   }
   /**
    * Creates a new instance of Consola, inheriting options from the current instance, with possible overrides.
@@ -216,15 +180,12 @@ class Consola {
    * @param {Partial<ConsolaOptions>} options - Optional overrides for the new instance. See {@link ConsolaOptions}.
    * @returns {ConsolaInstance} A new Consola instance. See {@link ConsolaInstance}.
    */
-  create(options) {
-    const instance = new Consola({
+  create(t) {
+    const e = new i({
       ...this.options,
-      ...options
+      ...t
     });
-    if (this._mockFn) {
-      instance.mockTypes(this._mockFn);
-    }
-    return instance;
+    return this._mockFn && e.mockTypes(this._mockFn), e;
   }
   /**
    * Creates a new Consola instance with the specified default log object properties.
@@ -232,12 +193,12 @@ class Consola {
    * @param {InputLogObject} defaults - Default properties to include in any log from the new instance. See {@link InputLogObject}.
    * @returns {ConsolaInstance} A new Consola instance. See {@link ConsolaInstance}.
    */
-  withDefaults(defaults) {
+  withDefaults(t) {
     return this.create({
       ...this.options,
       defaults: {
         ...this.options.defaults,
-        ...defaults
+        ...t
       }
     });
   }
@@ -247,9 +208,9 @@ class Consola {
    * @param {string} tag - The tag to include in each log of the new instance.
    * @returns {ConsolaInstance} A new Consola instance. See {@link ConsolaInstance}.
    */
-  withTag(tag) {
+  withTag(t) {
     return this.withDefaults({
-      tag: this.options.defaults.tag ? this.options.defaults.tag + ":" + tag : tag
+      tag: this.options.defaults.tag ? this.options.defaults.tag + ":" + t : t
     });
   }
   /**
@@ -259,9 +220,8 @@ class Consola {
    * @param {ConsolaReporter} reporter - The reporter to add. See {@link ConsolaReporter}.
    * @returns {Consola} The current Consola instance.
    */
-  addReporter(reporter) {
-    this.options.reporters.push(reporter);
-    return this;
+  addReporter(t) {
+    return this.options.reporters.push(t), this;
   }
   /**
    * Removes a custom reporter from the Consola instance.
@@ -270,15 +230,13 @@ class Consola {
    * @param {ConsolaReporter} reporter - The reporter to remove. See {@link ConsolaReporter}.
    * @returns {Consola} The current Consola instance.
    */
-  removeReporter(reporter) {
-    if (reporter) {
-      const i = this.options.reporters.indexOf(reporter);
-      if (i !== -1) {
-        return this.options.reporters.splice(i, 1);
-      }
-    } else {
+  removeReporter(t) {
+    if (t) {
+      const e = this.options.reporters.indexOf(t);
+      if (e !== -1)
+        return this.options.reporters.splice(e, 1);
+    } else
       this.options.reporters.splice(0);
-    }
     return this;
   }
   /**
@@ -287,333 +245,235 @@ class Consola {
    * @param {ConsolaReporter[]} reporters - The new reporters to set. See {@link ConsolaReporter}.
    * @returns {Consola} The current Consola instance.
    */
-  setReporters(reporters) {
-    this.options.reporters = Array.isArray(reporters) ? reporters : [reporters];
-    return this;
+  setReporters(t) {
+    return this.options.reporters = Array.isArray(t) ? t : [t], this;
   }
   wrapAll() {
-    this.wrapConsole();
-    this.wrapStd();
+    this.wrapConsole(), this.wrapStd();
   }
   restoreAll() {
-    this.restoreConsole();
-    this.restoreStd();
+    this.restoreConsole(), this.restoreStd();
   }
   /**
    * Overrides console methods with Consola logging methods for consistent logging.
    */
   wrapConsole() {
-    for (const type in this.options.types) {
-      if (!console["__" + type]) {
-        console["__" + type] = console[type];
-      }
-      console[type] = this[type].raw;
-    }
+    for (const t in this.options.types)
+      console["__" + t] || (console["__" + t] = console[t]), console[t] = this[t].raw;
   }
   /**
    * Restores the original console methods, removing Consola overrides.
    */
   restoreConsole() {
-    for (const type in this.options.types) {
-      if (console["__" + type]) {
-        console[type] = console["__" + type];
-        delete console["__" + type];
-      }
-    }
+    for (const t in this.options.types)
+      console["__" + t] && (console[t] = console["__" + t], delete console["__" + t]);
   }
   /**
    * Overrides standard output and error streams to redirect them through Consola.
    */
   wrapStd() {
-    this._wrapStream(this.options.stdout, "log");
-    this._wrapStream(this.options.stderr, "log");
+    this._wrapStream(this.options.stdout, "log"), this._wrapStream(this.options.stderr, "log");
   }
-  _wrapStream(stream, type) {
-    if (!stream) {
-      return;
-    }
-    if (!stream.__write) {
-      stream.__write = stream.write;
-    }
-    stream.write = (data) => {
-      this[type].raw(String(data).trim());
-    };
+  _wrapStream(t, e) {
+    t && (t.__write || (t.__write = t.write), t.write = (r) => {
+      this[e].raw(String(r).trim());
+    });
   }
   /**
    * Restores the original standard output and error streams, removing the Consola redirection.
    */
   restoreStd() {
-    this._restoreStream(this.options.stdout);
-    this._restoreStream(this.options.stderr);
+    this._restoreStream(this.options.stdout), this._restoreStream(this.options.stderr);
   }
-  _restoreStream(stream) {
-    if (!stream) {
-      return;
-    }
-    if (stream.__write) {
-      stream.write = stream.__write;
-      delete stream.__write;
-    }
+  _restoreStream(t) {
+    t && t.__write && (t.write = t.__write, delete t.__write);
   }
   /**
    * Pauses logging, queues incoming logs until resumed.
    */
   pauseLogs() {
-    paused = true;
+    h = true;
   }
   /**
    * Resumes logging, processing any queued logs.
    */
   resumeLogs() {
-    paused = false;
-    const _queue = queue.splice(0);
-    for (const item of _queue) {
-      item[0]._logFn(item[1], item[2]);
-    }
+    h = false;
+    const t = y.splice(0);
+    for (const e of t)
+      e[0]._logFn(e[1], e[2]);
   }
   /**
    * Replaces logging methods with mocks if a mock function is provided.
    *
    * @param {ConsolaOptions["mockFn"]} mockFn - The function to use for mocking logging methods. See {@link ConsolaOptions["mockFn"]}.
    */
-  mockTypes(mockFn) {
-    const _mockFn = mockFn || this.options.mockFn;
-    this._mockFn = _mockFn;
-    if (typeof _mockFn !== "function") {
-      return;
-    }
-    for (const type in this.options.types) {
-      this[type] = _mockFn(type, this.options.types[type]) || this[type];
-      this[type].raw = this[type];
-    }
+  mockTypes(t) {
+    const e = t || this.options.mockFn;
+    if (this._mockFn = e, typeof e == "function")
+      for (const r in this.options.types)
+        this[r] = e(r, this.options.types[r]) || this[r], this[r].raw = this[r];
   }
-  _wrapLogFn(defaults, isRaw) {
-    return (...args) => {
-      if (paused) {
-        queue.push([this, defaults, args, isRaw]);
+  _wrapLogFn(t, e) {
+    return (...r) => {
+      if (h) {
+        y.push([this, t, r, e]);
         return;
       }
-      return this._logFn(defaults, args, isRaw);
+      return this._logFn(t, r, e);
     };
   }
-  _logFn(defaults, args, isRaw) {
-    if ((defaults.level || 0) > this.level) {
+  _logFn(t, e, r) {
+    if ((t.level || 0) > this.level)
       return false;
-    }
-    const logObj = {
+    const o = {
       date: /* @__PURE__ */ new Date(),
       args: [],
-      ...defaults,
-      level: _normalizeLogLevel(defaults.level, this.options.types)
+      ...t,
+      level: u(t.level, this.options.types)
     };
-    if (!isRaw && args.length === 1 && isLogObj(args[0])) {
-      Object.assign(logObj, args[0]);
-    } else {
-      logObj.args = [...args];
-    }
-    if (logObj.message) {
-      logObj.args.unshift(logObj.message);
-      delete logObj.message;
-    }
-    if (logObj.additional) {
-      if (!Array.isArray(logObj.additional)) {
-        logObj.additional = logObj.additional.split("\n");
+    !r && e.length === 1 && L$1(e[0]) ? Object.assign(o, e[0]) : o.args = [...e], o.message && (o.args.unshift(o.message), delete o.message), o.additional && (Array.isArray(o.additional) || (o.additional = o.additional.split(`
+`)), o.args.push(`
+` + o.additional.join(`
+`)), delete o.additional), o.type = typeof o.type == "string" ? o.type.toLowerCase() : "log", o.tag = typeof o.tag == "string" ? o.tag : "";
+    const n = (a = false) => {
+      const c = (this._lastLog.count || 0) - this.options.throttleMin;
+      if (this._lastLog.object && c > 0) {
+        const _ = [...this._lastLog.object.args];
+        c > 1 && _.push(`(repeated ${c} times)`), this._log({ ...this._lastLog.object, args: _ }), this._lastLog.count = 1;
       }
-      logObj.args.push("\n" + logObj.additional.join("\n"));
-      delete logObj.additional;
-    }
-    logObj.type = typeof logObj.type === "string" ? logObj.type.toLowerCase() : "log";
-    logObj.tag = typeof logObj.tag === "string" ? logObj.tag : "";
-    const resolveLog = (newLog = false) => {
-      const repeated = (this._lastLog.count || 0) - this.options.throttleMin;
-      if (this._lastLog.object && repeated > 0) {
-        const args2 = [...this._lastLog.object.args];
-        if (repeated > 1) {
-          args2.push(`(repeated ${repeated} times)`);
-        }
-        this._log({ ...this._lastLog.object, args: args2 });
-        this._lastLog.count = 1;
-      }
-      if (newLog) {
-        this._lastLog.object = logObj;
-        this._log(logObj);
-      }
+      a && (this._lastLog.object = o, this._log(o));
     };
     clearTimeout(this._lastLog.timeout);
-    const diffTime = this._lastLog.time && logObj.date ? logObj.date.getTime() - this._lastLog.time.getTime() : 0;
-    this._lastLog.time = logObj.date;
-    if (diffTime < this.options.throttle) {
+    const p = this._lastLog.time && o.date ? o.date.getTime() - this._lastLog.time.getTime() : 0;
+    if (this._lastLog.time = o.date, p < this.options.throttle)
       try {
-        const serializedLog = JSON.stringify([
-          logObj.type,
-          logObj.tag,
-          logObj.args
-        ]);
-        const isSameLog = this._lastLog.serialized === serializedLog;
-        this._lastLog.serialized = serializedLog;
-        if (isSameLog) {
-          this._lastLog.count = (this._lastLog.count || 0) + 1;
-          if (this._lastLog.count > this.options.throttleMin) {
-            this._lastLog.timeout = setTimeout(
-              resolveLog,
-              this.options.throttle
-            );
-            return;
-          }
+        const a = JSON.stringify([
+          o.type,
+          o.tag,
+          o.args
+        ]), c = this._lastLog.serialized === a;
+        if (this._lastLog.serialized = a, c && (this._lastLog.count = (this._lastLog.count || 0) + 1, this._lastLog.count > this.options.throttleMin)) {
+          this._lastLog.timeout = setTimeout(
+            n,
+            this.options.throttle
+          );
+          return;
         }
       } catch {
       }
-    }
-    resolveLog(true);
+    n(true);
   }
-  _log(logObj) {
-    for (const reporter of this.options.reporters) {
-      reporter.log(logObj, {
+  _log(t) {
+    for (const e of this.options.reporters)
+      e.log(t, {
         options: this.options
       });
-    }
   }
 }
-function _normalizeLogLevel(input, types = {}, defaultLevel = 3) {
-  if (input === void 0) {
-    return defaultLevel;
-  }
-  if (typeof input === "number") {
-    return input;
-  }
-  if (types[input] && types[input].level !== void 0) {
-    return types[input].level;
-  }
-  return defaultLevel;
+function u(s, t = {}, e = 3) {
+  return s === void 0 ? e : typeof s == "number" ? s : t[s] && t[s].level !== void 0 ? t[s].level : e;
 }
-Consola.prototype.add = Consola.prototype.addReporter;
-Consola.prototype.remove = Consola.prototype.removeReporter;
-Consola.prototype.clear = Consola.prototype.removeReporter;
-Consola.prototype.withScope = Consola.prototype.withTag;
-Consola.prototype.mock = Consola.prototype.mockTypes;
-Consola.prototype.pause = Consola.prototype.pauseLogs;
-Consola.prototype.resume = Consola.prototype.resumeLogs;
-function createConsola$1(options = {}) {
-  return new Consola(options);
+i.prototype.add = i.prototype.addReporter;
+i.prototype.remove = i.prototype.removeReporter;
+i.prototype.clear = i.prototype.removeReporter;
+i.prototype.withScope = i.prototype.withTag;
+i.prototype.mock = i.prototype.mockTypes;
+i.prototype.pause = i.prototype.pauseLogs;
+i.prototype.resume = i.prototype.resumeLogs;
+function b(s = {}) {
+  return new i(s);
 }
-class BrowserReporter {
+class S {
   options;
   defaultColor;
   levelColorMap;
   typeColorMap;
-  constructor(options) {
-    this.options = { ...options };
-    this.defaultColor = "#7f8c8d";
-    this.levelColorMap = {
+  constructor(t) {
+    this.options = { ...t }, this.defaultColor = "#7f8c8d", this.levelColorMap = {
       0: "#c0392b",
       // Red
       1: "#f39c12",
       // Yellow
       3: "#00BCD4"
       // Cyan
-    };
-    this.typeColorMap = {
+    }, this.typeColorMap = {
       success: "#2ecc71"
       // Green
     };
   }
-  _getLogFn(level) {
-    if (level < 1) {
-      return console.__error || console.error;
-    }
-    if (level === 1) {
-      return console.__warn || console.warn;
-    }
-    return console.__log || console.log;
+  _getLogFn(t) {
+    return t < 1 ? console.__error || console.error : t === 1 ? console.__warn || console.warn : console.__log || console.log;
   }
-  log(logObj) {
-    const consoleLogFn = this._getLogFn(logObj.level);
-    const type = logObj.type === "log" ? "" : logObj.type;
-    const tag = logObj.tag || "";
-    const color = this.typeColorMap[logObj.type] || this.levelColorMap[logObj.level] || this.defaultColor;
-    const style = `
-      background: ${color};
+  log(t) {
+    const e = this._getLogFn(t.level), r = t.type === "log" ? "" : t.type, o = t.tag || "", p = `
+      background: ${this.typeColorMap[t.type] || this.levelColorMap[t.level] || this.defaultColor};
       border-radius: 0.5em;
       color: white;
       font-weight: bold;
       padding: 2px 0.5em;
-    `;
-    const badge = `%c${[tag, type].filter(Boolean).join(":")}`;
-    if (typeof logObj.args[0] === "string") {
-      consoleLogFn(
-        `${badge}%c ${logObj.args[0]}`,
-        style,
-        // Empty string as style resets to default console style
-        "",
-        ...logObj.args.slice(1)
-      );
-    } else {
-      consoleLogFn(badge, style, ...logObj.args);
-    }
+    `, a = `%c${[o, r].filter(Boolean).join(":")}`;
+    typeof t.args[0] == "string" ? e(
+      `${a}%c ${t.args[0]}`,
+      p,
+      // Empty string as style resets to default console style
+      "",
+      ...t.args.slice(1)
+    ) : e(a, p, ...t.args);
   }
 }
-function createConsola(options = {}) {
-  const consola2 = createConsola$1({
-    reporters: options.reporters || [new BrowserReporter({})],
-    prompt(message, options2 = {}) {
-      if (options2.type === "confirm") {
-        return Promise.resolve(confirm(message));
-      }
-      return Promise.resolve(prompt(message));
+function C(s = {}) {
+  return b({
+    reporters: s.reporters || [new S({})],
+    prompt(e, r = {}) {
+      return r.type === "confirm" ? Promise.resolve(confirm(e)) : Promise.resolve(prompt(e));
     },
-    ...options
+    ...s
   });
-  return consola2;
 }
-createConsola();
-function handleTabGroupRowAndHeight(container) {
-  const focusedIndexString = container.getAttribute("data-cdrm-focused-idx");
-  if (typeof focusedIndexString === "undefined" || focusedIndexString === null) {
+C();
+function g(o) {
+  const e = o.getAttribute("data-cdrm-focused-idx");
+  if (typeof e > "u" || e === null) {
     console.error("No focused index found for the specified tab group.");
     return;
   }
-  const focusedIndex = parseInt(focusedIndexString);
-  const bodyContainer = container.querySelector(".cdrm-tab-group-body-container");
-  if (!bodyContainer) {
+  const t = parseInt(e), r = o.querySelector(".cdrm-tab-group-body-container");
+  if (!r) {
     console.error("Could not locate tab group body container.");
     return;
   }
-  const groupTabs = bodyContainer.getElementsByClassName("cdrm-tab-group-item");
-  for (let i = 0; i < groupTabs.length; i++) {
-    const tab = groupTabs.item(i);
-    tab.style.transition = "transform 0.3s ease-in-out";
-    tab.style.transform = `translateX(-${focusedIndex === 0 ? 0 : focusedIndex / groupTabs.length}%)`;
+  const a = r.getElementsByClassName("cdrm-tab-group-item");
+  for (let i2 = 0; i2 < a.length; i2++) {
+    const m2 = a.item(i2);
+    m2.style.transition = "transform 0.3s ease-in-out", m2.style.transform = `translateX(-${t === 0 ? 0 : t / a.length}%)`;
   }
-  const tabGroupId = container.getAttribute("data-cdrm-group");
-  if (!tabGroupId) {
+  const n = o.getAttribute("data-cdrm-group");
+  if (!n) {
     console.error("Could not locate tab group id. Can't continue.");
     return;
   }
-  const focusedTab = bodyContainer.querySelector(`#tab-${tabGroupId}-${focusedIndexString}`);
-  if (!focusedTab) {
+  const u2 = r.querySelector(`#tab-${n}-${e}`);
+  if (!u2) {
     console.error("Cold not locate focused tab. Cannot continue with transition.");
     return;
   }
-  const targetHeight = Math.min(focusedTab.getBoundingClientRect().height, 450);
-  bodyContainer.style.transition = "height 0.3s ease-in-out";
-  bodyContainer.style.overflowY = targetHeight === 450 ? "auto" : "hidden";
-  bodyContainer.style.height = `${targetHeight}px`;
+  const c = Math.min(u2.getBoundingClientRect().height, 450);
+  r.style.transition = "height 0.3s ease-in-out", r.style.overflowY = c === 450 ? "auto" : "hidden", r.style.height = `${c}px`;
 }
-const onTabLoad = () => {
-  const containers = document.getElementsByClassName("cdrm-tab-group");
-  for (let i = 0; i < containers.length; i++) {
-    const tabGroup = containers.item(i);
-    handleTabGroupRowAndHeight(tabGroup);
-    const observer = new MutationObserver(() => {
-      handleTabGroupRowAndHeight(tabGroup);
-    });
-    observer.observe(tabGroup, {
+const L = () => {
+  const o = document.getElementsByClassName("cdrm-tab-group");
+  for (let e = 0; e < o.length; e++) {
+    const t = o.item(e);
+    g(t), new MutationObserver(() => {
+      g(t);
+    }).observe(t, {
       attributes: true,
       attributeFilter: ["data-cdrm-focused-idx"]
     });
   }
 };
 (() => {
-  onTabLoad();
+  L();
 })();
 //# sourceMappingURL=footnotes.es.js.map

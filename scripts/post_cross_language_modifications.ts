@@ -22,7 +22,9 @@ const replacers: Record<
         header: `${HEADING_MARKER}
 export type ConundrumInt = number;
 export type GridColumnsMap = Map<SizableOption, number>;
-export type CL = string;`,
+export type CL = string;
+export type JsonContent = string;
+export type DateTime = string | number | Date;`,
         replacers: [
             // {
             //     query: '| { tag: "Int", content: i128 }',

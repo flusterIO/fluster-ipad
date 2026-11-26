@@ -13,16 +13,15 @@
 		796F71232EB185380012B500 /* SVGView in Frameworks */ = {isa = PBXBuildFile; productRef = 796F71222EB185380012B500 /* SVGView */; };
 		797C868B2FF4402200589F6E /* seed in Resources */ = {isa = PBXBuildFile; fileRef = 797C868A2FF4402200589F6E /* seed */; };
 		797C868E2FF4411800589F6E /* FlusterAI in Frameworks */ = {isa = PBXBuildFile; productRef = 797C868D2FF4411800589F6E /* FlusterAI */; };
-		797C86942FF4425B00589F6E /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 797C86932FF4425B00589F6E /* FlusterSwift */; };
 		79C1227C2F536562000CDCFA /* bibtex_editor_webview_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C122782F536562000CDCFA /* bibtex_editor_webview_ipad */; };
 		79C1227D2F536562000CDCFA /* dictionary_webview_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C122792F536562000CDCFA /* dictionary_webview_ipad */; };
 		79C1227E2F536562000CDCFA /* note_detail_webview_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C1227A2F536562000CDCFA /* note_detail_webview_ipad */; };
 		79C1227F2F536562000CDCFA /* splitview_mdx_editor_ipad in Resources */ = {isa = PBXBuildFile; fileRef = 79C1227B2F536562000CDCFA /* splitview_mdx_editor_ipad */; };
 		79D7DD812F6764B8002C5066 /* ConundrumSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79D7DD802F6764B8002C5066 /* ConundrumSwift */; };
 		79D841D02F4150EA004E992B /* FlusterWebviewClients in Frameworks */ = {isa = PBXBuildFile; productRef = 79D841CF2F4150EA004E992B /* FlusterWebviewClients */; };
+		79DC0D2530B7B12F0054797F /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79DC0D2430B7B12F0054797F /* FlusterSwift */; };
 		79EF658C2F5133F10019E6E8 /* bibliography_embedded in Resources */ = {isa = PBXBuildFile; fileRef = 79EF658B2F5133F10019E6E8 /* bibliography_embedded */; };
 		79FA32B52F1822EA0066B8B4 /* FlusterData in Frameworks */ = {isa = PBXBuildFile; productRef = 79FA32B42F1822EA0066B8B4 /* FlusterData */; };
-		79FB1F552ED928FB0041E1E0 /* FlusterSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 79FB1F542ED928FB0041E1E0 /* FlusterSwift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -73,14 +72,13 @@
 			files = (
 				792755712F4540E2004476E6 /* Redline in Frameworks */,
 				797C868E2FF4411800589F6E /* FlusterAI in Frameworks */,
-				797C86942FF4425B00589F6E /* FlusterSwift in Frameworks */,
 				796F71232EB185380012B500 /* SVGView in Frameworks */,
 				79513C752EF3AF3700FF4885 /* Testing in Frameworks */,
-				79FB1F552ED928FB0041E1E0 /* FlusterSwift in Frameworks */,
 				79513C772EF3AF3700FF4885 /* _TestDiscovery in Frameworks */,
 				79D841D02F4150EA004E992B /* FlusterWebviewClients in Frameworks */,
 				79FA32B52F1822EA0066B8B4 /* FlusterData in Frameworks */,
 				79D7DD812F6764B8002C5066 /* ConundrumSwift in Frameworks */,
+				79DC0D2530B7B12F0054797F /* FlusterSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -146,7 +144,7 @@
 				792755702F4540E2004476E6 /* Redline */,
 				79D7DD802F6764B8002C5066 /* ConundrumSwift */,
 				797C868D2FF4411800589F6E /* FlusterAI */,
-				797C86932FF4425B00589F6E /* FlusterSwift */,
+				79DC0D2430B7B12F0054797F /* FlusterSwift */,
 			);
 			productName = Fluster;
 			productReference = 79C33DCF2F19BC6400C25717 /* Fluster.app */;
@@ -184,7 +182,7 @@
 				7927556F2F4540E2004476E6 /* XCRemoteSwiftPackageReference "Redline" */,
 				79D7DD7F2F6764B8002C5066 /* XCLocalSwiftPackageReference "../../packages/rust/conundrum_swift/ConundrumSwift" */,
 				797C868C2FF4411800589F6E /* XCLocalSwiftPackageReference "../../packages/swift/FlusterAI" */,
-				797C86922FF4425B00589F6E /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */,
+				79DC0D2330B7B12F0054797F /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 796F70FB2EB174610012B500;
@@ -252,6 +250,7 @@
 		796F71132EB174630012B500 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Fluster/Fluster.entitlements;
@@ -274,21 +273,25 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fluster.flusterdesktop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.flusterapp.fluster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
 		796F71142EB174630012B500 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_ENTITLEMENTS = Fluster/Fluster.entitlements;
@@ -296,6 +299,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = SKUW7QG727;
 				ENABLE_PREVIEWS = YES;
+				"FRAMEWORK_SEARCH_PATHS[arch=*]" = /Users/bigsexy/Desktop/swift/Fluster/packages/swift/;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = Fluster/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = Fluster;
@@ -311,15 +315,18 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.fluster.flusterdesktop;
+				PRODUCT_BUNDLE_IDENTIFIER = com.flusterapp.fluster;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 6.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};
@@ -474,10 +481,6 @@
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../packages/swift/FlusterAI;
 		};
-		797C86922FF4425B00589F6E /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */ = {
-			isa = XCLocalSwiftPackageReference;
-			relativePath = ../../packages/swift/FlusterSwift;
-		};
 		79D7DD7F2F6764B8002C5066 /* XCLocalSwiftPackageReference "../../packages/rust/conundrum_swift/ConundrumSwift" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../packages/rust/conundrum_swift/ConundrumSwift;
@@ -485,6 +488,10 @@
 		79D841CE2F4150EA004E992B /* XCLocalSwiftPackageReference "../../packages/swift/FlusterWebviewClients" */ = {
 			isa = XCLocalSwiftPackageReference;
 			relativePath = ../../packages/swift/FlusterWebviewClients;
+		};
+		79DC0D2330B7B12F0054797F /* XCLocalSwiftPackageReference "../../packages/swift/FlusterSwift" */ = {
+			isa = XCLocalSwiftPackageReference;
+			relativePath = ../../packages/swift/FlusterSwift;
 		};
 		79FA32B32F1822EA0066B8B4 /* XCLocalSwiftPackageReference "../../packages/swift/FlusterData" */ = {
 			isa = XCLocalSwiftPackageReference;
@@ -544,10 +551,6 @@
 			isa = XCSwiftPackageProductDependency;
 			productName = FlusterAI;
 		};
-		797C86932FF4425B00589F6E /* FlusterSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			productName = FlusterSwift;
-		};
 		79D7DD802F6764B8002C5066 /* ConundrumSwift */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = ConundrumSwift;
@@ -555,6 +558,10 @@
 		79D841CF2F4150EA004E992B /* FlusterWebviewClients */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = FlusterWebviewClients;
+		};
+		79DC0D2430B7B12F0054797F /* FlusterSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FlusterSwift;
 		};
 		79FA32B42F1822EA0066B8B4 /* FlusterData */ = {
 			isa = XCSwiftPackageProductDependency;

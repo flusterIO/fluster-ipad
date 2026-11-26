@@ -5,10 +5,13 @@
 //  Created by Andrew on 12/18/25.
 //
 
+// `@testable` needs ENABLE_TESTABILITY, which is off in Release (archive) builds.
+#if DEBUG
 import Testing
 
 @testable import FlusterSwift
 @testable import FlusterData
+#endif
 
 //@Test("Decodes initial json data")
 //func testInitialJsonDecoding() async throws {

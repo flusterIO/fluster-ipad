@@ -55,7 +55,7 @@ extension MdxParsingResult: @retroactive Codable {
       aiSecondaryParseRequests: aiParsingRequests,
       eqRefMap: eqRefMap,
       warnings: [],
-      footnotes: footnotes,
+      footnotes: footnotes as! [Int32 : RenderedFootnoteResult],
       includedComponents: includedComponents
     )
   }

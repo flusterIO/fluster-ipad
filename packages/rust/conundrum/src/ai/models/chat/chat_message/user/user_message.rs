@@ -28,6 +28,7 @@ use crate::impl_default_crud;
 
 #[derive(Serialize, Deserialize, Clone, Debug, specta::Type, Dummy, DatabaseEntity)]
 #[db(table = crate::ecosystem::db::tables::DatabaseTable::UserMessage, source_crate = true)]
+#[typeshare::typeshare]
 pub struct UserMessage {
     pub id: DatabaseId,
     pub convo_id: DatabaseId,

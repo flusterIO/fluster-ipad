@@ -1680,6 +1680,18 @@ export interface UnorderedTaskListModel {
 	items: UnorderedTaskListItem[];
 }
 
+export interface UserMessage {
+	id: DatabaseId;
+	convo_id: DatabaseId;
+	/**
+	 * If the sender is the user, this is the agent requested. If the sender is
+	 * AI, this is the AI sending the response.
+	 */
+	agent_id: DatabaseId;
+	body: string;
+	ctime: DateTime;
+}
+
 export interface UserMessageInput {
 	convo_id?: DatabaseId;
 	/**
