@@ -8,7 +8,7 @@ edition.workspace = true
 license-file.workspace = true
 homepage = "https://flusterapp.com"
 repository.workspace = true
-categories = ["parser-implementations", "science", "math", "visualization", "wasm"]
+categories = ["parser-implementations", "science", "mathematics", "visualization", "wasm"]
 keywords = ["mdx", "markdown"]
 
 [features]
