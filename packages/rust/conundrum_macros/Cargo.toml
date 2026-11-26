@@ -15,7 +15,7 @@ workspace = true
 proc-macro = true
 
 [dependencies]
-syn = { version = "2", features = ["full", "parsing"] }
+syn = { version = "2", features = ["full", "parsing", "extra-traits"] }
 quote = "1.0"
 proc-macro2 = "1.0"
 env_filter = "1.0.1"
