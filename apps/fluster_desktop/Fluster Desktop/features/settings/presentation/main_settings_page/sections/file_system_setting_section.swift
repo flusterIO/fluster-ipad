@@ -83,6 +83,7 @@ struct NotesDirSettingSection: View {
             Text("The view that will be shown when a not is initially selected.").font(.caption)
               .foregroundStyle(.secondary)
           }
+          FsSyncSettingsPanel()
         }
       }
       .fileImporter(
@@ -91,7 +92,14 @@ struct NotesDirSettingSection: View {
         onCompletion: { res in
           switch res {
             case .success(let urls):
-              if !urls.isEmpty {
+              if let url = urls.first {
+                let didAccess = url.startAccessingSecurityScopedResource()
+                defer { if didAccess { url.stopAccessingSecurityScopedResource() } }
+                do {
+                  try NotesDirectoryBookmark.save(url)
+                } catch {
+                  print("Couldn't save notes directory bookmark: \(error.localizedDescription)")
+                }
                 notesDirectory = urls.first!.absoluteString.replacingOccurrences(
                   of: "file://", with: "")
               }

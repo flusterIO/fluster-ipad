@@ -3662,6 +3662,7 @@ dependencies = [
  "serde",
  "serde_arrow",
  "serde_json",
+ "sha2 0.10.9",
  "specta",
  "strum 0.27.2",
  "strum_macros 0.27.2",

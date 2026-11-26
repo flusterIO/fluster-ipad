@@ -33,6 +33,8 @@ struct Fluster_DesktopApp: App {
   private var appData: AppDataContainer { AppDataContainer.shared }
   private var paletteController = CommandPaletteController()
   @StateObject private var authManager = AuthManager()
+  @State private var fsSyncController = FsSyncController(
+    modelContainer: AppDataContainer.shared.sharedModelContainer)
   init() {
     SchemeRegistration.registerCustomScheme()
     do {
@@ -45,6 +47,8 @@ struct Fluster_DesktopApp: App {
     WindowGroup("Fluster", id: DesktopWindowId.mainDesktopWindowGroup.rawValue) {
       ContentView()
         .environmentObject(authManager)
+        .environment(fsSyncController)
+        .task { fsSyncController.activate() }
         .background(WindowAccessor(color: NSColor.windowBackground))
         .toolbarBackground(.hidden, for: .automatic)
     }
@@ -69,6 +73,10 @@ struct Fluster_DesktopApp: App {
           paletteController.toggle()
         }
         .keyboardShortcut("p", modifiers: [.command, .shift])
+        Button("Sync Notes Directory") {
+          fsSyncController.syncNow()
+        }
+        .disabled(fsSyncController.isRunning)
       }
     }
   }

@@ -2,6 +2,7 @@ use crate::mcp::mcp_handler::ConundrumMCP;
 use crate::mcp::mcp_server::get_mcp_server;
 use crate::mcp::server::ConundrumMcpServer;
 use crate::rest::handle_socket::handle_socket;
+use crate::rest::rest_router::{REST_API_PREFIX, get_rest_router};
 pub use crate::rpc::rspc_router::get_rspc_router;
 use axum::extract::State;
 use axum::{Router, extract::WebSocketUpgrade, response::Response, routing::get};
@@ -71,6 +72,7 @@ pub async fn run_server(write_types_to: Option<impl AsRef<std::path::Path>>) -> 
                                                            Arc::clone(&cloned_state)
                                                        }).layer(cors))
                                          .nest_service("/api/mcp", mcp_service)
+                                         .nest(REST_API_PREFIX, get_rest_router())
                                          .with_state(Arc::clone(&state));
     let port = get_server_port();
     let listener = tokio::net::TcpListener::bind(format!("127.0.0.1:{}", port)).await.unwrap();

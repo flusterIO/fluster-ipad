@@ -16,7 +16,11 @@ import SwiftData
 public final class AppDataContainer {
   // private let initialNotesUrl: URL
   public static let shared = AppDataContainer()
-  public var sharedModelContainer: ModelContainer {
+  /// Created once. This used to be a computed property, which built a new
+  /// `ModelContainer` (and re-ran the seed check) on every access.
+  public private(set) lazy var sharedModelContainer: ModelContainer = Self.makeModelContainer()
+
+  private static func makeModelContainer() -> ModelContainer {
     let hasLaunchedPreviously = UserDefaults.standard.bool(
       forKey: AppStorageKeys.hasLaunchedPreviously.rawValue
     )
