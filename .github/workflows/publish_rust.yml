@@ -58,8 +58,8 @@ jobs:
 
           publish_crate conundrum_macro_traits
           publish_crate conundrum_macros
-          publish_crate fluster_core_utilities
           publish_crate conundrum
+          publish_crate fluster_core_utilities
           publish_crate conundrum_config
           publish_crate conundrum_fs
           publish_crate conundrum_db
