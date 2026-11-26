@@ -2,7 +2,7 @@
 edition.workspace = true
 name = "fluster_wasm"
 publish = false
-version = "0.0.3"
+version = "0.0.4"
 
 [lib]
 crate-type = ["cdylib"]
@@ -13,8 +13,8 @@ workspace = true
 [dependencies]
 wasm-bindgen = "0.2.114"
 # fluster_core_utilities = { path = "../../../rust/fluster_core_utilities" }
-conundrum_lsp = { path = "../../../rust/conundrum_lsp/", version = "0" }
-conundrum = { path = "../../conundrum/", features = ["wasm"], version = "0" }
+conundrum_lsp = { path = "../../../rust/conundrum_lsp/", version = "0.0.4" }
+conundrum = { path = "../../conundrum/", features = ["wasm"], version = "0.1.0" }
 serde-wasm-bindgen = "0.6.5"
 web-sys = "0.3.91"
 js-sys = "0.3.91"
