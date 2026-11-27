@@ -11,5 +11,6 @@ pub mod helpers;
 #[cfg(feature = "db")]
 pub mod macros;
 pub mod parameters;
+pub mod table_output;
 #[cfg(feature = "db")]
 pub mod tables;
