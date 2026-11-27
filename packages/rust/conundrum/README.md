@@ -3,7 +3,7 @@
 #### A modular knowledge toolkit for the vibe-coding era.
 
 > **Conundrum is a modular academic toolkit built in the pursuit of
-> quantized gravity, rebuilt for the vibe-coding era.**
+> quantized gravity, rebuilt for to vibe-code on top of*
 
 Conundrum began as part of [Fluster](https://flusterapp.com), an application born from an attempt to build better tools for doing academic research.
 
@@ -234,7 +234,7 @@ Because the structure is useful to AI.
 Consider:
 
 ```tsx
-<Admonition type="research">
+<Admonition research>
     This result is still speculative.
 </Admonition>
 ```

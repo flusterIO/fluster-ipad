@@ -13,8 +13,8 @@ pub struct Model {
     pub generics: syn::Generics,
     pub where_clause: Option<syn::WhereClause>,
 
-    /// True if the model is held in the `conundrum` crate, false if held in
-    /// any crate that imports conundrum.
+    /// True if the model is held in the `conundrum_lang` crate, false if held in
+    /// any crate that imports conundrum_lang.
     pub in_source_crate: bool,
 
     pub table: Option<syn::Path>,
@@ -385,7 +385,7 @@ impl Model {
     pub fn conundrum_crate_import(&self) -> syn::PathSegment {
         match self.in_source_crate {
             true => syn::PathSegment::from(syn::Ident::new("crate", Span::call_site())),
-            false => syn::PathSegment::from(syn::Ident::new("conundrum", Span::call_site())),
+            false => syn::PathSegment::from(syn::Ident::new("conundrum_lang", Span::call_site())),
         }
     }
 
