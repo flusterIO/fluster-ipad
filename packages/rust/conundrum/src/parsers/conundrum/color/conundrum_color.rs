@@ -1,6 +1,7 @@
 use std::fmt::Display;
 
 use anyhow::Result;
+use fake::Dummy;
 use lightningcss::traits::ToCss;
 use serde::Serialize;
 use typeshare::typeshare;

@@ -13,6 +13,9 @@ pub enum DatabaseTable {
     #[strum(to_string = "ecosystem_log")]
     #[serde(rename = "ecosystem_log")]
     EcosystemLog,
+    #[strum(to_string = "application_theme")]
+    #[serde(rename = "application_theme")]
+    ApplicationTheme,
     #[strum(to_string = "tag")]
     #[serde(rename = "tag")]
     Tag,

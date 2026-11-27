@@ -6,7 +6,7 @@ use crate::{
     parsers::conundrum::color::{color_pair::ColorPair, conundrum_color::ConundrumColor},
 };
 
-#[derive(Serialize, Deserialize, Clone)]
+#[derive(Clone, Serialize, Deserialize, Debug, Dummy, specta::Type)]
 pub struct ColorSchemeGroup<T> {
     pub light: T,
     pub dark: T,

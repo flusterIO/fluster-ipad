@@ -279,6 +279,10 @@ impl From<DatabaseTable> for DBTableDescription {
                 This tool describes your 'colleagues', or other agents that you may request access to if your tools permit.
                 "}.to_string(),
             },
+            DatabaseTable::ApplicationTheme => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
+                This table holds the themes for the user's applications that use the Conundrum ecosystem.
+                "}.to_string(),
+            },
             DatabaseTable::MCPToolRecord => DBTableDescription { table: value.clone(), entity_name: value.to_model_name(), is_joining_table: false, description: indoc!{"
                     This is the vector index that contains all of the tools you will need to help the user reach their goals. Query it frequently, and take notes as needed to help you recall the tools that most frequently help this specific user.
                 "}.to_string()

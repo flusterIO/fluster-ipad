@@ -25,6 +25,7 @@ The workspace also has a dedicated `conundrum_macros` crate for procedural deriv
 - Keep database-specific behavior here. If a type must be shared with the language core or WASM consumers, consider whether it belongs in `conundrum_lang` instead.
 - Treat schema evolution as a compatibility concern. Inspect schema versioning/initialization paths before changing persisted fields.
 - Do not expose credentials, local paths, or user content in logs or fixtures.
+- A "complete" model must have the associated CRUD methods exposed in the RPC server, implement all database related traits and return the associated `TableFieldMap` so that the data can be rendered on the client. Keep as much of this logic contained in the macros as is logically plausible.
 
 ## Useful commands
 

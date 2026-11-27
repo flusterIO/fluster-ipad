@@ -3,13 +3,14 @@ import React, { type ReactNode } from "react";
 import { type getTableColumns } from "../methods/get_table_columns";
 
 interface GenericTableProps<TData extends RowData> {
-    columns: ReturnType<typeof getTableColumns<TData>>;
+  columns: ReturnType<typeof getTableColumns<TData>>;
+  /* fields: TableFieldMap */
 }
 
 export const GenericTable = <TData extends RowData>({
-    columns,
+  columns,
 }: GenericTableProps<TData>): ReactNode => {
-    return <div></div>;
+  return <div></div>;
 };
 
 GenericTable.displayName = "GenericTable";
