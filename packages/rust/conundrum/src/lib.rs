@@ -1058,6 +1058,7 @@
 //!   <br />
 //!   <em>Build something interesting.</em>
 //! </p>
+#![feature(string_replace_in_place)]
 uniffi::setup_scaffolding!();
 
 #[cfg(feature = "db")]
