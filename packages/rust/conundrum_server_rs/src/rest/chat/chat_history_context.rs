@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ai::traits::chat_history_context::{ConversationStore, MemoryStore},
     ecosystem::error_handling::db_error::DatabaseResult,
     lifted_models::primitives::db_id::DatabaseId,

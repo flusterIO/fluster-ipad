@@ -1,4 +1,4 @@
-use conundrum::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
+use conundrum_lang::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
 
 #[tokio::test]
 async fn parses_block_quote_of_depth_1() {

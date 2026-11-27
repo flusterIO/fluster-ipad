@@ -1,6 +1,6 @@
 use std::{fmt::Display, path::PathBuf};
 
-use conundrum::ecosystem::error_handling::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult};
+use conundrum_lang::ecosystem::error_handling::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult};
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

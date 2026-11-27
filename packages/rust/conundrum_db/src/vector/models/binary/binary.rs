@@ -1,5 +1,5 @@
 use arrow_schema::Field;
-use conundrum::ecosystem::db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge};
+use conundrum_lang::ecosystem::db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge};
 use serde::{Deserialize, Serialize};
 
 #[derive(Debug, serde::Deserialize, serde::Serialize, Clone, specta::Type, fake::Dummy)]

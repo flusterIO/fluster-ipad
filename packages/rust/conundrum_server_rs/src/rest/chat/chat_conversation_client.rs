@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ai::{
         models::chat::chat_message::chat_context_policy::ChatContextPolicy,
         traits::chat_history_context::ConversationStore,
@@ -22,7 +22,7 @@ impl ConversationStore<AnyChatMessage> for ChatConversationClient {
     async fn append(&mut self,
                     message: AnyChatMessage,
                     db: DBClient)
-                    -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<()> {
+                    -> conundrum_lang::ecosystem::error_handling::db_error::DatabaseResult<()> {
         message.save(db.clone()).await?;
         self.messages.push(message);
         Ok(())
@@ -47,10 +47,10 @@ impl ConversationStore<AnyChatMessage> for ChatConversationClient {
     /// - [ ] Load messages based on recency
     /// - [ ] Truncate them within policy bounds
     async fn history(&self,
-                     conversation_id: conundrum::lifted_models::primitives::db_id::DatabaseId,
+                     conversation_id: conundrum_lang::lifted_models::primitives::db_id::DatabaseId,
                      policy: ChatContextPolicy,
                      db: DBClient)
-                     -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<AnyChatMessage>> {
+                     -> conundrum_lang::ecosystem::error_handling::db_error::DatabaseResult<Vec<AnyChatMessage>> {
         todo!()
     }
 }

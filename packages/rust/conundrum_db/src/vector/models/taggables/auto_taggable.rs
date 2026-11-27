@@ -1,7 +1,7 @@
 use std::path::Path;
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{
         db::{
             db_traits::{

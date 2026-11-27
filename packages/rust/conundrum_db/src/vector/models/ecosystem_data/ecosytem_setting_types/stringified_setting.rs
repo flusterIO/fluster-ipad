@@ -1,5 +1,5 @@
 use arrow_array::{RecordBatch, StringArray};
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{
         db::{
             db_client::db_client::DBClient,

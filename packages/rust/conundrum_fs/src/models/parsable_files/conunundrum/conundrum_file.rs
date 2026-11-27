@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::error_handling::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult},
     lang::runtime::{
         run_conundrum::{run_conundrum, ParseConundrumOptions},
@@ -19,7 +19,7 @@ pub struct ConundrumFile {
 }
 
 impl ParsableFile for ConundrumFile {
-    fn as_file_content(&self) -> conundrum::lang::runtime::state::conundrum_error_variant::ConundrumResult<String> {
+    fn as_file_content(&self) -> conundrum_lang::lang::runtime::state::conundrum_error_variant::ConundrumResult<String> {
         Ok(self.results.content.clone())
     }
 

@@ -3,12 +3,12 @@ use std::sync::Arc;
 use crate::vector::models::ecosystem_data::log::ecosystem_log_input::EcosystemLogInput;
 use crate::vector::models::ecosystem_data::log::ecosystem_log_intention::EcosystemLogIntention;
 use crate::vector::models::ecosystem_data::log::ecosystem_log_severity::EcosystemLogSeverity;
-use conundrum::ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema};
-use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
-use conundrum::ecosystem::db::tables::DatabaseTable;
-use conundrum::impl_default_crud;
-use conundrum::lifted_models::primitives::date_time::DateTime;
-use conundrum::lifted_models::primitives::db_id::DatabaseId;
+use conundrum_lang::ecosystem::db::db_traits::db_entity::{DBEntity, DBSchema};
+use conundrum_lang::ecosystem::db::db_traits::db_field::DatabaseField;
+use conundrum_lang::ecosystem::db::tables::DatabaseTable;
+use conundrum_lang::impl_default_crud;
+use conundrum_lang::lifted_models::primitives::date_time::DateTime;
+use conundrum_lang::lifted_models::primitives::db_id::DatabaseId;
 use conundrum_macros::DatabaseEntity;
 use fake::Dummy;
 

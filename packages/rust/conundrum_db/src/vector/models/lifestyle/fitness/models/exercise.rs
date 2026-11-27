@@ -1,4 +1,4 @@
-use conundrum::lifted_models::primitives::db_id::DatabaseId;
+use conundrum_lang::lifted_models::primitives::db_id::DatabaseId;
 
 use crate::vector::models::{
     ai::ai_generated_input::AIGeneratedInput, lifestyle::fitness::models::exercise_goal::ExerciseGoal,

@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     lang::runtime::{
         run_conundrum::{ParseConundrumOptions, run_conundrum},
         state::{
@@ -7,7 +7,7 @@ use conundrum::{
         },
     },
     parsers::{
-        conundrum::logic::number::conundrum_int::ConundrumInt,
+        conundrum_lang::logic::number::conundrum_int::ConundrumInt,
         markdown::code_block::supported_themes::SupportedCodeBlockTheme,
     },
     testing::{render_test::render_test, test_result::TestResult},

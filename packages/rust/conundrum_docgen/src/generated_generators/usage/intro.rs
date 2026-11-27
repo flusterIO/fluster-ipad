@@ -1,6 +1,6 @@
 
 use askama::Template;
-use conundrum::lang::runtime::traits::conundrum_template::CDRMTemplateRepresentableWithParam;
+use conundrum_lang::lang::runtime::traits::conundrum_template::CDRMTemplateRepresentableWithParam;
 use strum::IntoEnumIterator;
 
 #[derive(Template, Default)]

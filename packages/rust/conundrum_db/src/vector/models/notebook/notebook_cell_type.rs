@@ -1,4 +1,4 @@
-use conundrum::ecosystem::db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge};
+use conundrum_lang::ecosystem::db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 

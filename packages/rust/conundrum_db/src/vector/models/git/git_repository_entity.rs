@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use arrow_schema::{DataType, Field};
-use conundrum::{
+use conundrum_lang::{
     ai::models::chat::vector::vector_model::DBVector,
     ecosystem::db::{
         db_traits::{

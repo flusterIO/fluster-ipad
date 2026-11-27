@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use arrow_schema::Field;
-use conundrum::{
+use conundrum_lang::{
     ai::rig::features::chat::convo_context::ArcMutexConversationContext,
     ecosystem::{
         db::{

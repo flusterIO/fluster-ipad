@@ -1,6 +1,6 @@
 use std::{collections::HashMap, ops::Index, str::FromStr};
 
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation},
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };

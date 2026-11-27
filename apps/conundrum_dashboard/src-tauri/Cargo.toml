@@ -22,5 +22,5 @@ tauri = { version = "2", features = [] }
 tauri-plugin-opener = "2"
 serde = { version = "1", features = ["derive"] }
 serde_json = { version = "1.0.45", default-features = false, features = ["alloc"] }
-conundrum = { path = "../../../packages/rust/conundrum/", version = "0"}
+conundrum_lang = { path = "../../../packages/rust/conundrum/", version = "0"}
 conundrum_server_rs = { path = "../../../packages/rust/conundrum_server_rs/", version = "0"}

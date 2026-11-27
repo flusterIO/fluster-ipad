@@ -6,8 +6,8 @@ use crate::rest::rest_router::{REST_API_PREFIX, get_rest_router};
 pub use crate::rpc::rspc_router::get_rspc_router;
 use axum::extract::State;
 use axum::{Router, extract::WebSocketUpgrade, response::Response, routing::get};
-use conundrum::ecosystem::environment_variables::cdrm_env_variable::{CdrmEnvVariable, DEFAULT_CDRM_SERVER_PORT};
-use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
+use conundrum_lang::ecosystem::environment_variables::cdrm_env_variable::{CdrmEnvVariable, DEFAULT_CDRM_SERVER_PORT};
+use conundrum_lang::ecosystem::error_handling::server_error::{ServerError, ServerResult};
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use rmcp::transport::streamable_http_server::{
     StreamableHttpServerConfig, StreamableHttpService, session::local::LocalSessionManager,

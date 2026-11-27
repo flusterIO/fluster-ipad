@@ -1,5 +1,5 @@
 use axum::extract::FromRef;
-use conundrum::{
+use conundrum_lang::{
     ai::rig::ai_traits::chunk::Chunk, ecosystem::error_handling::ai_error::AIError,
     lang::runtime::run_conundrum::ParseConundrumOptions,
 };

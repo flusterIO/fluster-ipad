@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     ecosystem::db::parameters::general::pagination::PaginationParams,
     lang::runtime::{
         queries::{

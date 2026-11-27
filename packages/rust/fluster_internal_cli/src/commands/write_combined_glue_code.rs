@@ -1,4 +1,4 @@
-use conundrum::output::{
+use conundrum_lang::output::{
     general::component_constants::component_ids::EmbeddableComponentId,
     html::glue::component_glue_manager::{AnyComponentKey, WEB_GLUE_CODE_MAP},
 };

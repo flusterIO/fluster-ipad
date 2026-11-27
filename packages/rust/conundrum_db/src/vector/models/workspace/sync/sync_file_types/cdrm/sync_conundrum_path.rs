@@ -1,6 +1,6 @@
 use std::{path::PathBuf, sync::Arc};
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{
         db::{
             db_client::db_client::DBClient,
@@ -44,7 +44,7 @@ pub async fn sync_conundrum_path<'a>(fp: WorkspaceRelativePath<PathBuf>,
     let file_content = tokio::fs::read_to_string(fp.absolutize()).await
         .map_err(|e| {
            log::error!("Error: {:#?}", e);
-           DatabaseError::FileSystemError(conundrum::ecosystem::error_handling::conundrum_fs_error::ConundrumFSError::FsError(e.to_string()))
+           DatabaseError::FileSystemError(conundrum_lang::ecosystem::error_handling::conundrum_fs_error::ConundrumFSError::FsError(e.to_string()))
         })?;
     if existing_content.clone().is_some_and(|s| s == file_content) {
         log::debug!(

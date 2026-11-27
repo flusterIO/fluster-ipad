@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use arrow_schema::Field;
-use conundrum::{
+use conundrum_lang::{
     ecosystem::db::{db_traits::db_entity::DBSchema, tables::DatabaseTable},
     lifted_models::primitives::db_id::DatabaseId,
 };

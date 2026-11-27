@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     bibliography::{bib_entry::BibEntry, split_bibtex_by_entries::split_biblatex_to_raw_strings},
     ecosystem::{
         db::tables::DatabaseTable,

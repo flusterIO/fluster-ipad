@@ -1,4 +1,4 @@
-use conundrum::lang::runtime::state::conundrum_error::ConundrumError;
+use conundrum_lang::lang::runtime::state::conundrum_error::ConundrumError;
 use serde::Serialize;
 use typeshare::typeshare;
 use uniffi::Record;

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{
         db::{
             db_client::db_client::DBClient,
@@ -41,7 +41,7 @@ pub async fn update_database_from_parsed_cdrm<'a>(content: MdxParsingResult,
     let title =
         get_title_group(file_content.clone(),
                         vec![],
-                        conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget::PlainText).ok()
+                        conundrum_lang::lang::runtime::state::parse_state::ConundrumCompileTarget::PlainText).ok()
                                                                                                         .map(|x| {
                                                                                                             x.title
                                                                                                         });

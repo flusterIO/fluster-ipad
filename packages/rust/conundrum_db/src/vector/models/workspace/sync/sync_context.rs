@@ -1,6 +1,6 @@
 use std::{collections::HashMap, sync::Arc};
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{
         db::{db_client::db_client::DBClient, db_traits::entity_crud::EntityCRUD},
         error_handling::db_error::DatabaseResult,

@@ -1,4 +1,4 @@
-use conundrum::ai::models::chat::vector::vector_model::DBVector;
+use conundrum_lang::ai::models::chat::vector::vector_model::DBVector;
 use serde::{Deserialize, Serialize};
 
 use crate::vector::models::academic::result::academic_result_metric::AcademicResultMetric;

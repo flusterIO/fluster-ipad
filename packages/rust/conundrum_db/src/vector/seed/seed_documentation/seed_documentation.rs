@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk, conundrum_agent::ConundrumAgent},
     ecosystem::{
         db::{
@@ -72,7 +72,7 @@ impl<'a>
                ParseConundrumOptions,
                ServerState> for SeedDocumentation
 {
-    fn table() -> conundrum::ecosystem::db::tables::DatabaseTable {
+    fn table() -> conundrum_lang::ecosystem::db::tables::DatabaseTable {
         DatabaseTable::DocumentationChunk
     }
 

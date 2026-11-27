@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::ai::rig::rig_client_remote::RigClientRemote;
+use conundrum_lang::ai::rig::rig_client_remote::RigClientRemote;
 use conundrum_db::vector::{
     database::inititialize_db::initialize_db::initialize_local_database,
     models::ecosystem_data::server_state::server_state::ServerState,

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ai::rig::ai_traits::chunk::Chunk,
     ecosystem::{
         db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge},
@@ -73,8 +73,8 @@ impl BinaryBasedContent<ParseConundrumOptions> for PdfBinary {
     }
 
     async fn get_title(&self,
-                       modifiers: Vec<conundrum::lang::runtime::state::parse_state::ConundrumModifier>,
-                       target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget)
+                       modifiers: Vec<conundrum_lang::lang::runtime::state::parse_state::ConundrumModifier>,
+                       target: conundrum_lang::lang::runtime::state::parse_state::ConundrumCompileTarget)
                        -> AIResult<Option<String>> {
         let content =
             self.get_parsed_content(ParseConundrumOptions::for_chunking()).await.map_err(|e| {

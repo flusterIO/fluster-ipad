@@ -1,5 +1,5 @@
 use arrow_schema::{Field, Fields};
-use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
+use conundrum_lang::ecosystem::db::db_traits::db_field::DatabaseField;
 use serde::{Deserialize, Serialize};
 
 // Because Lance refuses to serialize to all of arrow. If it

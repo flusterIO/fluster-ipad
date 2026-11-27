@@ -1,4 +1,4 @@
-use conundrum::ai::{
+use conundrum_lang::ai::{
     models::tool::mcp_tool_name::MCPToolName, rig::ai_traits::tool_implementation::ToolImplementation,
 };
 use fake::Dummy;
@@ -20,7 +20,7 @@ impl ToolImplementation<Vec<UserWorkspace>> for QueryWorkspacesTool {
         MCPToolName::QueryWorkspaces
     }
 
-    async fn execute() -> Result<Vec<UserWorkspace>, conundrum::ecosystem::error_handling::db_error::DatabaseError> {
+    async fn execute() -> Result<Vec<UserWorkspace>, conundrum_lang::ecosystem::error_handling::db_error::DatabaseError> {
         todo!()
     }
 }

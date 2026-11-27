@@ -1,5 +1,5 @@
 use arrow_schema::Field;
-use conundrum::{
+use conundrum_lang::{
     ecosystem::db::tables::DatabaseTable,
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},
 };

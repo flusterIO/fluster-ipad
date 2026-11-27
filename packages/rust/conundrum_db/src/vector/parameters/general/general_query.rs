@@ -1,4 +1,4 @@
-use conundrum::ecosystem::db::parameters::general::{pagination::PaginationParams, sort_query::SortQuery};
+use conundrum_lang::ecosystem::db::parameters::general::{pagination::PaginationParams, sort_query::SortQuery};
 use fake::Dummy;
 use lancedb::query::ColumnOrdering;
 use serde::{Deserialize, Serialize};

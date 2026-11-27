@@ -1,4 +1,4 @@
-use conundrum::ecosystem::db::parameters::general::pagination::PaginationParams;
+use conundrum_lang::ecosystem::db::parameters::general::pagination::PaginationParams;
 use serde::{Deserialize, Serialize};
 use specta::Type;
 

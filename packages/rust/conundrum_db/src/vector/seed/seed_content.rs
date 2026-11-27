@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ai::rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk},
     ecosystem::{
         db::{

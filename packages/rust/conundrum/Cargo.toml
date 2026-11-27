@@ -1,5 +1,5 @@
 [package]
-name = "conundrum"
+name = "conundrum_lang"
 version = "0.1.1"
 authors.workspace = true
 description = "A language built to be consumed by AI but as easy to write as mdx, with a growing suite of tools creating a complete standalone, vibe-codable framework for the development of academic oriented applications, particularly those in STEM fields."

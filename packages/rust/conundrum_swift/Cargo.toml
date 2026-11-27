@@ -11,7 +11,7 @@ name = "conundrum_swift"
 
 [dependencies]
 uniffi = { workspace = true, features = ["tokio", "cli"] }
-conundrum = { path = "../conundrum/", version = "0" }
+conundrum_lang = { path = "../conundrum/", version = "0" }
 
 
 [target.'cfg(not(target_arch = "wasm32"))'.dependencies]

@@ -1,8 +1,8 @@
-use conundrum::ecosystem::db::db_traits::db_identifiable::DatabaseIdentifiable;
-use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
-use conundrum::ecosystem::db::parameters::general::pagination::PaginationParams;
-use conundrum::ecosystem::error_handling::db_error::DatabaseError;
-use conundrum::ecosystem::error_handling::server_error::ServerError;
+use conundrum_lang::ecosystem::db::db_traits::db_identifiable::DatabaseIdentifiable;
+use conundrum_lang::ecosystem::db::db_traits::entity_crud::EntityCRUD;
+use conundrum_lang::ecosystem::db::parameters::general::pagination::PaginationParams;
+use conundrum_lang::ecosystem::error_handling::db_error::DatabaseError;
+use conundrum_lang::ecosystem::error_handling::server_error::ServerError;
 use conundrum_db::vector::models::ecosystem_data::ecosystem_setting_key::setting_key::Setting;
 use conundrum_db::vector::models::ecosystem_data::ecosystem_setting_key::unique_setting_key::UniqueSettingKey;
 use conundrum_db::vector::models::ecosystem_data::ecosytem_setting_types::ecosystem_setting_model::EcosystemSettingModel;

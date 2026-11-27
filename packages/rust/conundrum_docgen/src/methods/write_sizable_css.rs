@@ -1,7 +1,7 @@
 use std::fs;
 
 use askama::Template;
-use conundrum::lang::lib::ui::shared_props::sizable_option::SizableOption;
+use conundrum_lang::lang::lib::ui::shared_props::sizable_option::SizableOption;
 
 use crate::workspace_utils::get_workspace_root_duplicate::get_workspace_root;
 

@@ -1,7 +1,7 @@
 use std::fmt::Display;
 
 use askama::{Result, Template};
-use conundrum::lang::runtime::queries::code::get_supported_syntaxes::get_supported_syntaxes;
+use conundrum_lang::lang::runtime::queries::code::get_supported_syntaxes::get_supported_syntaxes;
 use tabled::{Table, settings::Style};
 
 use crate::workspace_utils::get_workspace_root_duplicate::get_workspace_root;

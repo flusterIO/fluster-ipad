@@ -1,4 +1,4 @@
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::{db_client::db_client::DBClient, db_table_description::DBTableDescription, tables::DatabaseTable},
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };

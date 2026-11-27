@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::{
+use conundrum_lang::ecosystem::db::{
     db_client::db_client::DBClient,
     db_traits::{db_entity::DBSchema, entity_crud::EntityCRUD, into_partial::IntoPartial},
     tables::DatabaseTable,
@@ -26,7 +26,7 @@ impl Default for SettingsSeeder {
 }
 
 impl SeedContent for SettingsSeeder {
-    async fn try_seed<'a>(&self, db: DBClient) -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<()> {
+    async fn try_seed<'a>(&self, db: DBClient) -> conundrum_lang::ecosystem::error_handling::db_error::DatabaseResult<()> {
         let mut models: Vec<<EcosystemSettingEntity as DBSchema>::PartialUpdateType> =
             Vec::<<EcosystemSettingEntity as DBSchema>::PartialUpdateType>::new();
         for setting_key in UniqueSettingKey::iter() {

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::{db_traits::async_traits::try_from_async::FromAsync, tables::DatabaseTable};
+use conundrum_lang::ecosystem::db::{db_traits::async_traits::try_from_async::FromAsync, tables::DatabaseTable};
 use online::tokio::check;
 use serde::{Deserialize, Serialize};
 use strum::IntoEnumIterator;

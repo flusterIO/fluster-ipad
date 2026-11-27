@@ -22,7 +22,7 @@
             "type": "linked-versions",
             "groupName": "conundrum",
             "components": [
-                "conundrum",
+                "conundrum_lang",
                 "conundrum_cli",
                 "conundrum_config",
                 "conundrum_db",
@@ -47,7 +47,7 @@
         },
         "packages/rust/conundrum": {
             "changelog-path": "packages/rust/conundrum",
-            "component": "conundrum"
+            "component": "conundrum_lang"
         },
         "packages/rust/conundrum_cli": {
             "changelog-path": "packages/rust/conundrum_cli",

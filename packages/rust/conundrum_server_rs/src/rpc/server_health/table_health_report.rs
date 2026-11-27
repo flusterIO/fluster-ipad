@@ -1,4 +1,4 @@
-use conundrum::ecosystem::db::{db_table_description::DBTableDescription, tables::DatabaseTable};
+use conundrum_lang::ecosystem::db::{db_table_description::DBTableDescription, tables::DatabaseTable};
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type, fake::Dummy)]
 pub struct TableHealthReport {

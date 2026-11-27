@@ -1,6 +1,6 @@
 use std::ops::Index;
 
-use conundrum::{
+use conundrum_lang::{
     lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum},
     testing::get_test_content::get_test_content,
 };

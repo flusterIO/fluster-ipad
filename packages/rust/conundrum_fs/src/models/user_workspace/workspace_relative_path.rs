@@ -1,7 +1,7 @@
 use std::path::PathBuf;
 
 use arrow_schema::{Field, Fields};
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::db_traits::db_field::DatabaseField, error_handling::conundrum_fs_error::ConundrumFSResult,
 };
 use serde::{Deserialize, Serialize};
@@ -25,7 +25,7 @@ impl WorkspaceRelativePath<PathBuf> {
                                        relative_path })
         } else {
             log::warn!("Attempted to get a nested path from a parent that isn't that path's parent.");
-            Err(conundrum::ecosystem::error_handling::conundrum_fs_error::ConundrumFSError::PathSerializationError)
+            Err(conundrum_lang::ecosystem::error_handling::conundrum_fs_error::ConundrumFSError::PathSerializationError)
         }
     }
 }

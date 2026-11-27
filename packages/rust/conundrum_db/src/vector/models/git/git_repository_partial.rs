@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use arrow_schema::{DataType, Field};
-use conundrum::{ecosystem::db::db_traits::db_entity::DBSchema, lifted_models::primitives::db_id::DatabaseId};
+use conundrum_lang::{ecosystem::db::db_traits::db_entity::DBSchema, lifted_models::primitives::db_id::DatabaseId};
 use conundrum_macros::DBSchema;
 use fake::Dummy;
 

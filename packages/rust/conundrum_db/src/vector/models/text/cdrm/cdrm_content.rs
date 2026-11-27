@@ -1,7 +1,7 @@
 use std::{ops::{Index, IndexMut}, sync::Arc};
 
 use arrow_schema::Field;
-use conundrum::{
+use conundrum_lang::{
     ai::{models::chat::vector::vector_model::DBVector, rig::ai_traits::{ai_client_container::AIClientEmbedder, chunk::Chunk}}, ecosystem::{db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge}, error_handling::{ai_error::{AIError, AIResult}, db_error::DatabaseError}}, lang::{lib::shared::utility_types::ArcTokioMutex, runtime::{queries::get_title::get_title_group, run_conundrum::{ParseConundrumOptions, run_conundrum}}}, lifted_models::primitives::db_id::DatabaseId
 };
 use fake::Dummy;
@@ -51,8 +51,8 @@ impl TextBasedContent<ParseConundrumOptions> for CdrmContent {
     }
 
     async fn get_title(&self,
-        modifiers: Vec<conundrum::lang::runtime::state::parse_state::ConundrumModifier>,
-        target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget)
+        modifiers: Vec<conundrum_lang::lang::runtime::state::parse_state::ConundrumModifier>,
+        target: conundrum_lang::lang::runtime::state::parse_state::ConundrumCompileTarget)
         -> AIResult<Option<String>> {
             let r = get_title_group(self.0.clone(), modifiers, target).map_err(|e| {
                 log::error!("Failed to get Conundrum title: {:#?}", e);
@@ -72,7 +72,7 @@ impl Chunk<ParseConundrumOptions, TextBasedChunk, ServerState> for CdrmContent {
         locked_state: Arc<ServerState>)
         -> AIResult<Vec<TextBasedChunk>> {
                 let res = run_conundrum(ParseConundrumOptions { 
-                    target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget::Markdown,
+                    target: conundrum_lang::lang::runtime::state::parse_state::ConundrumCompileTarget::Markdown,
                     ..opts.clone()
                 }).map_err(AIError::ConundrumError)?;
             let md = MarkdownContent(res.content);

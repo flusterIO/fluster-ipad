@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{
         db::{db_client::db_client::DBClient, db_default_constants::DEFAULT_MAX_SYNC_THREADS},
         error_handling::db_error::{DatabaseError, DatabaseResult},

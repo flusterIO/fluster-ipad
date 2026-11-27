@@ -1,6 +1,6 @@
 use std::fs;
 
-use conundrum::lang::runtime::{
+use conundrum_lang::lang::runtime::{
     run_conundrum::{ParseConundrumOptions, run_conundrum},
     state::{parse_state::ConundrumCompileTarget, ui_params::UIParams},
 };

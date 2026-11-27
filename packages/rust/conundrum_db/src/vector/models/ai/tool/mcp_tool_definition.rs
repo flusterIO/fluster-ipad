@@ -1,4 +1,4 @@
-use conundrum::ai::models::tool::mcp_tool_name::MCPToolName;
+use conundrum_lang::ai::models::tool::mcp_tool_name::MCPToolName;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

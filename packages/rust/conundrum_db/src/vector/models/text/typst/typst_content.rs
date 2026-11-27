@@ -1,5 +1,5 @@
 use arrow_schema::Field;
-use conundrum::ecosystem::db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge};
+use conundrum_lang::ecosystem::db::db_traits::db_field::{DatabaseField, DatabaseFieldLarge};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
@@ -41,14 +41,14 @@ impl TextBasedContent<ParseTypstOpts> for TypstContent {
 
     async fn get_parsed_content(&self,
                                 opts: ParseTypstOpts)
-                                -> conundrum::ecosystem::error_handling::ai_error::AIResult<String> {
+                                -> conundrum_lang::ecosystem::error_handling::ai_error::AIResult<String> {
         todo!()
     }
 
     async fn get_title(&self,
-                       modifiers: Vec<conundrum::lang::runtime::state::parse_state::ConundrumModifier>,
-                       target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget)
-                       -> conundrum::ecosystem::error_handling::ai_error::AIResult<Option<String>> {
+                       modifiers: Vec<conundrum_lang::lang::runtime::state::parse_state::ConundrumModifier>,
+                       target: conundrum_lang::lang::runtime::state::parse_state::ConundrumCompileTarget)
+                       -> conundrum_lang::ecosystem::error_handling::ai_error::AIResult<Option<String>> {
         todo!()
     }
 }

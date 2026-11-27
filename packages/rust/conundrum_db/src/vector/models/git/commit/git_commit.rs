@@ -1,4 +1,4 @@
-use conundrum::lifted_models::primitives::db_id::DatabaseId;
+use conundrum_lang::lifted_models::primitives::db_id::DatabaseId;
 
 pub struct GitCommit {
     pub repo_id: DatabaseId,

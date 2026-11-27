@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use arrow_schema::Field;
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{
         db::{
             db_traits::{
@@ -55,7 +55,7 @@ impl From<String> for Tag {
 
 #[cfg(test)]
 mod tests {
-    use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
+    use conundrum_lang::ecosystem::db::db_traits::entity_crud::EntityCRUD;
     use fake::{Fake, Faker};
 
     use crate::test_utils::get_test_db::get_test_database;

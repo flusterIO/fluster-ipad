@@ -1,8 +1,8 @@
 #![recursion_limit = "1024"]
 
-use conundrum::ecosystem::db::db_traits::db_entity::DBSchema;
-use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
-use conundrum::ecosystem::db::tables::DatabaseTable;
+use conundrum_lang::ecosystem::db::db_traits::db_entity::DBSchema;
+use conundrum_lang::ecosystem::db::db_traits::entity_crud::EntityCRUD;
+use conundrum_lang::ecosystem::db::tables::DatabaseTable;
 use conundrum_db::test_utils::get_test_db::get_test_database;
 use conundrum_db::vector::models::academic::question::flashcard::flashcard_entity::FlashCardEntity;
 use conundrum_db::vector::models::academic::question::flashcard::flashcard_model::FlashCardModelStringAnswerInputData;

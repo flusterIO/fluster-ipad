@@ -1,4 +1,4 @@
-use conundrum::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
+use conundrum_lang::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
 
 use crate::vector::models::{
     ai::ai_interactions::AIInteractions, lifestyle::fitness::models::general_bodypart::BodyPart,

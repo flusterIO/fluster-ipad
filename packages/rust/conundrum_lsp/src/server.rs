@@ -1,5 +1,5 @@
-// use conundrum::lang::runtime::parse_conundrum_string::parse_conundrum_string;
-use conundrum::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
+// use conundrum_lang::lang::runtime::parse_conundrum_string::parse_conundrum_string;
+use conundrum_lang::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
 // use tower_lsp::jsonrpc::Result;
 // use tower_lsp::lsp_types::*;
 use tower_lsp::{Client, LanguageServer, LspService, Server};

@@ -7,7 +7,7 @@ use serde::Serialize;
 use typeshare::typeshare;
 
 use crate::rig::ai_types::ai_types::LocalMultiTurnStreamItem;
-use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
+use conundrum_lang::ecosystem::error_handling::server_error::{ServerError, ServerResult};
 
 /// Moved up to the Conundrum crate. THis is deprecated but I'm scaed to delete
 /// it.

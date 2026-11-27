@@ -11,7 +11,7 @@ use rust_mcp_sdk::{
     session_store::InMemorySessionStore,
 };
 
-use conundrum::{
+use conundrum_lang::{
     ai::rig::{rig_client_local::RigClientLocal, rig_client_remote::RigClientRemote},
     ecosystem::{
         db::{db::get_database, db_client::db_client::DBClient},

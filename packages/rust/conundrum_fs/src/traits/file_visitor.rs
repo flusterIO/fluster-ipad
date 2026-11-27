@@ -1,4 +1,4 @@
-use conundrum::lang::runtime::run_conundrum::ParseConundrumOptions;
+use conundrum_lang::lang::runtime::run_conundrum::ParseConundrumOptions;
 use ignore::{DirEntry, Error, WalkState};
 use std::path::PathBuf;
 

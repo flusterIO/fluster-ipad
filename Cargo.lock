@@ -3182,7 +3182,7 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "3d52eff69cd5e647efe296129160853a42795992097e8af39800e1060caeea9b"
 
 [[package]]
-name = "conundrum"
+name = "conundrum_lang"
 version = "0.1.1"
 dependencies = [
  "anyhow",
@@ -3336,7 +3336,7 @@ dependencies = [
  "clap-verbosity",
  "color-eyre",
  "config",
- "conundrum",
+ "conundrum_lang",
  "conundrum_config",
  "conundrum_db",
  "conundrum_server_rs",
@@ -3387,7 +3387,7 @@ dependencies = [
  "clap-verbosity",
  "config",
  "config-rs",
- "conundrum",
+ "conundrum_lang",
  "env_filter 1.0.1",
  "env_logger 0.11.11",
  "figment-directory",
@@ -3414,7 +3414,7 @@ dependencies = [
 name = "conundrum_dashboard"
 version = "0.1.2"
 dependencies = [
- "conundrum",
+ "conundrum_lang",
  "conundrum_server_rs",
  "serde",
  "serde_json",
@@ -3437,7 +3437,7 @@ dependencies = [
  "cfg-if",
  "chrono",
  "chrono-humanize",
- "conundrum",
+ "conundrum_lang",
  "conundrum_fs",
  "conundrum_macros",
  "convert_case 0.11.0",
@@ -3501,7 +3501,7 @@ version = "0.0.3"
 dependencies = [
  "askama 0.15.6",
  "clap",
- "conundrum",
+ "conundrum_lang",
  "conundrum_cli",
  "conundrum_config",
  "css-color",
@@ -3534,7 +3534,7 @@ version = "0.1.1"
 dependencies = [
  "anyhow",
  "arrow-schema",
- "conundrum",
+ "conundrum_lang",
  "conundrum_config",
  "dirs 6.0.0",
  "fake",
@@ -3563,7 +3563,7 @@ name = "conundrum_lsp"
 version = "0.0.3"
 dependencies = [
  "ariadne",
- "conundrum",
+ "conundrum_lang",
  "lsp-types 0.97.0",
  "miette",
  "tokio",
@@ -3595,7 +3595,7 @@ dependencies = [
 name = "conundrum_py"
 version = "0.1.2"
 dependencies = [
- "conundrum",
+ "conundrum_lang",
  "conundrum_db",
  "conundrum_server_rs",
  "polars 0.55.2",
@@ -3617,7 +3617,7 @@ dependencies = [
  "bcrypt",
  "chrono",
  "color-eyre",
- "conundrum",
+ "conundrum_lang",
  "conundrum_db",
  "conundrum_fs",
  "conundrum_tools",
@@ -3680,7 +3680,7 @@ dependencies = [
 name = "conundrum_swift"
 version = "0.1.0"
 dependencies = [
- "conundrum",
+ "conundrum_lang",
  "tokio",
  "uniffi",
 ]
@@ -3702,7 +3702,7 @@ dependencies = [
 name = "conundrum_wasm"
 version = "0.0.3"
 dependencies = [
- "conundrum",
+ "conundrum_lang",
  "getrandom 0.3.4",
  "gloo",
  "js-sys",
@@ -6360,7 +6360,7 @@ name = "fluster_core_utilities"
 version = "0.1.1"
 dependencies = [
  "chrono",
- "conundrum",
+ "conundrum_lang",
  "crossbeam",
  "crossbeam-channel",
  "dirs 6.0.0",
@@ -6402,7 +6402,7 @@ name = "fluster_desktop_fs"
 version = "0.1.0"
 dependencies = [
  "anyhow",
- "conundrum",
+ "conundrum_lang",
  "conundrum_config",
  "filetime",
  "ignore",
@@ -6420,7 +6420,7 @@ name = "fluster_internal_cli"
 version = "0.0.3"
 dependencies = [
  "clap",
- "conundrum",
+ "conundrum_lang",
  "ignore",
  "package_json_schema",
  "serde",
@@ -6434,7 +6434,7 @@ dependencies = [
 name = "fluster_wasm"
 version = "0.0.3"
 dependencies = [
- "conundrum",
+ "conundrum_lang",
  "conundrum_lsp",
  "gloo",
  "js-sys",

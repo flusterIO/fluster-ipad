@@ -1,4 +1,4 @@
-use conundrum::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
+use conundrum_lang::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
 
 #[tokio::test]
 pub async fn renders_docs_after_paragraph() {

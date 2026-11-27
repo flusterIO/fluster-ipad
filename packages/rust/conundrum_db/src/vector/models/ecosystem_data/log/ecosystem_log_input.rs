@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField};
+use conundrum_lang::ecosystem::db::db_traits::{db_entity::DBSchema, db_field::DatabaseField};
 use conundrum_macros::DBSchema;
 use fake::Dummy;
 

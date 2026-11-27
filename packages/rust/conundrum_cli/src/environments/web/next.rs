@@ -1,4 +1,4 @@
-use conundrum::ecosystem::glue::conundrum_web_types::{
+use conundrum_lang::ecosystem::glue::conundrum_web_types::{
     builder_output::next::{BlogFileSummary, NextJsConundrumOutput},
     conundrum_web_builder::ConundrumWebProjectBuilder,
 };

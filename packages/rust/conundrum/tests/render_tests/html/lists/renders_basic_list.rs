@@ -1,4 +1,4 @@
-use conundrum::testing::{render_test::render_test, write_test_ast::write_test_ast};
+use conundrum_lang::testing::{render_test::render_test, write_test_ast::write_test_ast};
 
 #[tokio::test]
 async fn renders_codeblock_to_html() {

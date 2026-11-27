@@ -1,4 +1,4 @@
-use conundrum::ecosystem::db::db_traits::db_entity::DBEntity;
+use conundrum_lang::ecosystem::db::db_traits::db_entity::DBEntity;
 
 use crate::vector::models::joins::join_table::JoinTable;
 

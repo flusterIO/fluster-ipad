@@ -1,7 +1,7 @@
 use std::{fmt::Debug, sync::Arc};
 
 use arrow_array::RecordBatchIterator;
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::{
         db_client::db_client::DBClient,
         db_traits::db_entity::{DBEntity, DBSchema},

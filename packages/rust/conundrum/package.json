@@ -29,7 +29,7 @@
     "src/output/html/standalone/conundrum.css"
   ],
   "scripts": {
-    "build:rust": "cargo build --package conundrum",
+    "build:rust": "cargo build --package conundrum_lang",
     "build:scss": "../../../node_modules/@tailwindcss/cli/dist/index.mjs --input ./src/output/html/standalone/conundrum_input.scss --output ./src/output/html/standalone/conundrum.css",
     "build:ts": "wireit",
     "build:tsProd": "wireit",

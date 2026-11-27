@@ -1,4 +1,4 @@
-use conundrum::ecosystem::error_handling::db_error::DatabaseError;
+use conundrum_lang::ecosystem::error_handling::db_error::DatabaseError;
 use serde_with::{DisplayFromStr, serde_as};
 use strum::{EnumIter, IntoEnumIterator};
 

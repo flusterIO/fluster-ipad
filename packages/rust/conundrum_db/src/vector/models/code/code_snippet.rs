@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     lifted_models::primitives::db_id::DatabaseId,
     parsers::markdown::code_block::supported_languages::SupportedCodeBlockSyntax,
 };

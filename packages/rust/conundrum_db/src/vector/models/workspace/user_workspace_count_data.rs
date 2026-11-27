@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{db::db_traits::async_traits::try_from_async::TryFromAsync, error_handling::db_error::DatabaseResult},
     lang::constants::file_types::ParsableFileType,
 };

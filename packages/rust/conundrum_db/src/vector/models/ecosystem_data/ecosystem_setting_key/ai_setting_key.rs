@@ -1,4 +1,4 @@
-use conundrum::ecosystem::error_handling::db_error::DatabaseError;
+use conundrum_lang::ecosystem::error_handling::db_error::DatabaseError;
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 

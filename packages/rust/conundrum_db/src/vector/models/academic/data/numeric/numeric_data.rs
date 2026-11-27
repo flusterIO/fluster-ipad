@@ -1,4 +1,4 @@
-use conundrum::lifted_models::primitives::date_time::DateTime;
+use conundrum_lang::lifted_models::primitives::date_time::DateTime;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

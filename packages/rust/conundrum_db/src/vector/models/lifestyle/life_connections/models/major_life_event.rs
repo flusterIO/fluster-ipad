@@ -1,4 +1,4 @@
-use conundrum::lifted_models::primitives::date_time::DateTime;
+use conundrum_lang::lifted_models::primitives::date_time::DateTime;
 
 use crate::vector::models::{
     ai::ai_interactions::AIInteractions,

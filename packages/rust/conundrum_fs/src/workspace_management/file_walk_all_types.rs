@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     ecosystem::error_handling::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult},
     lang::constants::file_types::ParsableFileType,
 };

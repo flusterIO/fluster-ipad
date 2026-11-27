@@ -28,7 +28,7 @@ tui-checkbox = "0.4.3"
 tui-nodes = "0.10.0"
 tui-piechart = "0.3.1"
 tui-scrollview = "0.6.2"
-conundrum = { path = "../conundrum/", version = "0.1.1" }
+conundrum_lang = { path = "../conundrum/", version = "0.1.1" }
 conundrum_db = { path = "../conundrum_db/", version = "0.1.1" }
 conundrum_server_rs = { path = "../conundrum_server_rs/", version = "0.1.1" }
 anyhow = "1.0.102"

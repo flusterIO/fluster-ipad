@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     lang::runtime::{
         run_conundrum::{run_conundrum as run_conundrum_swift, ParseConundrumOptions},
         state::conundrum_error_variant::{ConundrumErrorVariant, ConundrumResult},

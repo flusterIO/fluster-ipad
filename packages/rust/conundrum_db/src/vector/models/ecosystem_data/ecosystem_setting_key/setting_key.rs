@@ -1,6 +1,6 @@
 use std::{fmt::Display, ops::Index, str::FromStr, sync::Arc};
 
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::{
         db_client::db_client::DBClient,
         db_default_constants::DEFAULT_MAX_SYNC_THREADS,

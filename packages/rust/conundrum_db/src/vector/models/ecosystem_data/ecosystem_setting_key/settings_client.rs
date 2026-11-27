@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::db_client::db_client::DBClient,
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };

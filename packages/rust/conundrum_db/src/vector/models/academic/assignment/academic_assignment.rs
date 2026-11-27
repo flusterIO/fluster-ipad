@@ -1,4 +1,4 @@
-use conundrum::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
+use conundrum_lang::lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 

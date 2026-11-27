@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use conundrum::lang::runtime::{
+use conundrum_lang::lang::runtime::{
     run_conundrum::ParseConundrumOptions,
     state::{
         conundrum_error::ConundrumError,

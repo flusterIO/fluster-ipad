@@ -5,7 +5,7 @@ use std::{
     sync::Arc,
 };
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{
         db::{
             db_client::db_client::DBClient,
@@ -50,7 +50,7 @@ async fn create_test_table<T: DBSchema>(connection: &Connection, table: Database
               .await
               .map_err(|error| {
                   log::error!("Could not create isolated sync test table {table}: {error}");
-                  conundrum::ecosystem::error_handling::db_error::DatabaseError::FailToCreateTable(table)
+                  conundrum_lang::ecosystem::error_handling::db_error::DatabaseError::FailToCreateTable(table)
               })?;
     Ok(())
 }
@@ -74,7 +74,7 @@ async fn test_database() -> TestDatabase {
 
 async fn cdrm_row_count(db: &DBClient) -> usize {
     let connection = db.0.clone().lock_owned().await;
-    let table = conundrum::ecosystem::db::helpers::open_table::open_table(connection, DatabaseTable::Cdrm)
+    let table = conundrum_lang::ecosystem::db::helpers::open_table::open_table(connection, DatabaseTable::Cdrm)
         .await
         .expect("Open synchronized CDRM table");
     table.count_rows(None).await.expect("Count synchronized CDRM rows")

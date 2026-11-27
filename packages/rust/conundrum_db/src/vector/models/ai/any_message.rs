@@ -1,7 +1,7 @@
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 
-use conundrum::{
+use conundrum_lang::{
     ai::{
         models::chat::chat_message::{
             ai::ai_message::AIMessage, chat_message_sender::ChatMessageSender, message_chunk::MessageChunk,

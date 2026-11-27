@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     ecosystem::db::tables::DatabaseTable,
     lang::runtime::run_conundrum::ParseConundrumOptions,
     lifted_models::primitives::{date_time::DateTime, db_id::DatabaseId},

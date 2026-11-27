@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use conundrum::lang::constants::file_names::PROJECT_CONFIG_FILE_NAME;
+use conundrum_lang::lang::constants::file_names::PROJECT_CONFIG_FILE_NAME;
 use resolve_path::PathResolveExt;
 use serde::{Deserialize, Serialize};
 

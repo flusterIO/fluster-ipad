@@ -1,5 +1,5 @@
 use anyhow::Result;
-use conundrum::{
+use conundrum_lang::{
     ecosystem::error_handling::{ai_error::AIError, db_error::DatabaseError, server_error::ServerError},
     lang::runtime::state::conundrum_error_variant::ConundrumErrorVariant,
 };

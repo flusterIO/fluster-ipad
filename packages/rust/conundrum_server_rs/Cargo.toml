@@ -46,7 +46,7 @@ glob-match = "0.2.1"
 ollama-rs = "0.3.5"
 langchain-rust = { version = "4.6.0", features = ["uuid", "ollama", "ollama-rs", "pdf-extract", "opensearch", "git", "fastembed"] }
 ignore = "0.4.31"
-conundrum = {path = "../conundrum/", version = "0.1.1"}
+conundrum_lang = {path = "../conundrum/", version = "0.1.1"}
 conundrum_fs = {path = "../conundrum_fs/", version = "0.1.1"}
 conundrum_db = {path = "../conundrum_db/", version = "0.1.1"}
 conundrum_tools = {path = "../conundrum_tools/", version = "0.1.1" }

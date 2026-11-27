@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::glue::conundrum_web_types::builder_output::next::BlogFileSummary,
     output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };

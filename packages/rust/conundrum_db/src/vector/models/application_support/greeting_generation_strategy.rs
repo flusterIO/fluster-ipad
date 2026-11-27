@@ -1,4 +1,4 @@
-use conundrum::renamed_enum;
+use conundrum_lang::renamed_enum;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug, strum_macros::Display, strum_macros::EnumIter)]

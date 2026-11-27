@@ -1,4 +1,4 @@
-use conundrum::ecosystem::db::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation};
+use conundrum_lang::ecosystem::db::db_traits::db_field::{DatabaseField, DatabaseFieldRepresentation};
 use fake::Dummy;
 use lancedb::arrow::arrow_schema::Field;
 use serde::{Deserialize, Serialize};

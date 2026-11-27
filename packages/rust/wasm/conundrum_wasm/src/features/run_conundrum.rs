@@ -1,5 +1,5 @@
-use conundrum::lang::runtime::run_conundrum::{self, run_conundrum};
-use conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget;
+use conundrum_lang::lang::runtime::run_conundrum::{self, run_conundrum};
+use conundrum_lang::lang::runtime::state::parse_state::ConundrumCompileTarget;
 use wasm_bindgen::JsValue;
 use wasm_bindgen::prelude::*;
 

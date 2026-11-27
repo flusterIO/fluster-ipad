@@ -1,5 +1,5 @@
 use crate::vector::models::academic::question::flashcard::flashcard_value::FlashcardValue;
-use conundrum::{
+use conundrum_lang::{
     ecosystem::db::{
         db_traits::{
             db_entity::{DBEntity, DBSchema},

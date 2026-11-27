@@ -1,4 +1,4 @@
-use conundrum::{lifted_models::primitives::db_id::DatabaseId, output::parsing_result::tag_result::TagResult};
+use conundrum_lang::{lifted_models::primitives::db_id::DatabaseId, output::parsing_result::tag_result::TagResult};
 
 use crate::vector::models::taggables::{auto_taggable::AutoTaggable, tag_location::TagLocation};
 

@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{
         db::db_traits::db_field::DatabaseField,
         error_handling::{ai_error::AIResult, db_error::DatabaseResult},

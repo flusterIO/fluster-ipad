@@ -1,4 +1,4 @@
-use conundrum::ecosystem::db::tables::DatabaseTable;
+use conundrum_lang::ecosystem::db::tables::DatabaseTable;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, Debug)]

@@ -1,6 +1,6 @@
 use std::{ops::Index, sync::Arc};
 
-use conundrum::{
+use conundrum_lang::{
     ai::{
         agents::remote_agent,
         models::chat::vector::vector_model::DBVector,
@@ -53,8 +53,8 @@ impl TextBasedContent<ParseConundrumOptions> for MarkdownContent {
     }
 
     async fn get_title(&self,
-                       modifiers: Vec<conundrum::lang::runtime::state::parse_state::ConundrumModifier>,
-                       target: conundrum::lang::runtime::state::parse_state::ConundrumCompileTarget)
+                       modifiers: Vec<conundrum_lang::lang::runtime::state::parse_state::ConundrumModifier>,
+                       target: conundrum_lang::lang::runtime::state::parse_state::ConundrumCompileTarget)
                        -> AIResult<Option<String>> {
         let r = get_title_group(self.0.clone(), modifiers, target).map_err(|e| {
                     log::error!("Failed to get Conundrum title: {:#?}", e);

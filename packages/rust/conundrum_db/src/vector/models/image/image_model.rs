@@ -1,4 +1,4 @@
-use conundrum::lifted_models::primitives::bytes::Bytes;
+use conundrum_lang::lifted_models::primitives::bytes::Bytes;
 use conundrum_fs::models::user_workspace::{
     workspace_relative_path::WorkspaceRelativePath, workspace_relative_path_strings::WorkspaceRelativeStringPath,
 };

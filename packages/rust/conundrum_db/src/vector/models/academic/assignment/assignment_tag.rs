@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::db::{
         db_traits::{db_entity::DBSchema, db_field::DatabaseField},
         tables::DatabaseTable,

@@ -1,4 +1,4 @@
-use conundrum::ecosystem::db::tables::DatabaseTable;
+use conundrum_lang::ecosystem::db::tables::DatabaseTable;
 use std::{collections::HashMap, hash::Hash};
 
 #[allow(non_camel_case_types)]

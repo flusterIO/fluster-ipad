@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     ai::{
         models::chat::vector::vector_model::DBVector,
         rig::ai_traits::into_embedding_description::IntoEmbeddingDescription,

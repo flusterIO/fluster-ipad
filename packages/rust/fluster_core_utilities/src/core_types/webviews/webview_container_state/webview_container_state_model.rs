@@ -1,7 +1,7 @@
 use crate::core_types::{
     webview_environment::WebviewEnvironment, webviews::webview_container_state::fluster_theme::FlusterTheme,
 };
-use conundrum::lang::lib::ui::shared_props::sizable_option::SizableOption;
+use conundrum_lang::lang::lib::ui::shared_props::sizable_option::SizableOption;
 use serde::{Deserialize, Serialize};
 use strum_macros::Display;
 use typeshare::typeshare;

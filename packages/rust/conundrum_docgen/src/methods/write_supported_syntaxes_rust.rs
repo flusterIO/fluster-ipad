@@ -1,5 +1,5 @@
 use askama::Template;
-use conundrum::lang::runtime::queries::code::get_supported_syntaxes::get_supported_syntaxes;
+use conundrum_lang::lang::runtime::queries::code::get_supported_syntaxes::get_supported_syntaxes;
 
 use crate::{
     methods::write_supported_syntaxes::SupportedThemeEnumVariant,

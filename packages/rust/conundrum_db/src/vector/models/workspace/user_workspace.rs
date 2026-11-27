@@ -1,15 +1,15 @@
 use crate::vector::models::ai::ai_interactions::AIInteractions;
-use conundrum::ecosystem::db::db_traits::db_entity::DBEntity;
-use conundrum::ecosystem::db::db_traits::db_entity::DBSchema;
-use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
-use conundrum::ecosystem::db::db_traits::into_partial::IntoPartial;
-use conundrum::ecosystem::db::db_traits::validate::ValidateSelf;
-use conundrum::ecosystem::db::tables::DatabaseTable;
-use conundrum::ecosystem::error_handling::db_error::DatabaseError;
-use conundrum::ecosystem::error_handling::db_error::DatabaseResult;
-use conundrum::impl_default_crud;
-use conundrum::lang::constants::file_types::ParsableFileType;
-use conundrum::lifted_models::primitives::date_time::DateTime;
+use conundrum_lang::ecosystem::db::db_traits::db_entity::DBEntity;
+use conundrum_lang::ecosystem::db::db_traits::db_entity::DBSchema;
+use conundrum_lang::ecosystem::db::db_traits::db_field::DatabaseField;
+use conundrum_lang::ecosystem::db::db_traits::into_partial::IntoPartial;
+use conundrum_lang::ecosystem::db::db_traits::validate::ValidateSelf;
+use conundrum_lang::ecosystem::db::tables::DatabaseTable;
+use conundrum_lang::ecosystem::error_handling::db_error::DatabaseError;
+use conundrum_lang::ecosystem::error_handling::db_error::DatabaseResult;
+use conundrum_lang::impl_default_crud;
+use conundrum_lang::lang::constants::file_types::ParsableFileType;
+use conundrum_lang::lifted_models::primitives::date_time::DateTime;
 use conundrum_fs::workspace_management::file_walk_config::FileWalkConfig;
 use conundrum_fs::workspace_management::get_filetype_recursively::ParsableFileTypePathMap;
 use conundrum_fs::workspace_management::get_filetype_recursively::get_filetype_in_workspace_recursively;
@@ -138,7 +138,7 @@ impl IntoPartial<UserWorkspacePartial> for UserWorkspace {
 
 #[cfg(test)]
 mod tests {
-    use conundrum::ecosystem::db::db_traits::entity_crud::EntityCRUD;
+    use conundrum_lang::ecosystem::db::db_traits::entity_crud::EntityCRUD;
     use fake::Fake;
 
     use crate::test_crud_functionality;

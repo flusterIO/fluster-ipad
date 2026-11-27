@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     ai::models::chat::vector::vector_model::DBVector,
     lifted_models::primitives::{bytes::Bytes, db_id::DatabaseId},
 };

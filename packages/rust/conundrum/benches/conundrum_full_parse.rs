@@ -1,4 +1,4 @@
-use conundrum::lang::runtime::{
+use conundrum_lang::lang::runtime::{
     queries::get_title::get_title_group,
     run_conundrum::{ParseConundrumOptions, run_conundrum},
     state::parse_state::{ConundrumModifier, ConundrumCompileTarget},

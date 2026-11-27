@@ -153,7 +153,7 @@ build_cross_language_schemas: generate_initial_note_data write_typescript_types
 
 
 build_conundrum_rust: build_conundrum_ts
-	cargo build -p conundrum
+	cargo build -p conundrum_lang
 
 run_post_cross_language_mods:
 	tsx {{justfile_directory()}}/scripts/post_cross_language_modifications.ts
@@ -170,7 +170,7 @@ build_fluster_bibliography:
 	cd {{justfile_directory()}}/packages/rust/fluster_bibliography; cargo swift package -y --xcframework-name FlusterBib
 
 gather_rustdoc_markdown:
-	cargo doc-md -p conundrum --no-deps -o {{justfile_directory()}}/docs/generated/rustdoc/conundrum
+	cargo doc-md -p conundrum_lang --no-deps -o {{justfile_directory()}}/docs/generated/rustdoc/conundrum
 
 clear_macos_database:
 	trash "/Users/bigsexy/Library/Containers/com.fluster.flusterdesktop/Data/Library/Application Support/default.store"

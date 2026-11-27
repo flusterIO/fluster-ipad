@@ -27,13 +27,13 @@ use crate::{
     traits::DocGenTemplate,
     workspace_utils::get_workspace_root_duplicate::get_workspace_root,
 };
-use conundrum::ecosystem::environment_variables::cdrm_env_variable::CdrmEnvVariable;
+use conundrum_lang::ecosystem::environment_variables::cdrm_env_variable::CdrmEnvVariable;
 use rustdoc_json::Builder;
 
 #[tokio::main]
 async fn main() {
     let env_level = CdrmEnvVariable::LogLevel.read().map(|x| x.to_lowercase()).unwrap_or("warn".to_string());
-    let filters = format!("warn,conundrum_server_rs={},conundrum={},conundrum_db={},conundrum_fs={}",
+    let filters = format!("warn,conundrum_server_rs={},conundrum_lang={},conundrum_db={},conundrum_fs={}",
                           &env_level, &env_level, &env_level, &env_level);
     pretty_env_logger::formatted_builder().parse_filters(filters.as_str()).init();
     if let Err(err) = write_supported_syntaxes() {

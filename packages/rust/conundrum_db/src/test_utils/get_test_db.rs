@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::ecosystem::db::{db::get_database, db_client::db_client::DBClient};
+use conundrum_lang::ecosystem::db::{db::get_database, db_client::db_client::DBClient};
 use lancedb::Connection;
 use tokio::sync::Mutex;
 

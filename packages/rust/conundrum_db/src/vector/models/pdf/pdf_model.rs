@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::db::{
         db_traits::{
             db_entity::DBSchema,
@@ -35,7 +35,7 @@ pub struct PdfModel(BinaryBasedContent<PdfBinary, TextBasedChunk, ParseConundrum
 //                 .map_err(|e| {
 //                     log::error!("Notebook File System Error: {:?}", e);
 //
-// DatabaseError::FileSystemError(conundrum::ecosystem::error_handling::conundrum_fs_error::ConundrumFSError::FsError(e.
+// DatabaseError::FileSystemError(conundrum_lang::ecosystem::error_handling::conundrum_fs_error::ConundrumFSError::FsError(e.
 // to_string()))                 })?;
 //     }
 // }

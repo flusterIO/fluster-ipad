@@ -1,7 +1,7 @@
 use std::sync::{Arc, LazyLock};
 
 use axum::extract::ws::{Message, WebSocket};
-use conundrum::ai::models::{
+use conundrum_lang::ai::models::{
     agent::{agent_description::AgentDescription, agent_primary_task::AgentPrimaryTask},
     chat::{
         chat_conversation::chat_conversation::ChatConversation,
@@ -10,7 +10,7 @@ use conundrum::ai::models::{
         chat_sender::chat_sender::ChatParticipant,
     },
 };
-use conundrum::ai::rig::{
+use conundrum_lang::ai::rig::{
     ai_traits::{
         ai_client_container::AIClientContainer,
         conundrum_agent::ConundrumAgent,
@@ -18,11 +18,11 @@ use conundrum::ai::rig::{
     },
     features::chat::{chat_event::ChatEvent, convo_context::ConversationContext},
 };
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::db_traits::entity_crud::EntityCRUD,
     error_handling::{ai_error::AIError, db_error::DatabaseError},
 };
-use conundrum::lifted_models::primitives::{db_id::DatabaseId, static_id::StaticId};
+use conundrum_lang::lifted_models::primitives::{db_id::DatabaseId, static_id::StaticId};
 use conundrum_db::vector::models::ecosystem_data::server_state::server_state::ServerState;
 use dashmap::DashMap;
 use futures_util::{SinkExt, Stream, StreamExt};

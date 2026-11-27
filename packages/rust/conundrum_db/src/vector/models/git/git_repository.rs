@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use arrow_schema::{DataType, Field};
-use conundrum::{ai::models::chat::vector::vector_model::DBVector, lifted_models::primitives::db_id::DatabaseId};
+use conundrum_lang::{ai::models::chat::vector::vector_model::DBVector, lifted_models::primitives::db_id::DatabaseId};
 use fake::Dummy;
 
 use crate::vector::models::{

@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ai::models::{
         agent::agent_description::AgentDescription,
         chat::{

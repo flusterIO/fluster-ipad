@@ -1,5 +1,5 @@
 use arrow_array::{RecordBatch, RecordBatchIterator};
-use conundrum::{
+use conundrum_lang::{
     ai::{models::chat::vector::vector_model::DB_VECTOR_LOCAL_DIMENSIONS, rig::rig_client_remote::RigClientRemote},
     ecosystem::{
         db::{

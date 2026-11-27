@@ -1,6 +1,6 @@
 use std::{ops::Index, sync::Arc};
 
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::{
         db_traits::{async_traits::try_from_async::TryFromAsync, entity_crud::EntityCRUD},
         parameters::general::pagination::PaginationParams,
@@ -14,7 +14,7 @@ use conundrum_db::vector::models::{
 };
 use rspc::{Procedure, Router};
 
-use conundrum::ecosystem::error_handling::server_error::{ServerError, ServerResult};
+use conundrum_lang::ecosystem::error_handling::server_error::{ServerError, ServerResult};
 
 pub fn get_workspace_management_router() -> Router<Arc<ServerState>> {
     Router::<Arc<ServerState>>::new()

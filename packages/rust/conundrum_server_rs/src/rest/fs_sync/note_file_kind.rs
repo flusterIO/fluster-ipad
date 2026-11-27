@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use conundrum::lang::constants::file_types::ParsableFileType;
+use conundrum_lang::lang::constants::file_types::ParsableFileType;
 use serde::{Deserialize, Serialize};
 
 /// The subset of [`ParsableFileType`] that maps onto a text note.

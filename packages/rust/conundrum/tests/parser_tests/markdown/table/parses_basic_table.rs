@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     lang::runtime::{
         run_conundrum::{ParseConundrumOptions, run_conundrum},
         state::parse_state::ConundrumCompileTarget,

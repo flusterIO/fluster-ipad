@@ -1,7 +1,7 @@
 use std::sync::Arc;
 
 use crate::mcp::create_tool_index::create_tool_index;
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::db_traits::async_traits::try_from_async::FromAsync, error_handling::server_error::ServerError,
 };
 use conundrum_db::vector::{

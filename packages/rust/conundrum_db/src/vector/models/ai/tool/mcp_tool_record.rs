@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ai::models::{chat::vector::vector_model::DBVector, tool::mcp_tool_name::MCPToolName},
     ecosystem::db::{
         db_traits::{

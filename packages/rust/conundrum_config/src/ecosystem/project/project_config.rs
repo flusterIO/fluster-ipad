@@ -1,5 +1,5 @@
 use config::{Config, Environment, File};
-use conundrum::{
+use conundrum_lang::{
     ecosystem::glue::conundrum_web_types::{
         builder_output::next::BlogFileSummary, conundrum_web_builder::ConundrumWebProjectBuilder,
     },
@@ -197,7 +197,7 @@ impl<'a, T, J> FileCollectionVisitor<'a, T, J> for ProjectConfig
     fn visit_files(&self, req: FileCollectionRequest<'a, T, J>) -> ConundrumResult<()> {
         let w =
 ignore::WalkBuilder::new(req.root).
-add_custom_ignore_filename(conundrum::lang::constants::file_names::CDRM_IGNORE_FILE_NAME)
+add_custom_ignore_filename(conundrum_lang::lang::constants::file_names::CDRM_IGNORE_FILE_NAME)
                                           .git_ignore(req.respect_gitignore)
                                           .build_parallel();
         w.run(req.callback);

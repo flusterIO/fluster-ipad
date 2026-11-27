@@ -1,4 +1,4 @@
-use conundrum::lang::runtime::traits::ai::ai_describable::AIDescribable;
+use conundrum_lang::lang::runtime::traits::ai::ai_describable::AIDescribable;
 use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize, Clone, strum_macros::Display)]

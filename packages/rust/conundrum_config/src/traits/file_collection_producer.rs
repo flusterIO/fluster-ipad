@@ -1,6 +1,6 @@
 use std::path::PathBuf;
 
-use conundrum::lang::{
+use conundrum_lang::lang::{
     constants::{file_names::CDRM_IGNORE_FILE_NAME, file_types::ParsableFileType},
     runtime::state::conundrum_error_variant::ConundrumResult,
 };

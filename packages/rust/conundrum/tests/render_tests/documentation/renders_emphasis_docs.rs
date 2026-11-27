@@ -1,4 +1,4 @@
-use conundrum::testing::render_test::render_test;
+use conundrum_lang::testing::render_test::render_test;
 
 use crate::render_tests::documentation::get_documentation_content::get_documentation_content;
 

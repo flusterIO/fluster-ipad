@@ -1,8 +1,8 @@
 use std::path::PathBuf;
 
 use arrow_schema::{Field, Fields};
-use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
-use conundrum::ecosystem::error_handling::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult};
+use conundrum_lang::ecosystem::db::db_traits::db_field::DatabaseField;
+use conundrum_lang::ecosystem::error_handling::conundrum_fs_error::{ConundrumFSError, ConundrumFSResult};
 use fake::Dummy;
 
 /// The path on the user's system, divided between the workspace path and the

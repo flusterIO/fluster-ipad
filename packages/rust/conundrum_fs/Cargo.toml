@@ -16,7 +16,7 @@ serde.workspace = true
 thiserror.workspace = true
 typeshare.workspace = true
 uniffi = "0.29"
-conundrum = { path = "../conundrum/", version="0", features = ["db"] }
+conundrum_lang = { path = "../conundrum/", version="0", features = ["db"] }
 conundrum_config = { path = "../conundrum_config/" , version="0"}
 ignore = "0.4.25"
 tempfile = "3.27.0"

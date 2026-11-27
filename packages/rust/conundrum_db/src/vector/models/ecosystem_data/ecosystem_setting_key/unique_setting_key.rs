@@ -1,6 +1,6 @@
 use std::sync::Arc;
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::{
         db::{
             db_client::db_client::DBClient,

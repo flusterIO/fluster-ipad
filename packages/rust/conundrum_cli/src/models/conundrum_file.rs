@@ -1,6 +1,6 @@
 use std::path::{Path, PathBuf};
 
-use conundrum::{
+use conundrum_lang::{
     lang::runtime::run_conundrum::run_conundrum, output::parsing_result::mdx_parsing_result::MdxParsingResult,
 };
 use conundrum_config::ecosystem::project::project_config::ProjectConfig;

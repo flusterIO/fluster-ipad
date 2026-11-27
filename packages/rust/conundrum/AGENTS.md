@@ -27,8 +27,8 @@
 Run from this crate directory:
 
 ```sh
-cargo check -p conundrum
-cargo check -p conundrum --target wasm32-unknown-unknown
+cargo check -p conundrum_lang
+cargo check -p conundrum_lang --target wasm32-unknown-unknown
 ```
 
-The WASM command requires the target to be installed. For database-feature work, use `cargo check -p conundrum --features db` and account for its native-only dependency implications.
+The WASM command requires the target to be installed. For database-feature work, use `cargo check -p conundrum_lang --features db` and account for its native-only dependency implications.

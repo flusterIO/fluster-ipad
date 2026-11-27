@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     ecosystem::db::{db_traits::db_field::DatabaseField, macros::renamed_enum},
     renamed_enum,
 };

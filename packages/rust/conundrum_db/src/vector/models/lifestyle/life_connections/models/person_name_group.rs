@@ -1,5 +1,5 @@
 use arrow_schema::{DataType, Field, Fields};
-use conundrum::ecosystem::db::db_traits::db_field::DatabaseField;
+use conundrum_lang::ecosystem::db::db_traits::db_field::DatabaseField;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type)]
 pub struct PersonNameGroup {

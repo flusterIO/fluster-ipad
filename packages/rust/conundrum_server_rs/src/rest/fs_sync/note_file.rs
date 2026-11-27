@@ -4,7 +4,7 @@ use std::{
     time::{SystemTime, UNIX_EPOCH},
 };
 
-use conundrum::output::parsing_result::mdx_parsing_result::MdxParsingResult;
+use conundrum_lang::output::parsing_result::mdx_parsing_result::MdxParsingResult;
 use sha2::{Digest, Sha256};
 
 use crate::rest::fs_sync::models::{FileIssueReason, ManifestFrontMatter};

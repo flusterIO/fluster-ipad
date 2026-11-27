@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum},
     testing::{render_test::render_test, write_test_ast::write_test_ast},
 };

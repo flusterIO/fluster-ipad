@@ -1,9 +1,9 @@
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::db_traits::async_traits::actionable_request::ActionableRequest,
     error_handling::db_error::{DatabaseError, DatabaseResult},
 };
-use conundrum::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
-use conundrum::output::parsing_result::mdx_parsing_result::MdxParsingResult;
+use conundrum_lang::lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum};
+use conundrum_lang::output::parsing_result::mdx_parsing_result::MdxParsingResult;
 
 #[derive(serde::Serialize, serde::Deserialize, Clone, Debug, specta::Type)]
 pub struct CompileCdrmRequest {

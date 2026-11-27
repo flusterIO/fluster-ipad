@@ -2,10 +2,10 @@ use std::sync::Arc;
 
 use crate::crud_router;
 use crate::rpc::routers::crud::expanded::chat_conversation_crud::get_chat_conversation_crud;
-use conundrum::ai::models::agent::agent_description::AgentDescription;
-use conundrum::ecosystem::db::db_traits::db_entity::DBSchema;
-use conundrum::ecosystem::error_handling::server_error::ServerError;
-use conundrum::{
+use conundrum_lang::ai::models::agent::agent_description::AgentDescription;
+use conundrum_lang::ecosystem::db::db_traits::db_entity::DBSchema;
+use conundrum_lang::ecosystem::error_handling::server_error::ServerError;
+use conundrum_lang::{
     ai::models::{
         chat::{
             chat_conversation::chat_conversation::ChatConversation,

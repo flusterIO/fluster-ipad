@@ -1,7 +1,7 @@
 use std::{fmt::Debug, marker::PhantomData, sync::Arc};
 
 use arrow_schema::Field;
-use conundrum::{
+use conundrum_lang::{
     ecosystem::db::db_traits::{
         db_entity::DBSchema,
         db_field::{DatabaseField, DatabaseFieldLarge},

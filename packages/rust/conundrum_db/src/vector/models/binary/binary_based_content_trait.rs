@@ -1,6 +1,6 @@
 use std::path::Path;
 
-use conundrum::{
+use conundrum_lang::{
     ecosystem::error_handling::{
         ai_error::AIResult,
         conundrum_fs_error::ConundrumFSError,

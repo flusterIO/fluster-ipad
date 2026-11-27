@@ -1,6 +1,6 @@
 use std::{ops::Index, sync::Arc};
 
-use conundrum::ecosystem::{
+use conundrum_lang::ecosystem::{
     db::db_traits::async_traits::try_from_async::FromAsync,
     error_handling::server_error::{ServerError, ServerResult},
 };

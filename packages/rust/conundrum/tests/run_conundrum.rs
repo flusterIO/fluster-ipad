@@ -1,4 +1,4 @@
-use conundrum::{
+use conundrum_lang::{
     embedded::in_content_documentation_id::InContentDocumentationId,
     lang::runtime::run_conundrum::{ParseConundrumOptions, run_conundrum},
     output::general::component_constants::{

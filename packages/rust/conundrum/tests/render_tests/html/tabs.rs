@@ -1,4 +1,4 @@
-use conundrum::testing::render_test::render_test;
+use conundrum_lang::testing::render_test::render_test;
 
 #[tokio::test]
 async fn renders_tabgroup_to_html() {

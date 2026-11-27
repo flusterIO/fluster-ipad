@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use conundrum::lang::constants::file_types::ParsableFileType;
+use conundrum_lang::lang::constants::file_types::ParsableFileType;
 use strum::IntoEnumIterator;
 
 use crate::vector::models::workspace::sync::ir::generic_tag_input::GenericTagInput;

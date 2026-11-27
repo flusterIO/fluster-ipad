@@ -21,7 +21,7 @@ pub fn write_public_font_file<C: AsRef<[u8]>>(content: C, sub_path: &str) {
 
 #[cfg(test)]
 mod tests {
-    use conundrum::output::html::glue::individual_glue_assets::lucide_font::LucideFontAsset;
+    use conundrum_lang::output::html::glue::individual_glue_assets::lucide_font::LucideFontAsset;
 
     use super::*;
 

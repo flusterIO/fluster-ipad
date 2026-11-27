@@ -3,7 +3,7 @@ macro_rules! subject_join {
     ( $id_type:ty, $struct_name:ident, $id_key:ident ) => {
         use std::sync::Arc;
 
-        use conundrum::ecosystem::db::traits::db_entity::DBSchema;
+        use conundrum_lang::ecosystem::db::traits::db_entity::DBSchema;
 
         use $crate::vector::{database::db_traits::db_field::DatabaseField};
 
@@ -16,7 +16,7 @@ macro_rules! subject_join {
         impl<'a> DBSchema for $struct_name {
             fn arrow_fields(
                 )
-                -> conundrum::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
+                -> conundrum_lang::ecosystem::error_handling::db_error::DatabaseResult<Vec<std::sync::Arc<arrow_schema::Field>>>
             {
                 Ok(vec![Arc::new(String::field_definition("subject_value", false)),
                         Arc::new(<$id_type>::field_definition(stringify!($id_key), false))])

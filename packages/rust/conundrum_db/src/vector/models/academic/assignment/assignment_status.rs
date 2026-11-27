@@ -1,5 +1,5 @@
 use arrow_schema::Field;
-use conundrum::ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::db_error::DatabaseError};
+use conundrum_lang::ecosystem::{db::db_traits::db_field::DatabaseField, error_handling::db_error::DatabaseError};
 use fake::Dummy;
 use serde::{Deserialize, Serialize};
 use std::{fmt::Display, str::FromStr};

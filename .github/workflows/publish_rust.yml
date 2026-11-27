@@ -50,7 +50,7 @@ jobs:
             fi
 
             for attempt in 1 2 3; do
-              if [[ "$crate" == "conundrum" ]]; then
+              if [[ "$crate" == "conundrum_lang" ]]; then
                 rm -rf packages/rust/conundrum/vendor/web_assets/dist
                 mkdir -p packages/rust/conundrum/vendor/web_assets
                 cp -R packages/rust/conundrum_web_assets/dist packages/rust/conundrum/vendor/web_assets/dist
@@ -70,7 +70,7 @@ jobs:
 
           publish_crate conundrum_macro_traits
           publish_crate conundrum_macros
-          publish_crate conundrum
+          publish_crate conundrum_lang
           publish_crate fluster_core_utilities
           publish_crate conundrum_config
           publish_crate conundrum_fs

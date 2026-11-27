@@ -3,8 +3,8 @@ use fake::Fake;
 #[macro_export]
 macro_rules! test_crud_functionality {
     ( $entity:ty, $partial:ty, $label:expr ) => {
-        use conundrum::ecosystem::db::db_traits::db_entity::DBEntity;
-        use conundrum::ecosystem::db::db_traits::into_partial::IntoPartial;
+        use conundrum_lang::ecosystem::db::db_traits::db_entity::DBEntity;
+        use conundrum_lang::ecosystem::db::db_traits::into_partial::IntoPartial;
         use std::ops::Index;
         let test_db = $crate::test_utils::get_test_db::get_test_database().await;
         let mut test_data: Vec<$entity> = Vec::new();

@@ -1,5 +1,5 @@
 use askama::Template;
-use conundrum::{
+use conundrum_lang::{
     lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis,
     output::html::web_specific_traits::css_value_representable::CSSVariablePairRepresentable,
 };
