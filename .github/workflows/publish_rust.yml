@@ -49,7 +49,14 @@ jobs:
             fi
 
             for attempt in 1 2 3; do
-              if cargo publish --locked -p "$crate" --token "$CARGO_REGISTRY_TOKEN"; then
+              if [[ "$crate" == "conundrum" ]]; then
+                rm -rf packages/rust/conundrum/vendor/web_assets/dist
+                mkdir -p packages/rust/conundrum/vendor/web_assets
+                cp -R packages/rust/conundrum_web_assets/dist packages/rust/conundrum/vendor/web_assets/dist
+                git add -f packages/rust/conundrum/vendor/web_assets/dist
+              fi
+
+              if cargo publish --locked --allow-dirty -p "$crate" --token "$CARGO_REGISTRY_TOKEN"; then
                 return 0
               fi
               if [[ "$attempt" -lt 3 ]]; then
