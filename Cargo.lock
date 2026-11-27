@@ -3578,7 +3578,7 @@ version = "0.1.1"
 
 [[package]]
 name = "conundrum_macros"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "conundrum_macro_traits",
  "convert_case 0.11.0",
