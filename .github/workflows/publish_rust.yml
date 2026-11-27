@@ -20,7 +20,7 @@ jobs:
       - name: Install protobuf compiler
         run: |
           sudo apt-get update
-          sudo apt-get install --yes protobuf-compiler
+          sudo apt-get install --yes protobuf-compiler pkg-config libwayland-dev
       - uses: dtolnay/rust-toolchain@nightly
         name: Install Rust toolchain
       - name: Publish conundrum crates
