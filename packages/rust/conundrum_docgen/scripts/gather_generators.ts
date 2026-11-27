@@ -155,7 +155,7 @@ for (const k in outputPaths) {
     const p = pulloutPath(fp);
     const l = p.slice(p.lastIndexOf("/") + 1, p.length);
     const name = formatName(l);
-    q += `             Self::${name} => include_str!("../../../../../../../../docs/generated/vector/${p}.cdrm").to_string(),
+    q += `             Self::${name} => include_str!("../../../../../vendor/docs/generated/vector/${p}.cdrm").to_string(),
 `;
 }
 

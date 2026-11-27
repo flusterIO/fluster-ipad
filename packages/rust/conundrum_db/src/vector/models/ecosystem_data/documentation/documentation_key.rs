@@ -30,13 +30,13 @@ pub enum DocumentationKey {
 impl Into<String> for DocumentationKey {
      fn into(self) -> String {
          match self {
-             Self::Readme => include_str!("../../../../../../../../docs/generated/vector/readme.cdrm").to_string(),
-             Self::Intro => include_str!("../../../../../../../../docs/generated/vector/usage/intro.cdrm").to_string(),
-             Self::ConundrumProtocol => include_str!("../../../../../../../../docs/generated/vector/protocol/conundrum_protocol.cdrm").to_string(),
-             Self::ConundrumLang => include_str!("../../../../../../../../docs/generated/vector/protocol/language/conundrum_lang.cdrm").to_string(),
-             Self::Soul => include_str!("../../../../../../../../docs/generated/vector/legal/soul.cdrm").to_string(),
-             Self::License => include_str!("../../../../../../../../docs/generated/vector/legal/license.cdrm").to_string(),
-             Self::Warnings => include_str!("../../../../../../../../docs/generated/vector/api/developer/warnings.cdrm").to_string(),
+             Self::Readme => include_str!("../../../../../vendor/docs/generated/vector/readme.cdrm").to_string(),
+             Self::Intro => include_str!("../../../../../vendor/docs/generated/vector/usage/intro.cdrm").to_string(),
+             Self::ConundrumProtocol => include_str!("../../../../../vendor/docs/generated/vector/protocol/conundrum_protocol.cdrm").to_string(),
+             Self::ConundrumLang => include_str!("../../../../../vendor/docs/generated/vector/protocol/language/conundrum_lang.cdrm").to_string(),
+             Self::Soul => include_str!("../../../../../vendor/docs/generated/vector/legal/soul.cdrm").to_string(),
+             Self::License => include_str!("../../../../../vendor/docs/generated/vector/legal/license.cdrm").to_string(),
+             Self::Warnings => include_str!("../../../../../vendor/docs/generated/vector/api/developer/warnings.cdrm").to_string(),
          }
      }
 }

@@ -57,6 +57,13 @@ jobs:
                 git add -f packages/rust/conundrum/vendor/web_assets/dist
               fi
 
+              if [[ "$crate" == "conundrum_db" ]]; then
+                rm -rf packages/rust/conundrum_db/vendor/docs/generated/vector
+                mkdir -p packages/rust/conundrum_db/vendor/docs/generated
+                cp -R docs/generated/vector packages/rust/conundrum_db/vendor/docs/generated/vector
+                git add -f packages/rust/conundrum_db/vendor/docs/generated/vector
+              fi
+
               if cargo publish --locked --allow-dirty -p "$crate" --token "$CARGO_REGISTRY_TOKEN"; then
                 return 0
               fi
