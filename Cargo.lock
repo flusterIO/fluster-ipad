@@ -3283,7 +3283,7 @@ dependencies = [
 
 [[package]]
 name = "conundrum_db"
-version = "0.1.1"
+version = "0.1.2"
 dependencies = [
  "apalis-cron",
  "arrow-array",
