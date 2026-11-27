@@ -9,7 +9,7 @@ use winnow::{Parser, combinator::alt};
 
 
 pub fn emphasis_string(input: &mut ConundrumInput) -> ConundrumModalResult<Emphasis> {
-    alt(({% for emphasis in conundrum::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
+    alt(({% for emphasis in conundrum_lang::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
     literal("{{emphasis}}").value(Emphasis::{{emphasis | title}}),
     {% endfor %}
     )).parse_next(input)

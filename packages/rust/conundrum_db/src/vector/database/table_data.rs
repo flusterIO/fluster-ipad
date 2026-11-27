@@ -1,5 +1,5 @@
 use conundrum_lang::{
-    bibliography::bib_entry::BibEntry, parsers::conundrum_lang::logic::number::conundrum_float::ConundrumFloat,
+    bibliography::bib_entry::BibEntry, parsers::conundrum::logic::number::conundrum_float::ConundrumFloat,
 };
 
 use crate::vector::models::{

@@ -18,7 +18,7 @@ pub fn generate_db_entity(model: &Model) -> Result<proc_macro2::TokenStream, syn
     let table = &model.table_required()?;
 
     let as_entity = &model.as_db_entity_path();
-    let crate_id = &model.conundrum_crate_import();
+    let crate_id = &model.conundrum_lang_crate_import();
 
     if let Some(um) = &model.unit {
         let ty = um.ty.clone();

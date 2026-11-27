@@ -19,6 +19,6 @@ This is a <Hl success>green</Hl> highlighted component.
 ````long-docs
 ### Demo 
 
-{% for emphasis in conundrum::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
+{% for emphasis in conundrum_lang::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
 - This is <Hl {{emphasis}}>{{emphasis}}</Hl> highlighted text {% endfor %}
 ````

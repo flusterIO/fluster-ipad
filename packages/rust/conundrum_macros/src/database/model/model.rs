@@ -249,7 +249,7 @@ impl Model {
                         .cloned()
                         .expect("You must provide a 'unit' value if the struct does not have an id field.")
                         .ty;
-                let crate_id = self.conundrum_crate_import();
+                let crate_id = self.conundrum_lang_crate_import();
                 quote! {
                     <#nested_type as #crate_id::ecosystem::db::db_traits::db_entity::DBSchema>::IDType
                 }
@@ -382,7 +382,7 @@ impl Model {
                                                             })
     }
 
-    pub fn conundrum_crate_import(&self) -> syn::PathSegment {
+    pub fn conundrum_lang_crate_import(&self) -> syn::PathSegment {
         match self.in_source_crate {
             true => syn::PathSegment::from(syn::Ident::new("crate", Span::call_site())),
             false => syn::PathSegment::from(syn::Ident::new("conundrum_lang", Span::call_site())),
@@ -398,7 +398,7 @@ impl Model {
 
     pub fn as_db_entity_path(&self) -> TokenStream {
         let id_type = self.primary_field().ok();
-        let crate_id = self.conundrum_crate_import();
+        let crate_id = self.conundrum_lang_crate_import();
         match id_type {
             Some(um) => {
                 let id_type = um.ty.clone();

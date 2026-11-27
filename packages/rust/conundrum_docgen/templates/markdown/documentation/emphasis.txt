@@ -15,9 +15,9 @@ In the near future these colors will be customizable.
 ```
 
 <Grid smedium={2} large={3}>
-{% for emphasis in conundrum::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
-{{emphasis.as_cdrm_template(conundrum::lang::lib::ui::shared_props::sizable::SizablePropsGroup {
-    width: Some(conundrum::lang::lib::ui::shared_props::sizable_option::SizableOption::Full),
+{% for emphasis in conundrum_lang::lang::lib::ui::ui_types::emphasis::emphasis_model::Emphasis::iter() %}
+{{emphasis.as_cdrm_template(conundrum_lang::lang::lib::ui::shared_props::sizable::SizablePropsGroup {
+    width: Some(conundrum_lang::lang::lib::ui::shared_props::sizable_option::SizableOption::Full),
     ..Default::default()
     }.clone()).render()?}}
 {% endfor %}

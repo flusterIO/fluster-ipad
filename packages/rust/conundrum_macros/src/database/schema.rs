@@ -7,7 +7,7 @@ use crate::database::model::model::Model;
 pub fn gen_db_schema(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     let name = &input.ident;
 
-    let crate_id = &input.conundrum_crate_import();
+    let crate_id = &input.conundrum_lang_crate_import();
 
     let mut generated_fields = Vec::new();
 

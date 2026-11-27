@@ -1,3 +1,4 @@
+import consola from "consola";
 import fs from "fs";
 import assert from "node:assert";
 import path from "path";
@@ -38,7 +39,7 @@ export type DateTime = string | number | Date;`,
             },
         ],
     },
-    "packages/rust/conundrum_swift/ConundrumSwift/Sources/ConundrumSwift/conundrum.swift":
+    "packages/rust/conundrum_swift/ConundrumSwift/Sources/ConundrumSwift/conundrum_lang.swift":
     {
         replacers: [
             {
@@ -212,6 +213,7 @@ replacers["packages/rust/conundrum_ts/src/code_gen/typeshare/conundrum.ts"] =
 
 export const replaceStuff = (replacers: Replacer[], filePath: string) => {
     const fp = path.resolve(path.resolve(__dirname, "../"), filePath);
+    consola.info(`Modifying ${fp}`);
     let content = fs.readFileSync(fp, {
         encoding: "utf-8",
     });

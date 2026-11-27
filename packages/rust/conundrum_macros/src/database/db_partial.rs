@@ -87,7 +87,7 @@ pub fn gen_db_partial(input: &Model) -> syn::Result<proc_macro2::TokenStream> {
     let partial_dummy = &input.partial_dummy();
     if let Some(um) = &input.unit {
         let partial_nested_type = um.ty.clone();
-        let crate_id = input.conundrum_crate_import();
+        let crate_id = input.conundrum_lang_crate_import();
         let self_def = match input.opts.partial_self {
             true => {
                 quote! {

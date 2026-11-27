@@ -15,7 +15,7 @@ pub fn derive_db_default_crud(input: TokenStream) -> TokenStream {
 }
 
 pub fn gen_default_crud(input: &Model) -> Result<proc_macro2::TokenStream, syn::Error> {
-    let crate_id = input.conundrum_crate_import();
+    let crate_id = input.conundrum_lang_crate_import();
     let partial_type = input.partial_type_or_partial_name()?;
     let self_ident = input.ident.clone();
     let id_type = input.primary_field_type_with_nested_type_fallback();
