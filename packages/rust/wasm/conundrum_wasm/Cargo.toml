@@ -1,5 +1,4 @@
 [package]
-edition.workspace = true
 name = "conundrum_wasm"
 version = "0.0.3"
 authors.workspace = true
