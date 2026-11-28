@@ -12,8 +12,7 @@ use crate::vector::models::{
 pub struct Activity {
     pub id: DatabaseId,
     pub label: CaseInsensitiveString,
-    pub desc_from_user: Option<String>,
-    pub comment_from_model: Option<String>,
+    pub description: Option<String>,
     /// A float between 0 and 1 indicating the productivity of this activity
     /// session.
     pub productivity: f64,

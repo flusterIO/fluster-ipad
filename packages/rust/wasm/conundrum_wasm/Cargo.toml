@@ -2,6 +2,12 @@
 edition.workspace = true
 name = "conundrum_wasm"
 version = "0.0.3"
+authors.workspace = true
+description.workspace = true
+documentation.workspace = true
+edition.workspace = true
+license-file.workspace = true
+
 
 [lib]
 crate-type = ["cdylib"]
